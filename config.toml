@@ -75,7 +75,7 @@ comment = false
 name = "Ahmet Can Çiçek"
 bio = "Software Engineer | I'm a software engineer, researcher, and student. I love coding, writing, speaking, helping others, learning, and listening. These things shape my journey in tech and knowledge."
 # The URL of avatar.
-avatar_url = "icons/20240303_123057.jpg"
+avatar_url = "icons/profile.jpg"
 # Invert color in dark mode.
 avatar_invert = false
 
