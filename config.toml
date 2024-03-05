@@ -5,7 +5,7 @@ base_url = "https://ahmetcancicek.dev"
 title = "Ahmet Can Çiçek - Software Engineer, Blogger, Researcher"
 description = "Hello, I'm Ahmet Can Çiçek, a Software Engineer who wears many hats - Blogger, Author, and Researcher. By day, I craft elegant code, and by night, I delve into the world of words, sharing insights, research findings, and coding tips on my blog. "
 
-# The default site author.
+# The default site author. 
 author = "ahmetcancicek"
 
 # The default language; used in feeds.
