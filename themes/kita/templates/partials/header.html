@@ -1,5 +1,16 @@
 <header
   class="{% if config.extra.style.header_blur %}blur-header{% else %}header{% endif %} fixed top-0 z-40 mx-auto min-h-[3.5rem] w-full">
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-01S4R6K1J4"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+
+    gtag('config', 'G-01S4R6K1J4');
+  </script>
+
   <div class="mx-auto w-full max-w-4xl p-3 lg:flex lg:justify-between">
     <div class="flex justify-between">
       <div class="flex items-center">
