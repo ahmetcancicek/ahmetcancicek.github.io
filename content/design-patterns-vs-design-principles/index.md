@@ -30,8 +30,8 @@ By distinguishing between their differences in design patterns and design princi
 
 ## REFERENCES
 
-[1] [https://www.tutorialsteacher.com/articles/difference-between-design-principle-and-design-pattern](https://www.tutorialsteacher.com/articles/difference-between-design-principle-and-design-pattern)
+[1] <a href="https://www.tutorialsteacher.com/articles/difference-between-design-principle-and-design-pattern" target="_blank">https://www.tutorialsteacher.com/articles/difference-between-design-principle-and-design-pattern</a>
 
-[2] [https://stackoverflow.com/questions/31317141/whats-the-difference-between-design-patterns-and-design-principles](https://stackoverflow.com/questions/31317141/whats-the-difference-between-design-patterns-and-design-principles)
+[2] <a href="https://stackoverflow.com/questions/31317141/whats-the-difference-between-design-patterns-and-design-principles" target="_blank">https://stackoverflow.com/questions/31317141/whats-the-difference-between-design-patterns-and-design-principles</a>
 
-[3] [https://subscription.packtpub.com/book/programming/9781786463593/1/ch01lvl1sec17/design-patterns-and-principles](https://subscription.packtpub.com/book/programming/9781786463593/1/ch01lvl1sec17/design-patterns-and-principles)
+[3] <a href="https://subscription.packtpub.com/book/programming/9781786463593/1/ch01lvl1sec17/design-patterns-and-principles" target="_blank">https://subscription.packtpub.com/book/programming/9781786463593/1/ch01lvl1sec17/design-patterns-and-principles</a>
