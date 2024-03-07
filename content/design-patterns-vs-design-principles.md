@@ -26,7 +26,7 @@ Two concepts improve the code quality and offer maintainable, flexible, and reus
 
 By distinguishing between their differences in design patterns and design principles, software products can be developed with higher quality, maintainability, flexibility, and reusability. This understanding allows developers to choose the appropriate approach for each situation and create more efficient and effective solutions.
 
-## Sources
+## References
 [1] [https://www.tutorialsteacher.com/articles/difference-between-design-principle-and-design-pattern](https://www.tutorialsteacher.com/articles/difference-between-design-principle-and-design-pattern)
 
 [2] [https://stackoverflow.com/questions/31317141/whats-the-difference-between-design-patterns-and-design-principles](https://stackoverflow.com/questions/31317141/whats-the-difference-between-design-patterns-and-design-principles)
