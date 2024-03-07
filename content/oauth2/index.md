@@ -130,11 +130,13 @@ OAuth 2.0 has five important grant types that are useful in different cases:
 
 > It is important to note that two grant types, namely the **Implicit Grant** and the **Password Grant** types, are no longer recommended for use due to security concerns. Both grant types used have already caused vulnerabilities.
 
-1. **Authorization Code Grant:** The authorization server provides a single-use authorization code to the client. This authorization code can then be exchanged for an access token, which allows the client to access the protected resource. The authorization code grant type is commonly used for web applications, especially when the exchange can be securely carried out on the server side, making it ideal for server-side applications.
+#### 1. Authorization Code Grant
+
+The authorization server provides a single-use authorization code to the client. This authorization code can then be exchanged for an access token, which allows the client to access the protected resource. The authorization code grant type is commonly used for web applications, especially when the exchange can be securely carried out on the server side, making it ideal for server-side applications.
 
 **Authorization Code Flow:** The example of authorization or grant type flow is illustrated step by step.
 
-Step 1 - Authorization Code Link: Initially, the user receives an authorization code link formatted as follows:
+**Step 1 - Authorization Code Link:** Initially, the user receives an authorization code link formatted as follows:
 
 ```
 http://localhost:5050/oauth/authorize?
@@ -210,11 +212,15 @@ The authorization code grant type is illustrated in Figure 3.
     </figure>
 </center>
 
-**Authorization Code Flow with Proof Key for Code Exchange (PKCE):** During authentication, mobile and native applications can use the Authorization Code Flow for security, but they require additional measures to ensure safety. Single-page apps, on the other hand, have their own set of challenges. To overcome these issues, OAuth 2.0 has introduced a variation of the Authorization Code Flow called Proof Key for Code Exchange (PKCE).
+#### Authorization Code Flow with Proof Key for Code Exchange (PKCE)
+
+During authentication, mobile and native applications can use the Authorization Code Flow for security, but they require additional measures to ensure safety. Single-page apps, on the other hand, have their own set of challenges. To overcome these issues, OAuth 2.0 has introduced a variation of the Authorization Code Flow called Proof Key for Code Exchange (PKCE).
 
 PKCE (RFC 7636) is an extension to the Authorization Code Flow designed to mitigate CSRF and authorization code injection attacks.
 
-2. **Client Credentials Grant:** The client credentials grant type is commonly used in scenarios where there is no user involved, and the client authenticates itself directly with the authorization server.
+#### 2. Client Credentials Grant
+
+The client credentials grant type is commonly used in scenarios where there is no user involved, and the client authenticates itself directly with the authorization server.
 
 The application requests an access token by sending its credentials, specifically the client ID and client secret, to the authorization server.
 
@@ -248,7 +254,9 @@ The client credentials flow is illustrated in Figure 4.
     </figure>
 </center>
 
- 3. **Device Code Grant:** The device code grant type offers a mechanism for devices without a browser or with limited inputs to acquire an access token and gain access to a user's account. The primary purpose of this grant type is to enable users to authorize applications on such devices, allowing them access to their accounts and resources. For example, when users aim to log in to a video streaming application on a device lacking conventional keyboard input, such as a smart television, the device code provides a solution, facilitating user access to the application.
+ #### 3. Device Code Grant
+ 
+ The device code grant type offers a mechanism for devices without a browser or with limited inputs to acquire an access token and gain access to a user's account. The primary purpose of this grant type is to enable users to authorize applications on such devices, allowing them access to their accounts and resources. For example, when users aim to log in to a video streaming application on a device lacking conventional keyboard input, such as a smart television, the device code provides a solution, facilitating user access to the application.
 
 
 **Device Code Flow:** The example of device code grant type flow is illustrated step by step.
@@ -289,7 +297,9 @@ The device code flow is illustrated in Figure 5.
     </figure>
 </center>
 
-4. **Implicit Grant:** The implicit grant type is notably simpler. Instead of initially acquiring an authorization code and then exchanging it for an access token, the client application instantly receives the access token once the user grants their consent. With the implicit grant type, all communication occurs through browser redirects without a secure back-channel, unlike the authorization code flow. Consequently, this exposes the sensitive access token and the user's data to potential security risks. The implicit grant type is better suited for single-page applications and native desktop applications. The implicit flow is illustrated in Figure 6.
+#### 4. Implicit Grant 
+
+The implicit grant type is notably simpler. Instead of initially acquiring an authorization code and then exchanging it for an access token, the client application instantly receives the access token once the user grants their consent. With the implicit grant type, all communication occurs through browser redirects without a secure back-channel, unlike the authorization code flow. Consequently, this exposes the sensitive access token and the user's data to potential security risks. The implicit grant type is better suited for single-page applications and native desktop applications. The implicit flow is illustrated in Figure 6.
 
 <center>
     <figure>
@@ -300,7 +310,9 @@ The device code flow is illustrated in Figure 5.
     </figure>
 </center>
 
-5. **Password Grant:** The Password grant type is considered a legacy method for swapping a user's credentials for an access token. However, it is not recommended anymore because it involves the client application collecting the user's password and transmitting it to the authorization server, posing security risks. The latest OAuth 2.0 Security Current Practice disallows the password grant entirely, and the grant is not defined in OAuth 2.1.
+#### 5. Password Grant
+
+The Password grant type is considered a legacy method for swapping a user's credentials for an access token. However, it is not recommended anymore because it involves the client application collecting the user's password and transmitting it to the authorization server, posing security risks. The latest OAuth 2.0 Security Current Practice disallows the password grant entirely, and the grant is not defined in OAuth 2.1.
 
 ## REFERENCES
 
