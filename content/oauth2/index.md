@@ -63,9 +63,7 @@ The abstract OAuth 2.0 flow is illustrated in Figure 1, which describes the inte
 
 <center>
     <figure>
-    <img
-    src="/oauth2/Protocol_Flow.png"
-    alt="Figure 1: Protocol Flow">
+    <img src="/oauth2/Protocol_Flow.png" alt="Figure 1: Protocol Flow" width="750px">
     <figcaption>Figure 1: Protocol Flow</figcaption>
     </figure>
 </center>
@@ -80,9 +78,7 @@ A refresh token is a specialized type of token designed to acquire a renewed acc
 
 <center>
     <figure>
-    <img
-    src="/oauth2/Refresh_Token.png"
-    alt="Figure 2: Refreshing an Expired Access Token">
+    <img src="/oauth2/Refresh_Token.png" alt="Figure 2: Refreshing an Expired Access Token" width="750px">
     <figcaption>Figure 2: Refreshing an Expired Access Token</figcaption>
     </figure>
 </center>
@@ -205,9 +201,7 @@ The authorization code grant type is illustrated in Figure 3.
 
 <center>
     <figure>
-    <img
-    src="/oauth2/Authorization_Code_Flow.png"
-    alt="Figure 3: Authorization Code Flow">
+    <img src="/oauth2/Authorization_Code_Flow.png" alt="Figure 3: Authorization Code Flow" width="750px">
     <figcaption>Figure 3: Authorization Code Flow</figcaption>
     </figure>
 </center>
@@ -247,9 +241,7 @@ The client credentials flow is illustrated in Figure 4.
 
 <center>
     <figure>
-    <img
-    src="/oauth2/Client_Credentials_Flow.png"
-    alt="Figure 4: Client Credentials Flow">
+    <img src="/oauth2/Client_Credentials_Flow.png" alt="Figure 4: Client Credentials Flow" width="750px">
     <figcaption>Figure 4: Client Credentials Flow</figcaption>
     </figure>
 </center>
@@ -290,9 +282,7 @@ The device code flow is illustrated in Figure 5.
 
 <center>
     <figure>
-    <img
-    src="/oauth2/Device_Code_Flow.png"
-    alt="Figure 5: Device Code Flow">
+    <img src="/oauth2/Device_Code_Flow.png" alt="Figure 5: Device Code Flow" width="750px">
     <figcaption>Figure 5: Device Code Flow</figcaption>
     </figure>
 </center>
@@ -303,9 +293,7 @@ The implicit grant type is notably simpler. Instead of initially acquiring an au
 
 <center>
     <figure>
-    <img
-    src="/oauth2/Implicit_Code_Flow.png"
-    alt="Figure 6: Implicit Grant Flow">
+    <img src="/oauth2/Implicit_Code_Flow.png" alt="Figure 6: Implicit Grant Flow" width="750px">
     <figcaption>Figure 6: Implicit Grant Flow</figcaption>
     </figure>
 </center>
@@ -321,17 +309,17 @@ The Password grant type is considered a legacy method for swapping a user's cred
 
 [2] Okta, “What is OAuth 2.0?”, <a href="https://auth0.com/intro-to-iam/what-is-oauth-2" target="_blank">https://auth0.com/intro-to-iam/what-is-oauth-2</a>
 
-[3] David Demir, “OAuth 2.0: What is OAuth and How Does it Work?” 2023, <a href="https://apidog.com/blog/what-is-oauth-2" target="_blank">https://auth0.com/intro-to-iam/what-is-oauth-2</a>
+[3] David Demir, “OAuth 2.0: What is OAuth and How Does it Work?”, 2023, <a href="https://apidog.com/blog/what-is-oauth-2" target="_blank">https://auth0.com/intro-to-iam/what-is-oauth-2</a>
 
-[4] Gbadebo Bello, “What is OAuth 2.0?” 2023,  <a href="https://blog.postman.com/what-is-oauth-2-0" target="_blank">https://blog.postman.com/what-is-oauth-2-0/</a>
+[4] Gbadebo Bello, “What is OAuth 2.0?”, 2023,  <a href="https://blog.postman.com/what-is-oauth-2-0" target="_blank">https://blog.postman.com/what-is-oauth-2-0/</a>
 
 [5] Ramotion, “What is OAuth? A Beginner's Guide to Authentication for APIs” 2023, <a href="https://www.ramotion.com/blog/what-is-oauth-authentification" target="_blank">https://www.ramotion.com/blog/what-is-oauth-authentification</a>
 
 [6] Aaron Parecki, “OAuth 2.0”,  <a href="https://oauth.net/2" target="_blank">https://oauth.net/2/</a>
 
-[7] Cloudentity Portal, “Client Credentials Flow” 2023, <a href="https://cloudentity.com/developers/basics/oauth-grant-types/client-credentials-flow" target="_blank">https://cloudentity.com/developers/basics/oauth-grant-types/client-credentials-flow</a>
+[7] Cloudentity Portal, “Client Credentials Flow”, 2023, <a href="https://cloudentity.com/developers/basics/oauth-grant-types/client-credentials-flow" target="_blank">https://cloudentity.com/developers/basics/oauth-grant-types/client-credentials-flow</a>
 
-[8] Daniel Yang, “How to Identify OAuth2 Vulnerabilities and Mitigate Risks” 2022, <a href="https://www.coupa.com/blog/technology-innovation/how-to-mitigate-oauth2-vulnerabilities" target="_blank">https://www.coupa.com/blog/technology-innovation/how-to-mitigate-oauth2-vulnerabilities</a>
+[8] Daniel Yang, “How to Identify OAuth2 Vulnerabilities and Mitigate Risks”, 2022, <a href="https://www.coupa.com/blog/technology-innovation/how-to-mitigate-oauth2-vulnerabilities" target="_blank">https://www.coupa.com/blog/technology-innovation/how-to-mitigate-oauth2-vulnerabilities</a>
 
 [9] PortSwigger, “OAuth 2.0 Authentication Vulnerabilities”, <a href="https://portswigger.net/web-security/oauth" target="_blank">https://portswigger.net/web-security/oauth</a>
 
