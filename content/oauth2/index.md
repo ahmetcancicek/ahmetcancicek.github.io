@@ -4,6 +4,8 @@ date = "2024-03-07"
 description = "OAuth 2.0 is a protocol for authorization and has become the industry standard for software projects."
 [taxonomies]
 tags = ["OAuth 2.0", "authorization", "authentication","security","architecture"]
+[extra]
+cover_image = "/oauth2/oauth2.jpg"
 +++
 
 ## INTRODUCTION
