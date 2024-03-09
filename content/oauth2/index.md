@@ -126,7 +126,9 @@ OAuth 2.0 has five important grant types that are useful in different cases:
 
 5. **Password Grant:** The password grant is used to obtain an access token, the application forwards the user's username and password, subsequently allowing the application to acquire the access token.
 
-> It is important to note that two grant types, namely the **Implicit Grant** and the **Password Grant** types, are no longer recommended for use due to security concerns. Both grant types used have already caused vulnerabilities.
+{% admonition(type="warning", title="warning") %}
+It is important to note that two grant types, namely the **Implicit Grant** and the **Password Grant** types, are no longer recommended for use due to security concerns. Both grant types used have already caused vulnerabilities.
+{% end %}
 
 #### 1. Authorization Code Grant
 
