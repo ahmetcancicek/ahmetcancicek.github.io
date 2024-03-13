@@ -1,0 +1,662 @@
+<!doctype html>
+<html class="not-ready lg:text-base" lang="en">
+  <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+  <!-- Title -->
+  <title>
+    OAuth 2.0 - Ahmet Can Çiçek - Software Engineer, Blogger, Researcher
+  </title>
+
+  <!-- Meta -->
+  <meta name="theme-color" />
+
+  <!-- Author -->
+  
+  <meta name="description" content="OAuth 2.0" />
+  <meta name="author" content="OAuth 2.0" />
+  
+
+  <!-- CSS & JS -->
+  <link rel="preload stylesheet" as="style" href="https://ahmetcancicek.dev/main.css" />
+  <style>
+    :root {
+      --bg: #f4f4f5;
+      --bg-dark: #18181b;
+      --header: #e4e4e7;
+      --header-dark: #27272a;
+    }
+  </style>
+
+  
+
+  <!-- Dark Icon -->
+  <link rel="preload" as="image" href="https://ahmetcancicek.dev/icons/theme.svg" />
+
+  <!-- Math -->
+  
+  <!---->
+
+  <!-- Mermaid -->
+  
+  <!---->
+
+  <!-- Favicon -->
+  <link rel="icon" href="https://ahmetcancicek.dev/favicon.ico" />
+  <link rel="apple-touch-icon" href="https://ahmetcancicek.dev/apple-touch-icon.png" />
+
+  <!-- Feeds -->
+  
+  <!---->
+  
+  <link
+    rel="alternate"
+    type="application/atom+xml"
+    title="Atom"
+    href="https://ahmetcancicek.dev/atom.xml"
+  />
+  
+  <!---->
+  
+
+  <!-- Canonical -->
+  <link rel="canonical" href="https:&#x2F;&#x2F;ahmetcancicek.dev&#x2F;oauth2&#x2F;" />
+</head>
+
+  <body class="text-black duration-200 ease-out dark:text-white">
+    <header
+  class="header fixed top-0 z-40 mx-auto min-h-[3.5rem] w-full">
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-01S4R6K1J4"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+
+    gtag('config', 'G-01S4R6K1J4');
+  </script>
+
+  <div class="mx-auto w-full max-w-4xl p-3 lg:flex lg:justify-between">
+    <div class="flex justify-between">
+      <div class="flex items-center">
+        <!-- <a class="text-2xl font-semibold" href="https://ahmetcancicek.dev">Ahmet Can Çiçek - Software Engineer, Blogger, Researcher</a> -->
+        <a class="text-2xl font-semibold" href="https://ahmetcancicek.dev">ahmetcancicek</a>
+        <div
+          class="btn-dark ml-4 h-6 w-6 shrink-0 cursor-pointer text-[0] [background:url(./icons/theme.svg)_left_center/cover_no-repeat] dark:invert dark:[background-position:right]"
+          role="button" aria-label="Dark"></div>
+      </div>
+      
+      <div
+        class="btn-menu relative z-50 flex h-8 w-8 shrink-0 cursor-pointer flex-col items-center justify-center gap-2.5 lg:hidden"
+        role="button" aria-label="Menu"></div>
+      
+    </div>
+    <script>
+      // base
+      const htmlClass = document.documentElement.classList;
+      setTimeout(() => {
+        htmlClass.remove("not-ready");
+      }, 10);
+
+      // mobile menu
+      const btnMenu = document.querySelector(".btn-menu");
+      btnMenu?.addEventListener("click", () => {
+        htmlClass.toggle("open");
+      });
+
+      // dark theme
+      const setDark = (isDark) => {
+        htmlClass[isDark ? "add" : "remove"]("dark");
+        localStorage.setItem("dark", isDark);
+      };
+
+      // init
+      const darkScheme = window.matchMedia("(prefers-color-scheme: dark)");
+      if (htmlClass.contains("dark")) {
+        setDark(true);
+      } else {
+        const darkVal = localStorage.getItem("dark");
+        setDark(darkVal ? darkVal === "true" : darkScheme.matches);
+      }
+
+      // listen system
+      darkScheme.addEventListener("change", (event) => {
+        setDark(event.matches);
+      });
+
+      // manual switch
+      const btnDark = document.querySelector(".btn-dark");
+      btnDark.addEventListener("click", () => {
+        setDark(localStorage.getItem("dark") !== "true");
+      });
+    </script>
+    
+    <nav class="flex w-full items-center lg:w-auto">
+      <ul class="nav-wrapper flex w-full flex-col py-2 lg:w-auto lg:flex-row lg:self-center lg:py-0">
+        
+        <li>
+          <a class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0"
+            href="https://ahmetcancicek.dev/archive">Archive</a>
+        </li>
+        
+        <li>
+          <a class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0"
+            href="https://ahmetcancicek.dev/tags">Tags</a>
+        </li>
+        
+      </ul>
+    </nav>
+    
+  </div>
+</header>
+
+    <main
+      class="prose prose-neutral relative mx-auto min-h-[calc(100%-9rem)] max-w-3xl px-4 pb-16 pt-32 dark:prose-invert"
+    >
+      
+<article>
+  <header class="mb-16">
+    <h1 class="!my-0 pb-2.5">OAuth 2.0</h1>
+    <div class="text-sm antialiased opacity-60">
+  
+  <time>2024-03-07</time>
+  <span class="mx-1">&middot;</span>
+  <span>15min</span>
+  <!---->
+  
+  <!---->
+  
+  <span class="mx-1">&middot;</span>
+  <span>ahmetcancicek</span>
+  
+</div>
+  </header>
+
+  <!---->
+  <figure class="mb-12 mt-0">
+    <img
+      class="h-auto w-full rounded-lg"
+      src="https://ahmetcancicek.dev/oauth2/oauth2.jpg"
+      alt="cover"
+    />
+  </figure>
+  
+
+  <!-- TOC -->
+  <!---->
+<div class="block-bg mb-12 flex rounded-lg p-2 text-lg">
+  <details>
+    <summary class="cursor-pointer py-1 pl-4">
+      <span>Table of Contents</span>
+    </summary>
+    <div class="px-2">
+      <ul>
+        
+        <li>
+          <a class="no-underline hover:underline" href="https://ahmetcancicek.dev/oauth2/#introduction"
+            >INTRODUCTION</a
+          >
+          
+        </li>
+        
+        <li>
+          <a class="no-underline hover:underline" href="https://ahmetcancicek.dev/oauth2/#background"
+            >BACKGROUND</a
+          >
+          
+        </li>
+        
+        <li>
+          <a class="no-underline hover:underline" href="https://ahmetcancicek.dev/oauth2/#oauth-2-0"
+            >OAUTH 2.0</a
+          >
+          
+          <ul>
+            
+            <li>
+              <a class="no-underline hover:underline" href="https://ahmetcancicek.dev/oauth2/#oauth-2-0-roles"
+                >OAuth 2.0 Roles</a
+              >
+            </li>
+            
+            <li>
+              <a class="no-underline hover:underline" href="https://ahmetcancicek.dev/oauth2/#protocol-flow"
+                >Protocol Flow</a
+              >
+            </li>
+            
+            <li>
+              <a class="no-underline hover:underline" href="https://ahmetcancicek.dev/oauth2/#access-token"
+                >Access Token</a
+              >
+            </li>
+            
+            <li>
+              <a class="no-underline hover:underline" href="https://ahmetcancicek.dev/oauth2/#refresh-token"
+                >Refresh Token</a
+              >
+            </li>
+            
+            <li>
+              <a class="no-underline hover:underline" href="https://ahmetcancicek.dev/oauth2/#scope"
+                >Scope</a
+              >
+            </li>
+            
+            <li>
+              <a class="no-underline hover:underline" href="https://ahmetcancicek.dev/oauth2/#oauth-2-0-endpoints"
+                >OAuth 2.0 Endpoints</a
+              >
+            </li>
+            
+            <li>
+              <a class="no-underline hover:underline" href="https://ahmetcancicek.dev/oauth2/#authorization-grant-types"
+                >Authorization Grant Types</a
+              >
+            </li>
+            
+          </ul>
+          
+        </li>
+        
+        <li>
+          <a class="no-underline hover:underline" href="https://ahmetcancicek.dev/oauth2/#references"
+            >REFERENCES</a
+          >
+          
+        </li>
+        
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!---->
+
+  <!-- Content -->
+  <section><h2 id="introduction">INTRODUCTION</h2>
+<p>OAuth 2.0 is a widely used standard protocol designed for secure authorization. It provides a standard so that it allows users to grant access to their data to other applications. However, if the implementation of OAuth 2.0 is not done properly, it can expose users to several security vulnerabilities. Therefore, It is essential to ensure that the implementation of OAuth 2.0 follows best practices and security standards to keep it safe for any system. This article provides a comprehensive guide to the overview of OAuth 2.0 roles, authorization grant types, and flows.</p>
+<h2 id="background">BACKGROUND</h2>
+<p>Authentication and authorization represent foundational security processes essential for safeguarding systems and information. Authentication, simplistically defined, is the procedure of confirming a user's identity, whereas authorization is the process of validating the resources or privileges to which they are granted access. Table 1 presents a comparison of authentication and authorization.</p>
+<table><thead><tr><th style="text-align: center">Table 1: Authentication vs Authorization</th></tr></thead><tbody>
+</tbody></table>
+<table><thead><tr><th><strong>Authentication</strong></th><th><strong>Authorization</strong></th></tr></thead><tbody>
+<tr><td>Verifies the identity of users to ensure they are who they claim to be.</td><td>Decides the permissible access rights and restrictions for users.</td></tr>
+<tr><td>Prompts the user to authenticate their credentials, employing methods such as passwords, responses to security questions, or facial recognition.</td><td>Confirms the permissibility of access based on established policies and rules.</td></tr>
+<tr><td>Commonly performed before granting authorization.</td><td>Typically conducted subsequent to successful authentication.</td></tr>
+</tbody></table>
+<h2 id="oauth-2-0">OAUTH 2.0</h2>
+<p>OAuth 2.0 is an authorization protocol that was first introduced in 2012 and has since evolved into a framework. It has become the de facto standard for authorization. It is designed to allow any application to access a set of resources without requiring the user to share their credentials. This way, it provides a standard for users to grant access to their data to other applications, without their credentials. </p>
+<p>OAuth 2.0 adds an extra layer of security and helps users have better control over their data sharing. With OAuth 2.0, users can restrict the actions that various client apps can perform on their data resources, thus ensuring that their data remains private and secure. </p>
+<p>OAuth 2.0 is a popular authorization framework widely used and adopted by major web services such as Google, Microsoft, Linkedin, Facebook, and many others.</p>
+<h3 id="oauth-2-0-roles">OAuth 2.0 Roles</h3>
+<p>There are four specific roles involved in the OAuth 2.0 workflow, each with its own set of responsibilities. Each role plays an important part in the authentication and authorization. The four roles are:</p>
+<ul>
+<li>
+<p><strong>Resource Owner:</strong> The resource owner is a user or system that has the ability to grant access to a protected resource.</p>
+</li>
+<li>
+<p><strong>Client:</strong> The client is an application or service that requires access to the resource owner's data that is protected. To access resources, the client must belong to the access token. </p>
+</li>
+<li>
+<p><strong>Authorization Server:</strong> It is responsible for receiving requests from the client for access tokens and verifying the user's grants. When the authentication is successful and the resource owner has given their consent, the authorization server issues access tokens to the client. The authorization server provides a verification mechanism to identify the user's grant by receiving requests from the client with access tokens. It's important to note that the authorization server in OAuth 2.0 provides two endpoints - the Authorization endpoint and the Token endpoint. </p>
+</li>
+<li>
+<p><strong>Resource Server:</strong> The resource server protects the actual user's resources that the client wants to access. This server provides services that validate an access token from the client and also grants appropriate resources to those who request it.</p>
+</li>
+</ul>
+<h3 id="protocol-flow">Protocol Flow</h3>
+<p>OAuth 2.0 is a protocol that allows the resource owner to authorize a third-party application to access their data without sharing their credentials.</p>
+<p>The abstract OAuth 2.0 flow is illustrated in Figure 1, which describes the interaction between the four roles and includes the following steps:</p>
+<ol>
+<li>
+<p>To access service resources, the application requests authorization from the user.</p>
+</li>
+<li>
+<p>If the user authorizes the request, the application receives an authorization grant.</p>
+</li>
+<li>
+<p>To obtain an access token from the authorization server, the application sends a request by authenticating its own identity and presenting the authorization grant to the authorization server.</p>
+</li>
+<li>
+<p>After the application identity is authenticated and the authorization grant is valid, the access token is issued by the authorization server. All steps of authorization are complete at this step. </p>
+</li>
+<li>
+<p>If the application wants the resource from the resource server, it needs to request the resources from the resource server and present the access token for authentication.</p>
+</li>
+<li>
+<p>Upon validation of the access token issued by the authorization server, the resource server grants authorization to the application, allowing it access to the designated resources.</p>
+</li>
+</ol>
+<center>
+    <figure>
+    <img src="/oauth2/Protocol_Flow.png" alt="Figure 1: Protocol Flow" width="750px">
+    <figcaption>Figure 1: Protocol Flow</figcaption>
+    </figure>
+</center>
+<h3 id="access-token">Access Token</h3>
+<p>It basically tells the API that the person or organization using the token has been authorized to access the API and execute specific actions as delineated by the granted scope. </p>
+<h3 id="refresh-token">Refresh Token</h3>
+<p>A refresh token is a specialized type of token designed to acquire a renewed access token. It is advantageous for renewing expiring access tokens without requiring the user to go through the login process again.</p>
+<center>
+    <figure>
+    <img src="/oauth2/Refresh_Token.png" alt="Figure 2: Refreshing an Expired Access Token" width="750px">
+    <figcaption>Figure 2: Refreshing an Expired Access Token</figcaption>
+    </figure>
+</center>
+<h3 id="scope">Scope</h3>
+<p>An application can request one or more scopes and this information is displayed to the user on the consent screen. The resulting access token issued to the application will be confined to the specific scopes granted by the user.</p>
+<h3 id="oauth-2-0-endpoints">OAuth 2.0 Endpoints</h3>
+<p>OAuth 2.0 utilizes two endpoints:</p>
+<ul>
+<li>Authorization Endpoint</li>
+<li>Token endpoint</li>
+</ul>
+<ol>
+<li>
+<p><strong>Authorization Endpoint:</strong> The authorization endpoint is employed to engage with the resource owner and obtain authorization to access the protected resource. The request parameters of the authorization endpoint include:</p>
+<ul>
+<li>
+<p><strong>response_type:</strong> Specifies to the authorization server which grant type to execute. </p>
+</li>
+<li>
+<p><strong>client_id:</strong> The identifier of the application requesting authorization.</p>
+</li>
+<li>
+<p><strong>redirect_uri:</strong> A successful response from this endpoint leads to a redirection to the specified URL.</p>
+</li>
+<li>
+<p><strong>scope:</strong> A space-delimited list of permissions that the application necessitates.</p>
+</li>
+<li>
+<p><strong>state:</strong> The state parameter is a parameter that enables the restoration of the prior state of your application. It preserves a state object set by the client in the authorization request and makes it accessible to the client in the response.</p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>Token Endpoint:</strong> The token endpoint is utilized by the client to acquire an access token by presenting its authorization grant or refresh token.</p>
+</li>
+</ol>
+<h3 id="authorization-grant-types">Authorization Grant Types</h3>
+<p>The authorization grant type determines the flow of the OAuth 2.0 process, and different grant types have different levels of security and authentication requirements. This section delves into the concept of authorization grant types as the authorization grant type depends on the method used by the application to request authorization.</p>
+<p>OAuth 2.0 has five important grant types that are useful in different cases:</p>
+<ol>
+<li>
+<p><strong>Authorization Code Grant:</strong> The authorization server provides a single-use authorization code to the client.</p>
+</li>
+<li>
+<p><strong>Client Credentials Grant:</strong> The application or client is authenticated by using its client ID and secret code. </p>
+</li>
+<li>
+<p><strong>Device Code Grant:</strong> The device code grant type offers a mechanism for devices without a browser or with limited inputs to acquire an access token and gain access to a user's account. </p>
+</li>
+<li>
+<p><strong>Implicit Grant:</strong> The implicit grant is commonly used for single-page web applications. It allows for the access token to be returned directly to the client from the authorization endpoint, without going through the authorization code exchange process.</p>
+</li>
+<li>
+<p><strong>Password Grant:</strong> The password grant is used to obtain an access token, the application forwards the user's username and password, subsequently allowing the application to acquire the access token.</p>
+</li>
+</ol>
+ <!---->
+
+
+<div
+  class="my-4 flex flex-col rounded-lg bg-[var(--admonition-bg)]"
+  style="--admonition-bg: rgba(255, 145, 0, 0.1)"
+>
+  <div class="flex items-center rounded-t-lg bg-[var(--admonition-bg)] p-1">
+    <div
+      class="mx-2 h-4 w-4 text-[0] [background:var(--url)_center_center_no-repeat] dark:invert"
+      style="--url: url(./icons/warning.svg)"
+    >
+      warning
+    </div>
+    <span><strong>warning</strong></span>
+  </div>
+  <div class="pl-4"><p>It is important to note that two grant types, namely the <strong>Implicit Grant</strong> and the <strong>Password Grant</strong> types, are no longer recommended for use due to security concerns. Both grant types used have already caused vulnerabilities.</p>
+</div>
+</div>
+<h4 id="1-authorization-code-grant">1. Authorization Code Grant</h4>
+<p>The authorization server provides a single-use authorization code to the client. This authorization code can then be exchanged for an access token, which allows the client to access the protected resource. The authorization code grant type is commonly used for web applications, especially when the exchange can be securely carried out on the server side, making it ideal for server-side applications.</p>
+<p><strong>Authorization Code Flow:</strong> The example of authorization or grant type flow is illustrated step by step.</p>
+<p><strong>Step 1 - Authorization Code Link:</strong> Initially, the user receives an authorization code link formatted as follows:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>http://localhost:5050/oauth/authorize?
+</span><span>response_type=code&amp;
+</span><span>client_id=CLIENT_ID&amp;
+</span><span>redirect_uri=CALLBACK_URL&amp;
+</span><span>scope=read&amp;
+</span><span>state=aY0l3S7H5qHzSlXNGEe8p
+</span></code></pre>
+<p>Explanation of the components is presented below:</p>
+<ul>
+<li>
+<p><strong>http://localhost:5050/oauth/authorize:</strong> API endpoint for authorization</p>
+</li>
+<li>
+<p><strong>client_id:</strong> The application's client ID</p>
+</li>
+<li>
+<p><strong>redirect_uri:</strong> This is the point where the service redirects the user-agent after the authorization code has been granted.</p>
+</li>
+<li>
+<p><strong>response_type:</strong> This signifies that your application is requesting an authorization code grant.</p>
+</li>
+<li>
+<p><strong>scope:</strong> Specifies the level of access that the application is requesting.</p>
+</li>
+<li>
+<p><strong>state:</strong> The state parameter is a parameter that enables the restoration of the prior state of your application.</p>
+</li>
+</ul>
+<p><strong>Step 2 - User Authorizes Application:</strong> When clicking the link, users are required to log in to the service to authenticate their identity. Subsequently, the service will prompt them to either authorize or deny the application access to their account. </p>
+<p><strong>Step 3 - Application Receives Authorization Code:</strong> If the user chooses to authorize the application, the service redirects the user-agent to the application's redirect URI, as previously specified during client registration. This redirection includes an authorization code. The resulting redirect would resemble the following:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>http://myapplication.com/callback?code=AUTHORIZATION_CODE
+</span></code></pre>
+<p><strong>Note:</strong> This article assumes that the application is myapplication.com</p>
+<p><strong>Step 4 - Application Requests Access Token:</strong> The application initiates the request for an access token from the API by submitting the authorization code, along with authentication details that encompass the client secret, to the API token endpoint.</p>
+<p>It is an example of the POST request to a token endpoint.</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>http://localhost:5050/oauth/token?
+</span><span> client_id=CLIENT_ID&amp;
+</span><span> client_secret=CLIENT_SECRET&amp;
+</span><span> grant_type=authorization_code&amp;
+</span><span> code=AUTHORIZATION_CODE&amp;
+</span><span> redirect_uri=CALLBACK_URL
+</span></code></pre>
+<p><strong>Step 5 - Application Receives Access Token:</strong> If the authorization is valid, the API will send a response containing the access token to the application. The response is anticipated to resemble the following:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>{
+</span><span>  &quot;access_token&quot;:&quot;ACCESS_TOKEN&quot;,
+</span><span>   &quot;token_type&quot;:&quot;bearer&quot;,
+</span><span>   &quot;expires_in&quot;:326380,
+</span><span>   &quot;refresh_token&quot;:&quot;REFRESH_TOKEN&quot;,
+</span><span>   &quot;scope&quot;:&quot;read&quot;,
+</span><span>   &quot;uid&quot;:200515,
+</span><span>   &quot;info&quot;:
+</span><span>    {
+</span><span>       &quot;name&quot;:&quot;Bill Key&quot;,
+</span><span>       &quot;email&quot;:&quot;billkey@billkey.com&quot;
+</span><span>    }
+</span><span>}
+</span></code></pre>
+<p>The authorization code grant type is illustrated in Figure 3.</p>
+<center>
+    <figure>
+    <img src="/oauth2/Authorization_Code_Flow.png" alt="Figure 3: Authorization Code Flow" width="750px">
+    <figcaption>Figure 3: Authorization Code Flow</figcaption>
+    </figure>
+</center>
+<h4 id="authorization-code-flow-with-proof-key-for-code-exchange-pkce">Authorization Code Flow with Proof Key for Code Exchange (PKCE)</h4>
+<p>During authentication, mobile and native applications can use the Authorization Code Flow for security, but they require additional measures to ensure safety. Single-page apps, on the other hand, have their own set of challenges. To overcome these issues, OAuth 2.0 has introduced a variation of the Authorization Code Flow called Proof Key for Code Exchange (PKCE).</p>
+<p>PKCE (RFC 7636) is an extension to the Authorization Code Flow designed to mitigate CSRF and authorization code injection attacks.</p>
+<h4 id="2-client-credentials-grant">2. Client Credentials Grant</h4>
+<p>The client credentials grant type is commonly used in scenarios where there is no user involved, and the client authenticates itself directly with the authorization server.</p>
+<p>The application requests an access token by sending its credentials, specifically the client ID and client secret, to the authorization server.</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>http://localhost:5050/oauth/token?grant_type=client_credentials&amp;client_id=CLIENT_ID&amp;client_secret=CLIENT_SECRET
+</span></code></pre>
+<p>If successful verification of the application credentials, the authorization server issues an access token to the application, authorizing it to utilize its account. This method is particularly well-suited for a microservices architecture, facilitating secure communication among services or through a gateway server. </p>
+<p><strong>Client Credentials Flow:</strong> The example of client credentials grant type flow is illustrated step by step:</p>
+<p><strong>Step 1:</strong> The application sends its credentials to the authorization server.</p>
+<p><strong>Step 2:</strong> The authorization server validates the application's credentials.</p>
+<p><strong>Step 3:</strong> The authorization server responds with an access token.</p>
+<p><strong>Step 4:</strong> The application can utilize the access token for making API calls on its behalf.</p>
+<p><strong>Step 5:</strong> API responds with requested data.</p>
+<p>The client credentials flow is illustrated in Figure 4.</p>
+<center>
+    <figure>
+    <img src="/oauth2/Client_Credentials_Flow.png" alt="Figure 4: Client Credentials Flow" width="750px">
+    <figcaption>Figure 4: Client Credentials Flow</figcaption>
+    </figure>
+</center>
+<h4 id="3-device-code-grant">3. Device Code Grant</h4>
+<p>The device code grant type offers a mechanism for devices without a browser or with limited inputs to acquire an access token and gain access to a user's account. The primary purpose of this grant type is to enable users to authorize applications on such devices, allowing them access to their accounts and resources. For example, when users aim to log in to a video streaming application on a device lacking conventional keyboard input, such as a smart television, the device code provides a solution, facilitating user access to the application.</p>
+<p><strong>Device Code Flow:</strong> The example of device code grant type flow is illustrated step by step.</p>
+<p><strong>Step 1:</strong> The client transmits an access request to the authorization server, which includes its client identifier.</p>
+<p>POST http://localhost:5050/device 
+client_id=CLIENT_id</p>
+<p><strong>Step 2:</strong> The authorization server generates a device code, an end-user code, and an end-user verification URI.</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>&quot;device_code&quot;:&quot;5FMxmDmtHFD55X3DUg081VYYxcfc9Y&quot;,
+</span><span>&quot;user_code&quot;:&quot;ARRY-NWNJ&quot;,
+</span><span>&quot;expires_in&quot;:326380,
+</span><span>&quot;verification_uri&quot;:”http://localhost:5050/devices&quot;,
+</span><span>&quot;interval&quot;: 10,
+</span><span>&quot;expires_in”: 1600,
+</span></code></pre>
+<p><strong>Step 3:</strong> The client directs the user to access the given URI using a secondary device (e.g., a mobile device) and supplies the user with the end-user code.</p>
+<p><strong>Step 4:</strong> The authorization server prompts the user to input the end-user code. Subsequently, the authorization server verifies the code and requests the end user to either accept or decline the authorization request.</p>
+<p><strong>Step 5:</strong> As the end user evaluates the authorization request, the client continuously queries the authorization server using the device code and client identifier to ascertain if the user has concluded the authorization step.</p>
+<p><strong>Step 6:</strong> If the user approves access, the authorization server validates the verification code and issues a response containing the access token.</p>
+<p>The device code flow is illustrated in Figure 5.</p>
+<center>
+    <figure>
+    <img src="/oauth2/Device_Code_Flow.png" alt="Figure 5: Device Code Flow" width="750px">
+    <figcaption>Figure 5: Device Code Flow</figcaption>
+    </figure>
+</center>
+<h4 id="4-implicit-grant">4. Implicit Grant</h4>
+<p>The implicit grant type is notably simpler. Instead of initially acquiring an authorization code and then exchanging it for an access token, the client application instantly receives the access token once the user grants their consent. With the implicit grant type, all communication occurs through browser redirects without a secure back-channel, unlike the authorization code flow. Consequently, this exposes the sensitive access token and the user's data to potential security risks. The implicit grant type is better suited for single-page applications and native desktop applications. The implicit flow is illustrated in Figure 6.</p>
+<center>
+    <figure>
+    <img src="/oauth2/Implicit_Code_Flow.png" alt="Figure 6: Implicit Grant Flow" width="750px">
+    <figcaption>Figure 6: Implicit Grant Flow</figcaption>
+    </figure>
+</center>
+<h4 id="5-password-grant">5. Password Grant</h4>
+<p>The Password grant type is considered a legacy method for swapping a user's credentials for an access token. However, it is not recommended anymore because it involves the client application collecting the user's password and transmitting it to the authorization server, posing security risks. The latest OAuth 2.0 Security Current Practice disallows the password grant entirely, and the grant is not defined in OAuth 2.1.</p>
+<h2 id="references">REFERENCES</h2>
+<p>[1] Mitchell Anicas, “An Introduction to OAuth 2” 2021, <a href="https://www.digitalocean.com/community/tutorials/an-introduction-to-oauth-2" target="_blank">https://www.digitalocean.com/community/tutorials/an-introduction-to-oauth-2</a> </p>
+<p>[2] Okta, “What is OAuth 2.0?”, <a href="https://auth0.com/intro-to-iam/what-is-oauth-2" target="_blank">https://auth0.com/intro-to-iam/what-is-oauth-2</a></p>
+<p>[3] David Demir, “OAuth 2.0: What is OAuth and How Does it Work?”, 2023, <a href="https://apidog.com/blog/what-is-oauth-2" target="_blank">https://auth0.com/intro-to-iam/what-is-oauth-2</a></p>
+<p>[4] Gbadebo Bello, “What is OAuth 2.0?”, 2023,  <a href="https://blog.postman.com/what-is-oauth-2-0" target="_blank">https://blog.postman.com/what-is-oauth-2-0/</a></p>
+<p>[5] Ramotion, “What is OAuth? A Beginner's Guide to Authentication for APIs” 2023, <a href="https://www.ramotion.com/blog/what-is-oauth-authentification" target="_blank">https://www.ramotion.com/blog/what-is-oauth-authentification</a></p>
+<p>[6] Aaron Parecki, “OAuth 2.0”,  <a href="https://oauth.net/2" target="_blank">https://oauth.net/2/</a></p>
+<p>[7] Cloudentity Portal, “Client Credentials Flow”, 2023, <a href="https://cloudentity.com/developers/basics/oauth-grant-types/client-credentials-flow" target="_blank">https://cloudentity.com/developers/basics/oauth-grant-types/client-credentials-flow</a></p>
+<p>[8] Daniel Yang, “How to Identify OAuth2 Vulnerabilities and Mitigate Risks”, 2022, <a href="https://www.coupa.com/blog/technology-innovation/how-to-mitigate-oauth2-vulnerabilities" target="_blank">https://www.coupa.com/blog/technology-innovation/how-to-mitigate-oauth2-vulnerabilities</a></p>
+<p>[9] PortSwigger, “OAuth 2.0 Authentication Vulnerabilities”, <a href="https://portswigger.net/web-security/oauth" target="_blank">https://portswigger.net/web-security/oauth</a></p>
+<p>[10] Auth0 by Okta, “Client Credentials Flow”, <a href="https://auth0.com/docs/get-started/authentication-and-authorization-flow/client-credentials-flow" target="_blank">https://auth0.com/docs/get-started/authentication-and-authorization-flow/client-credentials-flow</a></p>
+<p>[11] Auth0 by Okta, “Authentication and Authorization Flows”, <a href="https://auth0.com/docs/get-started/authentication-and-authorization-flow" target="_blank"> https://auth0.com/docs/get-started/authentication-and-authorization-flow</a></p>
+<p>[12] Identity Server Documentation, “Device Authorization Grant (Device Flow)”, <a href="https://is.docs.wso2.com/en/latest/references/concepts/authorization" target="_blank">https://is.docs.wso2.com/en/latest/references/concepts/authorization/device-flow-grant</a></p>
+<p>[13] IETF, “OAuth 2.0 Security Best Current Practice”, <a href="https://datatracker.ietf.org/doc/html/draft-ietf-oauth-security-topics" target="_blank">https://datatracker.ietf.org/doc/html/draft-ietf-oauth-security-topics</a></p>
+</section>
+
+  <hr />
+
+  <!-- Post Taxonomies -->
+  
+<footer class="mt-12 flex flex-col">
+  <!---->
+  <!---->
+  <!---->
+  <!---->
+  
+  <div class="mb-2 flex flex-wrap">
+    <span class="block-bg mb-1.5 mr-1.5 rounded-lg px-5 py-1.5">Tags </span>
+    
+    <a
+      class="block-bg block-hover mb-1.5 mr-1.5 rounded-lg px-5 py-1.5 no-underline"
+      href="https://ahmetcancicek.dev/tags/oauth-2-0/"
+      >OAuth 2.0</a
+    >
+    
+    <a
+      class="block-bg block-hover mb-1.5 mr-1.5 rounded-lg px-5 py-1.5 no-underline"
+      href="https://ahmetcancicek.dev/tags/authorization/"
+      >authorization</a
+    >
+    
+    <a
+      class="block-bg block-hover mb-1.5 mr-1.5 rounded-lg px-5 py-1.5 no-underline"
+      href="https://ahmetcancicek.dev/tags/authentication/"
+      >authentication</a
+    >
+    
+    <a
+      class="block-bg block-hover mb-1.5 mr-1.5 rounded-lg px-5 py-1.5 no-underline"
+      href="https://ahmetcancicek.dev/tags/security/"
+      >security</a
+    >
+    
+    <a
+      class="block-bg block-hover mb-1.5 mr-1.5 rounded-lg px-5 py-1.5 no-underline"
+      href="https://ahmetcancicek.dev/tags/architecture/"
+      >architecture</a
+    >
+    
+  </div>
+  
+</footer>
+
+<!---->
+
+  <!-- Post Nav -->
+  
+<nav class="block-bg mt-12 flex rounded-lg text-lg">
+  
+  <a
+    class="block-hover-mask flex w-1/2 items-center rounded-l-md p-6 pr-3 font-semibold no-underline"
+    href="https:&#x2F;&#x2F;ahmetcancicek.dev&#x2F;design-patterns-vs-design-principles&#x2F;"
+    ><span class="mr-1.5">←</span><span>Design Patterns vs Design Principles</span></a
+  >
+  <!---->
+  
+  <a
+    class="block-hover-mask ml-auto flex w-1/2 items-center justify-end rounded-r-md p-6 pl-3 font-semibold no-underline"
+    href="https:&#x2F;&#x2F;ahmetcancicek.dev&#x2F;inversion-of-control&#x2F;"
+    ><span>Inversion of Control (IoC)</span><span class="ml-1.5">→</span></a
+  >
+  
+</nav>
+
+<!---->
+
+  <!-- Comment -->
+  
+</article>
+
+    </main>
+
+    <footer class="mx-auto flex max-w-3xl flex-wrap items-center px-8 py-4 text-sm opacity-60">
+  <div class="mr-auto basis-full lg:basis-1/2">
+    &copy; 2024 -  2024
+    <a class="link" href="https://ahmetcancicek.dev"
+      >ahmetcancicek</a
+    >
+     |<!---->
+    <!---->
+    <a class="link" href="https:&#x2F;&#x2F;creativecommons.org&#x2F;licenses&#x2F;by-sa&#x2F;4.0&#x2F;deed" rel="noopener" target="_blank">
+      CC BY-SA 4.0
+    </a>
+    <!---->
+    
+  </div>
+  <div class="flex basis-full lg:basis-1/2 lg:justify-end">
+    <a class="link mr-6 lg:ml-6" href="https://www.getzola.org/" rel="noopener" target="_blank"
+      >Powered by Zola</a
+    >
+    <a class="link" href="https://github.com/st1020/kita" rel="noopener" target="_blank">✎ Kita</a>
+  </div>
+</footer>
+
+  </body>
+</html>

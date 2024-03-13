@@ -1,0 +1,621 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
+    <title>Ahmet Can Çiçek - Software Engineer, Blogger, Researcher</title>
+    <subtitle>Hello, I&#x27;m Ahmet Can Çiçek, a Software Engineer who wears many hats - Blogger, Author, and Researcher. By day, I craft elegant code, and by night, I delve into the world of words, sharing insights, research findings, and coding tips on my blog. </subtitle>
+    <link href="https://ahmetcancicek.dev/atom.xml" rel="self" type="application/atom+xml"/>
+    <link href="https://ahmetcancicek.dev"/>
+    <generator uri="https://www.getzola.org/">Zola</generator>
+    <updated>2024-03-11T00:00:00+00:00</updated>
+    <id>https://ahmetcancicek.dev/atom.xml</id>
+    <entry xml:lang="en">
+        <title>Inversion of Control (IoC)</title>
+        <published>2024-03-11T00:00:00+00:00</published>
+        <updated>2024-03-11T00:00:00+00:00</updated>
+        <author>
+          <name>ahmetcancicek</name>
+        </author>
+        <link rel="alternate" href="https://ahmetcancicek.dev/inversion-of-control/" type="text/html"/>
+        <id>https://ahmetcancicek.dev/inversion-of-control/</id>
+        <content type="html">&lt;h2 id=&quot;introduction&quot;&gt;INTRODUCTION&lt;&#x2F;h2&gt;
+&lt;p&gt;IoC is sometimes referred to as the &lt;strong&gt;&amp;quot;Hollywood Principle&amp;quot;&lt;&#x2F;strong&gt;&lt;&#x2F;p&gt;
+ &lt;!----&gt;
+
+
+&lt;div
+  class=&quot;my-4 flex flex-col rounded-lg bg-[var(--admonition-bg)]&quot;
+  style=&quot;--admonition-bg: rgba(159, 159, 159, 0.1)&quot;
+&gt;
+  &lt;div class=&quot;flex items-center rounded-t-lg bg-[var(--admonition-bg)] p-1&quot;&gt;
+    &lt;div
+      class=&quot;mx-2 h-4 w-4 text-[0] [background:var(--url)_center_center_no-repeat] dark:invert&quot;
+      style=&quot;--url: url(.&#x2F;icons&#x2F;quote.svg)&quot;
+    &gt;
+      quote
+    &lt;&#x2F;div&gt;
+    &lt;span&gt;&lt;strong&gt;&lt;&#x2F;strong&gt;&lt;&#x2F;span&gt;
+  &lt;&#x2F;div&gt;
+  &lt;div class=&quot;pl-4&quot;&gt;&lt;p&gt;Don&#x27;t call us, we&#x27;ll call you.&lt;&#x2F;p&gt;
+&lt;&#x2F;div&gt;
+&lt;&#x2F;div&gt;
+&lt;p&gt;The design principle known as Inversion of Control (IoC) refers to the reversal of the control flow in a software application. In a traditional application, the flow of control is determined by the application code, where the main program is tasked with calling and coordinating various functions. In contrast, IoC is used to invert the control over the flow of execution to achieve loose coupling. Essentially, IoC transfers the authority for the flow of execution to an external container or framework.&lt;&#x2F;p&gt;
+&lt;p&gt;IoC can be likened to a real-life principle. Consider the scenario where you, as a software engineer in a company, have a crucial task at hand. Despite your desire for a coffee break, the importance of the task means you cannot afford the interruption. In this instance, you may opt to apply the principle of IoC by delegating the coffee-making responsibility to your nearby colleagues. This way, you can stay focused on your work while your friends take care of the coffee preparation. This situation exemplifies the concept of inversion of control. Similar to not personally preparing coffee and instead entrusting your friends with the task, it allows you to concentrate on your primary responsibilities without being directly involved in every detail.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;background&quot;&gt;BACKGROUND&lt;&#x2F;h2&gt;
+&lt;p&gt;&amp;quot;Loose coupling&amp;quot; and &amp;quot;tight coupling&amp;quot; are fundamental terms in software design and architecture, used to characterize the extent of dependency between various components.&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;loose-coupling&quot;&gt;Loose Coupling&lt;&#x2F;h3&gt;
+&lt;p&gt;In a loosely coupled system, components are relatively independent and have minimal knowledge of each other. Changes in one component are less likely to affect others. In the Object-Oriented Programming (OOP) approach, it is advisable to design classes with loose coupling. Loose coupling implies that modifications in one class should not necessitate changes in other classes.&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;tight-coupling&quot;&gt;Tight Coupling&lt;&#x2F;h3&gt;
+&lt;p&gt;In a tightly coupled system, components are closely interconnected, and changes in one component may have a significant impact on others. A high level of coupling between components can reduce system flexibility and make maintenance more challenging.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;ioc-implementation&quot;&gt;IoC IMPLEMENTATION&lt;&#x2F;h2&gt;
+&lt;p&gt;Fundamentally, the key concept in IoC is the inversion of the control flow. Rather than the application code directly calling and managing the execution flow of its dependencies, IoC inverses this control.  In essence, IoC simplifies the creation of objects for dependent classes.&lt;&#x2F;p&gt;
+&lt;p&gt;Initially, let&#x27;s analyze an example illustrating tight coupling. Imagine you have two classes, namely &lt;strong&gt;&amp;quot;Car&amp;quot;&lt;&#x2F;strong&gt; and &lt;strong&gt;&amp;quot;Engine.&amp;quot;&lt;&#x2F;strong&gt;&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;Java&quot; style=&quot;background-color:#2b303b;color:#c0c5ce;&quot; class=&quot;language-Java &quot;&gt;&lt;code class=&quot;language-Java&quot; data-lang=&quot;Java&quot;&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;public class &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ebcb8b;&quot;&gt;Car &lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;{
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;private &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ebcb8b;&quot;&gt;Engine &lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;engine;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;public &lt;&#x2F;span&gt;&lt;span style=&quot;color:#8fa1b3;&quot;&gt;Car&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;() {
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;this&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;.engine &lt;&#x2F;span&gt;&lt;span&gt;= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;new &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ebcb8b;&quot;&gt;Engine&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;();
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;    }
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;public void &lt;&#x2F;span&gt;&lt;span style=&quot;color:#8fa1b3;&quot;&gt;start&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;() {
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;        engine.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;start&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;();
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#65737e;&quot;&gt;&#x2F;&#x2F; Other car-related logic
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;    }
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;}
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;pre data-lang=&quot;Java&quot; style=&quot;background-color:#2b303b;color:#c0c5ce;&quot; class=&quot;language-Java &quot;&gt;&lt;code class=&quot;language-Java&quot; data-lang=&quot;Java&quot;&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;public class &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ebcb8b;&quot;&gt;Engine &lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;{
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;public void &lt;&#x2F;span&gt;&lt;span style=&quot;color:#8fa1b3;&quot;&gt;start&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;() {
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ebcb8b;&quot;&gt;System&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;.out.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;println&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;(&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;Engine is started!&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;);
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;    }
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;}
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;pre data-lang=&quot;Java&quot; style=&quot;background-color:#2b303b;color:#c0c5ce;&quot; class=&quot;language-Java &quot;&gt;&lt;code class=&quot;language-Java&quot; data-lang=&quot;Java&quot;&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;public class &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ebcb8b;&quot;&gt;Main &lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;{
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;public static void &lt;&#x2F;span&gt;&lt;span style=&quot;color:#8fa1b3;&quot;&gt;main&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ebcb8b;&quot;&gt;String&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;[] &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;args&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;) {
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ebcb8b;&quot;&gt;Car&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt; myCar &lt;&#x2F;span&gt;&lt;span&gt;= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;new &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ebcb8b;&quot;&gt;Car&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;();
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;        myCar.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;start&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;();
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;    }
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;}
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;In the provided example, the &lt;strong&gt;&amp;quot;Car&amp;quot;&lt;&#x2F;strong&gt; class is reliant on the &lt;strong&gt;&amp;quot;Engine&amp;quot;&lt;&#x2F;strong&gt; class for engine functionality. The &lt;strong&gt;&amp;quot;Car&amp;quot;&lt;&#x2F;strong&gt; cannot operate without the presence of the &lt;strong&gt;&amp;quot;Engine&amp;quot;&lt;&#x2F;strong&gt; class.&lt;&#x2F;p&gt;
+&lt;p&gt;It is evident that the &lt;strong&gt;&amp;quot;Car&amp;quot;&lt;&#x2F;strong&gt; class explicitly depends on the &lt;strong&gt;&amp;quot;Engine&amp;quot;&lt;&#x2F;strong&gt; class. This is due to the fact that the &lt;strong&gt;&amp;quot;Car&amp;quot;&lt;&#x2F;strong&gt; class cannot fulfill its functions independently and requires the presence and functionality of the &lt;strong&gt;&amp;quot;Engine&amp;quot;&lt;&#x2F;strong&gt; class.&lt;&#x2F;p&gt;
+&lt;p&gt;In the Object-Oriented Programming (OOP) approach, classes are designed to interact with each other to fulfill their respective functionalities such as the provided examples. In these scenarios, classes exhibit dependency on each other, resulting in a high level of coupling.&lt;&#x2F;p&gt;
+&lt;p&gt;In the software development process utilizing Object-Oriented Programming (OOP), a significant challenge arises with a high level of coupling between classes. The Inversion of Control (IoC) principle is introduced as a solution to address this issue.&lt;&#x2F;p&gt;
+&lt;p&gt;The IoC principle suggests inverting control, enabling the delegation of control to another class. This delegation of control is made possible through IoC, providing a solution to the challenges associated with tight coupling in software development with Object-Oriented Programming (OOP).&lt;&#x2F;p&gt;
+ &lt;!----&gt;
+
+
+&lt;div
+  class=&quot;my-4 flex flex-col rounded-lg bg-[var(--admonition-bg)]&quot;
+  style=&quot;--admonition-bg: rgba(83, 211, 230, 0.1)&quot;
+&gt;
+  &lt;div class=&quot;flex items-center rounded-t-lg bg-[var(--admonition-bg)] p-1&quot;&gt;
+    &lt;div
+      class=&quot;mx-2 h-4 w-4 text-[0] [background:var(--url)_center_center_no-repeat] dark:invert&quot;
+      style=&quot;--url: url(.&#x2F;icons&#x2F;info.svg)&quot;
+    &gt;
+      info
+    &lt;&#x2F;div&gt;
+    &lt;span&gt;&lt;strong&gt;&lt;&#x2F;strong&gt;&lt;&#x2F;span&gt;
+  &lt;&#x2F;div&gt;
+  &lt;div class=&quot;pl-4&quot;&gt;&lt;p&gt;In the given examples, the Inversion of Control (IoC) principle incorporates patterns such as the factory design pattern to reverse the control of dependency creation. A prevalent approach to implementing Inversion of Control (IoC) is through the utilization of a Dependency Injection (DI) framework.&lt;&#x2F;p&gt;
+&lt;&#x2F;div&gt;
+&lt;&#x2F;div&gt;
+&lt;p&gt;Let&#x27;s refactor the preceding examples, essentially inverting the control of dependency creation from one class to another, as demonstrated below.&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;Java&quot; style=&quot;background-color:#2b303b;color:#c0c5ce;&quot; class=&quot;language-Java &quot;&gt;&lt;code class=&quot;language-Java&quot; data-lang=&quot;Java&quot;&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;public class &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ebcb8b;&quot;&gt;Engine &lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;{
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;public void &lt;&#x2F;span&gt;&lt;span style=&quot;color:#8fa1b3;&quot;&gt;start&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;() {
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ebcb8b;&quot;&gt;System&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;.out.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;println&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;(&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;Engine is started!&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;);
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;    }
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;}
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;pre data-lang=&quot;Java&quot; style=&quot;background-color:#2b303b;color:#c0c5ce;&quot; class=&quot;language-Java &quot;&gt;&lt;code class=&quot;language-Java&quot; data-lang=&quot;Java&quot;&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;public class &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ebcb8b;&quot;&gt;FactoryEngine &lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;{
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;public static &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ebcb8b;&quot;&gt;Engine &lt;&#x2F;span&gt;&lt;span style=&quot;color:#8fa1b3;&quot;&gt;getEngine&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;() {
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;return new &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ebcb8b;&quot;&gt;Engine&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;();
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;    }
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;}
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;pre data-lang=&quot;Java&quot; style=&quot;background-color:#2b303b;color:#c0c5ce;&quot; class=&quot;language-Java &quot;&gt;&lt;code class=&quot;language-Java&quot; data-lang=&quot;Java&quot;&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;public class &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ebcb8b;&quot;&gt;Car &lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;{
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;private &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ebcb8b;&quot;&gt;Engine &lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;engine;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;public &lt;&#x2F;span&gt;&lt;span style=&quot;color:#8fa1b3;&quot;&gt;Car&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;() {
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;        engine &lt;&#x2F;span&gt;&lt;span&gt;= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ebcb8b;&quot;&gt;FactoryEngine&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;getEngine&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;();
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;    }
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;public void &lt;&#x2F;span&gt;&lt;span style=&quot;color:#8fa1b3;&quot;&gt;start&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;() {
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;        engine.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;start&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;();
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;    }
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;}
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;pre data-lang=&quot;Java&quot; style=&quot;background-color:#2b303b;color:#c0c5ce;&quot; class=&quot;language-Java &quot;&gt;&lt;code class=&quot;language-Java&quot; data-lang=&quot;Java&quot;&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;public class &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ebcb8b;&quot;&gt;Main &lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;{
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;public static void &lt;&#x2F;span&gt;&lt;span style=&quot;color:#8fa1b3;&quot;&gt;main&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ebcb8b;&quot;&gt;String&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;[] &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;args&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;) {
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ebcb8b;&quot;&gt;Car&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt; myCar &lt;&#x2F;span&gt;&lt;span&gt;= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;new &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ebcb8b;&quot;&gt;Car&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;();
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;        myCar.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;start&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;();
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;    }
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;}
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;In the given example, it&#x27;s evident that the &lt;strong&gt;&amp;quot;Car&amp;quot;&lt;&#x2F;strong&gt; class explicitly utilizes the &lt;strong&gt;&amp;quot;FactoryEngine&amp;quot;&lt;&#x2F;strong&gt; class to obtain an object of the &lt;strong&gt;&amp;quot;Engine&amp;quot;&lt;&#x2F;strong&gt; class. This restructuring is aimed at inverting the creation of dependent objects from the &lt;strong&gt;&amp;quot;Car&amp;quot;&lt;&#x2F;strong&gt; class to the &lt;strong&gt;&amp;quot;FactoryEngine&amp;quot;&lt;&#x2F;strong&gt; class.&lt;&#x2F;p&gt;
+ &lt;!----&gt;
+
+
+&lt;div
+  class=&quot;my-4 flex flex-col rounded-lg bg-[var(--admonition-bg)]&quot;
+  style=&quot;--admonition-bg: rgba(255, 145, 0, 0.1)&quot;
+&gt;
+  &lt;div class=&quot;flex items-center rounded-t-lg bg-[var(--admonition-bg)] p-1&quot;&gt;
+    &lt;div
+      class=&quot;mx-2 h-4 w-4 text-[0] [background:var(--url)_center_center_no-repeat] dark:invert&quot;
+      style=&quot;--url: url(.&#x2F;icons&#x2F;warning.svg)&quot;
+    &gt;
+      warning
+    &lt;&#x2F;div&gt;
+    &lt;span&gt;&lt;strong&gt;warning&lt;&#x2F;strong&gt;&lt;&#x2F;span&gt;
+  &lt;&#x2F;div&gt;
+  &lt;div class=&quot;pl-4&quot;&gt;&lt;p&gt;The refactored code, focusing solely on &lt;strong&gt;IoC&lt;&#x2F;strong&gt;, has not yet attained fully loosely coupled classes. To achieve this, it is imperative to integrate &lt;strong&gt;Dependency Inversion Principle (DIP)&lt;&#x2F;strong&gt; and &lt;strong&gt;Dependency Injection (DI)&lt;&#x2F;strong&gt;.&lt;&#x2F;p&gt;
+&lt;&#x2F;div&gt;
+&lt;&#x2F;div&gt;
+&lt;p&gt;Let&#x27;s consider another simple example to illustrate the Inversion of Control without IoC and then show how IoC can be applied.&lt;&#x2F;p&gt;
+&lt;p&gt;You assume that you delve into the project named marketplace in any company. You realized that the marketplace needed to handle various payment methods, from traditional credit cards to emerging digital currencies. Additionally, the finance department that belongs to the company requires regular updates and notifications about financial transactions.&lt;&#x2F;p&gt;
+&lt;p&gt;In your initial design, the marketplace class is responsible for managing orders and payments.&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;Java&quot; style=&quot;background-color:#2b303b;color:#c0c5ce;&quot; class=&quot;language-Java &quot;&gt;&lt;code class=&quot;language-Java&quot; data-lang=&quot;Java&quot;&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;public class &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ebcb8b;&quot;&gt;Marketplace &lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;{
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;private &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ebcb8b;&quot;&gt;PaymentProcessor &lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;paymentProcessor;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;private &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ebcb8b;&quot;&gt;FinancialReporter &lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;financialReporter;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;public &lt;&#x2F;span&gt;&lt;span style=&quot;color:#8fa1b3;&quot;&gt;Marketplace&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;() {
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;        paymentProcessor &lt;&#x2F;span&gt;&lt;span&gt;= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;new &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ebcb8b;&quot;&gt;PaymentProcessor&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;();
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;        financialReporter &lt;&#x2F;span&gt;&lt;span&gt;= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;new &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ebcb8b;&quot;&gt;FinancialReporter&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;();
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;    }
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;public void &lt;&#x2F;span&gt;&lt;span style=&quot;color:#8fa1b3;&quot;&gt;processOrder&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ebcb8b;&quot;&gt;Order &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;order&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;) {
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#65737e;&quot;&gt;&#x2F;&#x2F; Business logic for processing the order
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#65737e;&quot;&gt;&#x2F;&#x2F; ...
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#65737e;&quot;&gt;&#x2F;&#x2F; Call the payment processor
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;        paymentProcessor.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;processPayment&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;(order);
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#65737e;&quot;&gt;&#x2F;&#x2F; Update financial reports
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;        financialReporter.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;generateReport&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;(order.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;getTransaction&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;());
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;    }
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;}
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;pre data-lang=&quot;Java&quot; style=&quot;background-color:#2b303b;color:#c0c5ce;&quot; class=&quot;language-Java &quot;&gt;&lt;code class=&quot;language-Java&quot; data-lang=&quot;Java&quot;&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;public class &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ebcb8b;&quot;&gt;PaymentProcessor &lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;{
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;public void &lt;&#x2F;span&gt;&lt;span style=&quot;color:#8fa1b3;&quot;&gt;processPayment&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ebcb8b;&quot;&gt;Order &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;order&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;) {
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#65737e;&quot;&gt;&#x2F;&#x2F; Payment processing logic
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#65737e;&quot;&gt;&#x2F;&#x2F; ...
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ebcb8b;&quot;&gt;System&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;.out.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;println&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;(&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;Payment is started!&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;);
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;    }
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;}
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;pre data-lang=&quot;Java&quot; style=&quot;background-color:#2b303b;color:#c0c5ce;&quot; class=&quot;language-Java &quot;&gt;&lt;code class=&quot;language-Java&quot; data-lang=&quot;Java&quot;&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;public class &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ebcb8b;&quot;&gt;FinancialReporter &lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;{
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;public void &lt;&#x2F;span&gt;&lt;span style=&quot;color:#8fa1b3;&quot;&gt;generateReport&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ebcb8b;&quot;&gt;Order &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;order&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;){
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#65737e;&quot;&gt;&#x2F;&#x2F; Business logic for processing the order
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#65737e;&quot;&gt;&#x2F;&#x2F; ...
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ebcb8b;&quot;&gt;System&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;.out.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;println&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;(&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;Report is started!&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;);
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;    }
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;}
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;pre data-lang=&quot;Java&quot; style=&quot;background-color:#2b303b;color:#c0c5ce;&quot; class=&quot;language-Java &quot;&gt;&lt;code class=&quot;language-Java&quot; data-lang=&quot;Java&quot;&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;public class &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ebcb8b;&quot;&gt;Order &lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;{
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;private int &lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;id;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;private &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ebcb8b;&quot;&gt;String &lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;nameSurname;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;private &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ebcb8b;&quot;&gt;BigDecimal &lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;price;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;public &lt;&#x2F;span&gt;&lt;span style=&quot;color:#8fa1b3;&quot;&gt;Order&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;int &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;id&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ebcb8b;&quot;&gt;String &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;nameSurname&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ebcb8b;&quot;&gt;BigDecimal &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;price&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;) {
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;this&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;.id &lt;&#x2F;span&gt;&lt;span&gt;=&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt; id;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;this&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;.nameSurname &lt;&#x2F;span&gt;&lt;span&gt;=&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt; nameSurname;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;this&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;.price &lt;&#x2F;span&gt;&lt;span&gt;=&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt; price;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;    }
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#65737e;&quot;&gt;&#x2F;&#x2F; getter, setter
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;}
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;pre data-lang=&quot;Java&quot; style=&quot;background-color:#2b303b;color:#c0c5ce;&quot; class=&quot;language-Java &quot;&gt;&lt;code class=&quot;language-Java&quot; data-lang=&quot;Java&quot;&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;public class &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ebcb8b;&quot;&gt;Main &lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;{
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;public static void &lt;&#x2F;span&gt;&lt;span style=&quot;color:#8fa1b3;&quot;&gt;main&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ebcb8b;&quot;&gt;String&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;[] &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;args&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;) {
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ebcb8b;&quot;&gt;Marketplace&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt; marketplace &lt;&#x2F;span&gt;&lt;span&gt;= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;new &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ebcb8b;&quot;&gt;Marketplace&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;();
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ebcb8b;&quot;&gt;Order&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt; order &lt;&#x2F;span&gt;&lt;span&gt;= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;new &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ebcb8b;&quot;&gt;Order&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;1&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;, &lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;Bill Fox&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;new &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ebcb8b;&quot;&gt;BigDecimal&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;150&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;));
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;        marketplace.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;processOrder&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;(order);
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;    }
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;}
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;As you can see in the above example, when you start integrating different payment processors and financial reporting modules, you will notice that the code becomes tightly coupled and difficult to extend.&lt;&#x2F;p&gt;
+&lt;p&gt;In this situation, IoC could help break the tight coupling between components by inverting the control flow. Therefore, let&#x27;s refactor the previous examples, essentially transferring the control of dependency creation from one class to another.&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;Java&quot; style=&quot;background-color:#2b303b;color:#c0c5ce;&quot; class=&quot;language-Java &quot;&gt;&lt;code class=&quot;language-Java&quot; data-lang=&quot;Java&quot;&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;public class &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ebcb8b;&quot;&gt;PaymentProcessor &lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;{
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;public void &lt;&#x2F;span&gt;&lt;span style=&quot;color:#8fa1b3;&quot;&gt;processPayment&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ebcb8b;&quot;&gt;Order &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;order&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;) {
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#65737e;&quot;&gt;&#x2F;&#x2F; Payment processing logic
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#65737e;&quot;&gt;&#x2F;&#x2F; ...
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ebcb8b;&quot;&gt;System&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;.out.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;println&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;(&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;Payment is started!&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;);
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;    }
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;}
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;pre data-lang=&quot;Java&quot; style=&quot;background-color:#2b303b;color:#c0c5ce;&quot; class=&quot;language-Java &quot;&gt;&lt;code class=&quot;language-Java&quot; data-lang=&quot;Java&quot;&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;public class &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ebcb8b;&quot;&gt;FinancialReporter &lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;{
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;public void &lt;&#x2F;span&gt;&lt;span style=&quot;color:#8fa1b3;&quot;&gt;generateReport&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ebcb8b;&quot;&gt;Order &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;order&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;){
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#65737e;&quot;&gt;&#x2F;&#x2F; Business logic for processing the order
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#65737e;&quot;&gt;&#x2F;&#x2F; ...
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ebcb8b;&quot;&gt;System&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;.out.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;println&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;(&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;Report is started!&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;);
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;    }
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;}
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;pre data-lang=&quot;Java&quot; style=&quot;background-color:#2b303b;color:#c0c5ce;&quot; class=&quot;language-Java &quot;&gt;&lt;code class=&quot;language-Java&quot; data-lang=&quot;Java&quot;&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;public class &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ebcb8b;&quot;&gt;FactoryPaymentProcessor &lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;{
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;public static &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ebcb8b;&quot;&gt;PaymentProcessor &lt;&#x2F;span&gt;&lt;span style=&quot;color:#8fa1b3;&quot;&gt;getPaymentProcessor&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;() {
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;return new &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ebcb8b;&quot;&gt;PaymentProcessor&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;();
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;    }
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;}
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;pre data-lang=&quot;Java&quot; style=&quot;background-color:#2b303b;color:#c0c5ce;&quot; class=&quot;language-Java &quot;&gt;&lt;code class=&quot;language-Java&quot; data-lang=&quot;Java&quot;&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;public class &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ebcb8b;&quot;&gt;FactoryFinancialReporter &lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;{
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;public static &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ebcb8b;&quot;&gt;FinancialReporter &lt;&#x2F;span&gt;&lt;span style=&quot;color:#8fa1b3;&quot;&gt;getFinancialReporter&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;() {
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;return new &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ebcb8b;&quot;&gt;FinancialReporter&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;();
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;    }
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;}
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;pre data-lang=&quot;Java&quot; style=&quot;background-color:#2b303b;color:#c0c5ce;&quot; class=&quot;language-Java &quot;&gt;&lt;code class=&quot;language-Java&quot; data-lang=&quot;Java&quot;&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;public class &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ebcb8b;&quot;&gt;Marketplace &lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;{
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;private &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ebcb8b;&quot;&gt;PaymentProcessor &lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;paymentProcessor;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;private &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ebcb8b;&quot;&gt;FinancialReporter &lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;financialReporter;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;public &lt;&#x2F;span&gt;&lt;span style=&quot;color:#8fa1b3;&quot;&gt;Marketplace&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;() {
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;        paymentProcessor &lt;&#x2F;span&gt;&lt;span&gt;= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ebcb8b;&quot;&gt;FactoryPaymentProcessor&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;getPaymentProcessor&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;();
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;        financialReporter &lt;&#x2F;span&gt;&lt;span&gt;= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ebcb8b;&quot;&gt;FactoryFinancialReporter&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;getFinancialReporter&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;();
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;    }
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;public void &lt;&#x2F;span&gt;&lt;span style=&quot;color:#8fa1b3;&quot;&gt;processOrder&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ebcb8b;&quot;&gt;Order &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;order&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;) {
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#65737e;&quot;&gt;&#x2F;&#x2F; Business logic for processing the order
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#65737e;&quot;&gt;&#x2F;&#x2F; ...
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#65737e;&quot;&gt;&#x2F;&#x2F; Call the payment processor
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;        paymentProcessor.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;processPayment&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;(order);
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#65737e;&quot;&gt;&#x2F;&#x2F; Update financial reports
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;        financialReporter.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;generateReport&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;(order);
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;    }
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;}
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;pre data-lang=&quot;Java&quot; style=&quot;background-color:#2b303b;color:#c0c5ce;&quot; class=&quot;language-Java &quot;&gt;&lt;code class=&quot;language-Java&quot; data-lang=&quot;Java&quot;&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;public class &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ebcb8b;&quot;&gt;Main &lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;{
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;public static void &lt;&#x2F;span&gt;&lt;span style=&quot;color:#8fa1b3;&quot;&gt;main&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ebcb8b;&quot;&gt;String&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;[] &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;args&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;) {
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ebcb8b;&quot;&gt;Marketplace&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt; marketplace &lt;&#x2F;span&gt;&lt;span&gt;= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;new &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ebcb8b;&quot;&gt;Marketplace&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;();
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ebcb8b;&quot;&gt;Order&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt; order &lt;&#x2F;span&gt;&lt;span&gt;= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;new &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ebcb8b;&quot;&gt;Order&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;1&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;, &lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;Bill Fox&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;new &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ebcb8b;&quot;&gt;BigDecimal&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;150&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;));
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;        marketplace.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;processOrder&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;(order);
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;    }
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;}
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;The previously refactored code represents a basic implementation of IoC. However, this initial step is just the beginning of moving towards a fully loosely coupled design. &lt;strong&gt;This refactored code has not achieved complete loosely coupled classes by only using IoC. To attain this, it is essential to incorporate DIP (Dependency Inversion Principle) and DI (Dependency Injection) alongside IoC.&lt;&#x2F;strong&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;It&#x27;s important to note that IoC is a principle, not a specific pattern. It provides high-level design guidelines without giving implementation details. You have the flexibility to implement the IoC principle according to your preferences, as seen in the previous examples that utilized the factory design pattern.&lt;&#x2F;p&gt;
+ &lt;!----&gt;
+
+
+&lt;div
+  class=&quot;my-4 flex flex-col rounded-lg bg-[var(--admonition-bg)]&quot;
+  style=&quot;--admonition-bg: rgba(83, 211, 230, 0.1)&quot;
+&gt;
+  &lt;div class=&quot;flex items-center rounded-t-lg bg-[var(--admonition-bg)] p-1&quot;&gt;
+    &lt;div
+      class=&quot;mx-2 h-4 w-4 text-[0] [background:var(--url)_center_center_no-repeat] dark:invert&quot;
+      style=&quot;--url: url(.&#x2F;icons&#x2F;info.svg)&quot;
+    &gt;
+      info
+    &lt;&#x2F;div&gt;
+    &lt;span&gt;&lt;strong&gt;info&lt;&#x2F;strong&gt;&lt;&#x2F;span&gt;
+  &lt;&#x2F;div&gt;
+  &lt;div class=&quot;pl-4&quot;&gt;&lt;p&gt;The next article, incorporating &lt;strong&gt;DIP (Dependency Inversion Principle)&lt;&#x2F;strong&gt; and &lt;strong&gt;Dependency Injection (DI)&lt;&#x2F;strong&gt;, will steer the design towards achieving complete loose coupling.&lt;&#x2F;p&gt;
+&lt;&#x2F;div&gt;
+&lt;&#x2F;div&gt;
+&lt;h2 id=&quot;references&quot;&gt;REFERENCES&lt;&#x2F;h2&gt;
+&lt;p&gt;[1] &lt;a href=&quot;https:&#x2F;&#x2F;www.tutorialsteacher.com&#x2F;ioc&#x2F;inversion-of-control&quot; target=&quot;_blank&quot;&gt;https:&#x2F;&#x2F;www.tutorialsteacher.com&#x2F;ioc&#x2F;inversion-of-control&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;[2] &lt;a href=&quot;https:&#x2F;&#x2F;martinfowler.com&#x2F;bliki&#x2F;InversionOfControl.html&quot; target=&quot;_blank&quot;&gt;https:&#x2F;&#x2F;martinfowler.com&#x2F;bliki&#x2F;InversionOfControl.html&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;[3] &lt;a href=&quot;https:&#x2F;&#x2F;www.cesarsotovalero.net&#x2F;blog&#x2F;inversion-of-control-and-dependency-injection-in-java.html&quot; target=&quot;_blank&quot;&gt;https:&#x2F;&#x2F;www.cesarsotovalero.net&#x2F;blog&#x2F;inversion-of-control-and-dependency-injection-in-java.html&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;[4] &lt;a href=&quot;https:&#x2F;&#x2F;www.yegor256.com&#x2F;2017&#x2F;05&#x2F;10&#x2F;inversion-of-control.html&quot; target=&quot;_blank&quot;&gt;https:&#x2F;&#x2F;www.yegor256.com&#x2F;2017&#x2F;05&#x2F;10&#x2F;inversion-of-control.html&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
+</content>
+    </entry>
+    <entry xml:lang="en">
+        <title>OAuth 2.0</title>
+        <published>2024-03-07T00:00:00+00:00</published>
+        <updated>2024-03-07T00:00:00+00:00</updated>
+        <author>
+          <name>ahmetcancicek</name>
+        </author>
+        <link rel="alternate" href="https://ahmetcancicek.dev/oauth2/" type="text/html"/>
+        <id>https://ahmetcancicek.dev/oauth2/</id>
+        <content type="html">&lt;h2 id=&quot;introduction&quot;&gt;INTRODUCTION&lt;&#x2F;h2&gt;
+&lt;p&gt;OAuth 2.0 is a widely used standard protocol designed for secure authorization. It provides a standard so that it allows users to grant access to their data to other applications. However, if the implementation of OAuth 2.0 is not done properly, it can expose users to several security vulnerabilities. Therefore, It is essential to ensure that the implementation of OAuth 2.0 follows best practices and security standards to keep it safe for any system. This article provides a comprehensive guide to the overview of OAuth 2.0 roles, authorization grant types, and flows.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;background&quot;&gt;BACKGROUND&lt;&#x2F;h2&gt;
+&lt;p&gt;Authentication and authorization represent foundational security processes essential for safeguarding systems and information. Authentication, simplistically defined, is the procedure of confirming a user&#x27;s identity, whereas authorization is the process of validating the resources or privileges to which they are granted access. Table 1 presents a comparison of authentication and authorization.&lt;&#x2F;p&gt;
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th style=&quot;text-align: center&quot;&gt;Table 1: Authentication vs Authorization&lt;&#x2F;th&gt;&lt;&#x2F;tr&gt;&lt;&#x2F;thead&gt;&lt;tbody&gt;
+&lt;&#x2F;tbody&gt;&lt;&#x2F;table&gt;
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;&lt;strong&gt;Authentication&lt;&#x2F;strong&gt;&lt;&#x2F;th&gt;&lt;th&gt;&lt;strong&gt;Authorization&lt;&#x2F;strong&gt;&lt;&#x2F;th&gt;&lt;&#x2F;tr&gt;&lt;&#x2F;thead&gt;&lt;tbody&gt;
+&lt;tr&gt;&lt;td&gt;Verifies the identity of users to ensure they are who they claim to be.&lt;&#x2F;td&gt;&lt;td&gt;Decides the permissible access rights and restrictions for users.&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;Prompts the user to authenticate their credentials, employing methods such as passwords, responses to security questions, or facial recognition.&lt;&#x2F;td&gt;&lt;td&gt;Confirms the permissibility of access based on established policies and rules.&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;Commonly performed before granting authorization.&lt;&#x2F;td&gt;&lt;td&gt;Typically conducted subsequent to successful authentication.&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;&#x2F;tbody&gt;&lt;&#x2F;table&gt;
+&lt;h2 id=&quot;oauth-2-0&quot;&gt;OAUTH 2.0&lt;&#x2F;h2&gt;
+&lt;p&gt;OAuth 2.0 is an authorization protocol that was first introduced in 2012 and has since evolved into a framework. It has become the de facto standard for authorization. It is designed to allow any application to access a set of resources without requiring the user to share their credentials. This way, it provides a standard for users to grant access to their data to other applications, without their credentials. &lt;&#x2F;p&gt;
+&lt;p&gt;OAuth 2.0 adds an extra layer of security and helps users have better control over their data sharing. With OAuth 2.0, users can restrict the actions that various client apps can perform on their data resources, thus ensuring that their data remains private and secure. &lt;&#x2F;p&gt;
+&lt;p&gt;OAuth 2.0 is a popular authorization framework widely used and adopted by major web services such as Google, Microsoft, Linkedin, Facebook, and many others.&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;oauth-2-0-roles&quot;&gt;OAuth 2.0 Roles&lt;&#x2F;h3&gt;
+&lt;p&gt;There are four specific roles involved in the OAuth 2.0 workflow, each with its own set of responsibilities. Each role plays an important part in the authentication and authorization. The four roles are:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Resource Owner:&lt;&#x2F;strong&gt; The resource owner is a user or system that has the ability to grant access to a protected resource.&lt;&#x2F;p&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Client:&lt;&#x2F;strong&gt; The client is an application or service that requires access to the resource owner&#x27;s data that is protected. To access resources, the client must belong to the access token. &lt;&#x2F;p&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Authorization Server:&lt;&#x2F;strong&gt; It is responsible for receiving requests from the client for access tokens and verifying the user&#x27;s grants. When the authentication is successful and the resource owner has given their consent, the authorization server issues access tokens to the client. The authorization server provides a verification mechanism to identify the user&#x27;s grant by receiving requests from the client with access tokens. It&#x27;s important to note that the authorization server in OAuth 2.0 provides two endpoints - the Authorization endpoint and the Token endpoint. &lt;&#x2F;p&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Resource Server:&lt;&#x2F;strong&gt; The resource server protects the actual user&#x27;s resources that the client wants to access. This server provides services that validate an access token from the client and also grants appropriate resources to those who request it.&lt;&#x2F;p&gt;
+&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h3 id=&quot;protocol-flow&quot;&gt;Protocol Flow&lt;&#x2F;h3&gt;
+&lt;p&gt;OAuth 2.0 is a protocol that allows the resource owner to authorize a third-party application to access their data without sharing their credentials.&lt;&#x2F;p&gt;
+&lt;p&gt;The abstract OAuth 2.0 flow is illustrated in Figure 1, which describes the interaction between the four roles and includes the following steps:&lt;&#x2F;p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;To access service resources, the application requests authorization from the user.&lt;&#x2F;p&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;
+&lt;p&gt;If the user authorizes the request, the application receives an authorization grant.&lt;&#x2F;p&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;
+&lt;p&gt;To obtain an access token from the authorization server, the application sends a request by authenticating its own identity and presenting the authorization grant to the authorization server.&lt;&#x2F;p&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;
+&lt;p&gt;After the application identity is authenticated and the authorization grant is valid, the access token is issued by the authorization server. All steps of authorization are complete at this step. &lt;&#x2F;p&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;
+&lt;p&gt;If the application wants the resource from the resource server, it needs to request the resources from the resource server and present the access token for authentication.&lt;&#x2F;p&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;
+&lt;p&gt;Upon validation of the access token issued by the authorization server, the resource server grants authorization to the application, allowing it access to the designated resources.&lt;&#x2F;p&gt;
+&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+&lt;center&gt;
+    &lt;figure&gt;
+    &lt;img src=&quot;&#x2F;oauth2&#x2F;Protocol_Flow.png&quot; alt=&quot;Figure 1: Protocol Flow&quot; width=&quot;750px&quot;&gt;
+    &lt;figcaption&gt;Figure 1: Protocol Flow&lt;&#x2F;figcaption&gt;
+    &lt;&#x2F;figure&gt;
+&lt;&#x2F;center&gt;
+&lt;h3 id=&quot;access-token&quot;&gt;Access Token&lt;&#x2F;h3&gt;
+&lt;p&gt;It basically tells the API that the person or organization using the token has been authorized to access the API and execute specific actions as delineated by the granted scope. &lt;&#x2F;p&gt;
+&lt;h3 id=&quot;refresh-token&quot;&gt;Refresh Token&lt;&#x2F;h3&gt;
+&lt;p&gt;A refresh token is a specialized type of token designed to acquire a renewed access token. It is advantageous for renewing expiring access tokens without requiring the user to go through the login process again.&lt;&#x2F;p&gt;
+&lt;center&gt;
+    &lt;figure&gt;
+    &lt;img src=&quot;&#x2F;oauth2&#x2F;Refresh_Token.png&quot; alt=&quot;Figure 2: Refreshing an Expired Access Token&quot; width=&quot;750px&quot;&gt;
+    &lt;figcaption&gt;Figure 2: Refreshing an Expired Access Token&lt;&#x2F;figcaption&gt;
+    &lt;&#x2F;figure&gt;
+&lt;&#x2F;center&gt;
+&lt;h3 id=&quot;scope&quot;&gt;Scope&lt;&#x2F;h3&gt;
+&lt;p&gt;An application can request one or more scopes and this information is displayed to the user on the consent screen. The resulting access token issued to the application will be confined to the specific scopes granted by the user.&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;oauth-2-0-endpoints&quot;&gt;OAuth 2.0 Endpoints&lt;&#x2F;h3&gt;
+&lt;p&gt;OAuth 2.0 utilizes two endpoints:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;Authorization Endpoint&lt;&#x2F;li&gt;
+&lt;li&gt;Token endpoint&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Authorization Endpoint:&lt;&#x2F;strong&gt; The authorization endpoint is employed to engage with the resource owner and obtain authorization to access the protected resource. The request parameters of the authorization endpoint include:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;response_type:&lt;&#x2F;strong&gt; Specifies to the authorization server which grant type to execute. &lt;&#x2F;p&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;client_id:&lt;&#x2F;strong&gt; The identifier of the application requesting authorization.&lt;&#x2F;p&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;redirect_uri:&lt;&#x2F;strong&gt; A successful response from this endpoint leads to a redirection to the specified URL.&lt;&#x2F;p&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;scope:&lt;&#x2F;strong&gt; A space-delimited list of permissions that the application necessitates.&lt;&#x2F;p&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;state:&lt;&#x2F;strong&gt; The state parameter is a parameter that enables the restoration of the prior state of your application. It preserves a state object set by the client in the authorization request and makes it accessible to the client in the response.&lt;&#x2F;p&gt;
+&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Token Endpoint:&lt;&#x2F;strong&gt; The token endpoint is utilized by the client to acquire an access token by presenting its authorization grant or refresh token.&lt;&#x2F;p&gt;
+&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+&lt;h3 id=&quot;authorization-grant-types&quot;&gt;Authorization Grant Types&lt;&#x2F;h3&gt;
+&lt;p&gt;The authorization grant type determines the flow of the OAuth 2.0 process, and different grant types have different levels of security and authentication requirements. This section delves into the concept of authorization grant types as the authorization grant type depends on the method used by the application to request authorization.&lt;&#x2F;p&gt;
+&lt;p&gt;OAuth 2.0 has five important grant types that are useful in different cases:&lt;&#x2F;p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Authorization Code Grant:&lt;&#x2F;strong&gt; The authorization server provides a single-use authorization code to the client.&lt;&#x2F;p&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Client Credentials Grant:&lt;&#x2F;strong&gt; The application or client is authenticated by using its client ID and secret code. &lt;&#x2F;p&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Device Code Grant:&lt;&#x2F;strong&gt; The device code grant type offers a mechanism for devices without a browser or with limited inputs to acquire an access token and gain access to a user&#x27;s account. &lt;&#x2F;p&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Implicit Grant:&lt;&#x2F;strong&gt; The implicit grant is commonly used for single-page web applications. It allows for the access token to be returned directly to the client from the authorization endpoint, without going through the authorization code exchange process.&lt;&#x2F;p&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Password Grant:&lt;&#x2F;strong&gt; The password grant is used to obtain an access token, the application forwards the user&#x27;s username and password, subsequently allowing the application to acquire the access token.&lt;&#x2F;p&gt;
+&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+ &lt;!----&gt;
+
+
+&lt;div
+  class=&quot;my-4 flex flex-col rounded-lg bg-[var(--admonition-bg)]&quot;
+  style=&quot;--admonition-bg: rgba(255, 145, 0, 0.1)&quot;
+&gt;
+  &lt;div class=&quot;flex items-center rounded-t-lg bg-[var(--admonition-bg)] p-1&quot;&gt;
+    &lt;div
+      class=&quot;mx-2 h-4 w-4 text-[0] [background:var(--url)_center_center_no-repeat] dark:invert&quot;
+      style=&quot;--url: url(.&#x2F;icons&#x2F;warning.svg)&quot;
+    &gt;
+      warning
+    &lt;&#x2F;div&gt;
+    &lt;span&gt;&lt;strong&gt;warning&lt;&#x2F;strong&gt;&lt;&#x2F;span&gt;
+  &lt;&#x2F;div&gt;
+  &lt;div class=&quot;pl-4&quot;&gt;&lt;p&gt;It is important to note that two grant types, namely the &lt;strong&gt;Implicit Grant&lt;&#x2F;strong&gt; and the &lt;strong&gt;Password Grant&lt;&#x2F;strong&gt; types, are no longer recommended for use due to security concerns. Both grant types used have already caused vulnerabilities.&lt;&#x2F;p&gt;
+&lt;&#x2F;div&gt;
+&lt;&#x2F;div&gt;
+&lt;h4 id=&quot;1-authorization-code-grant&quot;&gt;1. Authorization Code Grant&lt;&#x2F;h4&gt;
+&lt;p&gt;The authorization server provides a single-use authorization code to the client. This authorization code can then be exchanged for an access token, which allows the client to access the protected resource. The authorization code grant type is commonly used for web applications, especially when the exchange can be securely carried out on the server side, making it ideal for server-side applications.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;Authorization Code Flow:&lt;&#x2F;strong&gt; The example of authorization or grant type flow is illustrated step by step.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;Step 1 - Authorization Code Link:&lt;&#x2F;strong&gt; Initially, the user receives an authorization code link formatted as follows:&lt;&#x2F;p&gt;
+&lt;pre style=&quot;background-color:#2b303b;color:#c0c5ce;&quot;&gt;&lt;code&gt;&lt;span&gt;http:&#x2F;&#x2F;localhost:5050&#x2F;oauth&#x2F;authorize?
+&lt;&#x2F;span&gt;&lt;span&gt;response_type=code&amp;amp;
+&lt;&#x2F;span&gt;&lt;span&gt;client_id=CLIENT_ID&amp;amp;
+&lt;&#x2F;span&gt;&lt;span&gt;redirect_uri=CALLBACK_URL&amp;amp;
+&lt;&#x2F;span&gt;&lt;span&gt;scope=read&amp;amp;
+&lt;&#x2F;span&gt;&lt;span&gt;state=aY0l3S7H5qHzSlXNGEe8p
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;Explanation of the components is presented below:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;http:&#x2F;&#x2F;localhost:5050&#x2F;oauth&#x2F;authorize:&lt;&#x2F;strong&gt; API endpoint for authorization&lt;&#x2F;p&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;client_id:&lt;&#x2F;strong&gt; The application&#x27;s client ID&lt;&#x2F;p&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;redirect_uri:&lt;&#x2F;strong&gt; This is the point where the service redirects the user-agent after the authorization code has been granted.&lt;&#x2F;p&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;response_type:&lt;&#x2F;strong&gt; This signifies that your application is requesting an authorization code grant.&lt;&#x2F;p&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;scope:&lt;&#x2F;strong&gt; Specifies the level of access that the application is requesting.&lt;&#x2F;p&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;state:&lt;&#x2F;strong&gt; The state parameter is a parameter that enables the restoration of the prior state of your application.&lt;&#x2F;p&gt;
+&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;&lt;strong&gt;Step 2 - User Authorizes Application:&lt;&#x2F;strong&gt; When clicking the link, users are required to log in to the service to authenticate their identity. Subsequently, the service will prompt them to either authorize or deny the application access to their account. &lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;Step 3 - Application Receives Authorization Code:&lt;&#x2F;strong&gt; If the user chooses to authorize the application, the service redirects the user-agent to the application&#x27;s redirect URI, as previously specified during client registration. This redirection includes an authorization code. The resulting redirect would resemble the following:&lt;&#x2F;p&gt;
+&lt;pre style=&quot;background-color:#2b303b;color:#c0c5ce;&quot;&gt;&lt;code&gt;&lt;span&gt;http:&#x2F;&#x2F;myapplication.com&#x2F;callback?code=AUTHORIZATION_CODE
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;&lt;strong&gt;Note:&lt;&#x2F;strong&gt; This article assumes that the application is myapplication.com&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;Step 4 - Application Requests Access Token:&lt;&#x2F;strong&gt; The application initiates the request for an access token from the API by submitting the authorization code, along with authentication details that encompass the client secret, to the API token endpoint.&lt;&#x2F;p&gt;
+&lt;p&gt;It is an example of the POST request to a token endpoint.&lt;&#x2F;p&gt;
+&lt;pre style=&quot;background-color:#2b303b;color:#c0c5ce;&quot;&gt;&lt;code&gt;&lt;span&gt;http:&#x2F;&#x2F;localhost:5050&#x2F;oauth&#x2F;token?
+&lt;&#x2F;span&gt;&lt;span&gt; client_id=CLIENT_ID&amp;amp;
+&lt;&#x2F;span&gt;&lt;span&gt; client_secret=CLIENT_SECRET&amp;amp;
+&lt;&#x2F;span&gt;&lt;span&gt; grant_type=authorization_code&amp;amp;
+&lt;&#x2F;span&gt;&lt;span&gt; code=AUTHORIZATION_CODE&amp;amp;
+&lt;&#x2F;span&gt;&lt;span&gt; redirect_uri=CALLBACK_URL
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;&lt;strong&gt;Step 5 - Application Receives Access Token:&lt;&#x2F;strong&gt; If the authorization is valid, the API will send a response containing the access token to the application. The response is anticipated to resemble the following:&lt;&#x2F;p&gt;
+&lt;pre style=&quot;background-color:#2b303b;color:#c0c5ce;&quot;&gt;&lt;code&gt;&lt;span&gt;{
+&lt;&#x2F;span&gt;&lt;span&gt;  &amp;quot;access_token&amp;quot;:&amp;quot;ACCESS_TOKEN&amp;quot;,
+&lt;&#x2F;span&gt;&lt;span&gt;   &amp;quot;token_type&amp;quot;:&amp;quot;bearer&amp;quot;,
+&lt;&#x2F;span&gt;&lt;span&gt;   &amp;quot;expires_in&amp;quot;:326380,
+&lt;&#x2F;span&gt;&lt;span&gt;   &amp;quot;refresh_token&amp;quot;:&amp;quot;REFRESH_TOKEN&amp;quot;,
+&lt;&#x2F;span&gt;&lt;span&gt;   &amp;quot;scope&amp;quot;:&amp;quot;read&amp;quot;,
+&lt;&#x2F;span&gt;&lt;span&gt;   &amp;quot;uid&amp;quot;:200515,
+&lt;&#x2F;span&gt;&lt;span&gt;   &amp;quot;info&amp;quot;:
+&lt;&#x2F;span&gt;&lt;span&gt;    {
+&lt;&#x2F;span&gt;&lt;span&gt;       &amp;quot;name&amp;quot;:&amp;quot;Bill Key&amp;quot;,
+&lt;&#x2F;span&gt;&lt;span&gt;       &amp;quot;email&amp;quot;:&amp;quot;billkey@billkey.com&amp;quot;
+&lt;&#x2F;span&gt;&lt;span&gt;    }
+&lt;&#x2F;span&gt;&lt;span&gt;}
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;The authorization code grant type is illustrated in Figure 3.&lt;&#x2F;p&gt;
+&lt;center&gt;
+    &lt;figure&gt;
+    &lt;img src=&quot;&#x2F;oauth2&#x2F;Authorization_Code_Flow.png&quot; alt=&quot;Figure 3: Authorization Code Flow&quot; width=&quot;750px&quot;&gt;
+    &lt;figcaption&gt;Figure 3: Authorization Code Flow&lt;&#x2F;figcaption&gt;
+    &lt;&#x2F;figure&gt;
+&lt;&#x2F;center&gt;
+&lt;h4 id=&quot;authorization-code-flow-with-proof-key-for-code-exchange-pkce&quot;&gt;Authorization Code Flow with Proof Key for Code Exchange (PKCE)&lt;&#x2F;h4&gt;
+&lt;p&gt;During authentication, mobile and native applications can use the Authorization Code Flow for security, but they require additional measures to ensure safety. Single-page apps, on the other hand, have their own set of challenges. To overcome these issues, OAuth 2.0 has introduced a variation of the Authorization Code Flow called Proof Key for Code Exchange (PKCE).&lt;&#x2F;p&gt;
+&lt;p&gt;PKCE (RFC 7636) is an extension to the Authorization Code Flow designed to mitigate CSRF and authorization code injection attacks.&lt;&#x2F;p&gt;
+&lt;h4 id=&quot;2-client-credentials-grant&quot;&gt;2. Client Credentials Grant&lt;&#x2F;h4&gt;
+&lt;p&gt;The client credentials grant type is commonly used in scenarios where there is no user involved, and the client authenticates itself directly with the authorization server.&lt;&#x2F;p&gt;
+&lt;p&gt;The application requests an access token by sending its credentials, specifically the client ID and client secret, to the authorization server.&lt;&#x2F;p&gt;
+&lt;pre style=&quot;background-color:#2b303b;color:#c0c5ce;&quot;&gt;&lt;code&gt;&lt;span&gt;http:&#x2F;&#x2F;localhost:5050&#x2F;oauth&#x2F;token?grant_type=client_credentials&amp;amp;client_id=CLIENT_ID&amp;amp;client_secret=CLIENT_SECRET
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;If successful verification of the application credentials, the authorization server issues an access token to the application, authorizing it to utilize its account. This method is particularly well-suited for a microservices architecture, facilitating secure communication among services or through a gateway server. &lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;Client Credentials Flow:&lt;&#x2F;strong&gt; The example of client credentials grant type flow is illustrated step by step:&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;Step 1:&lt;&#x2F;strong&gt; The application sends its credentials to the authorization server.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;Step 2:&lt;&#x2F;strong&gt; The authorization server validates the application&#x27;s credentials.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;Step 3:&lt;&#x2F;strong&gt; The authorization server responds with an access token.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;Step 4:&lt;&#x2F;strong&gt; The application can utilize the access token for making API calls on its behalf.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;Step 5:&lt;&#x2F;strong&gt; API responds with requested data.&lt;&#x2F;p&gt;
+&lt;p&gt;The client credentials flow is illustrated in Figure 4.&lt;&#x2F;p&gt;
+&lt;center&gt;
+    &lt;figure&gt;
+    &lt;img src=&quot;&#x2F;oauth2&#x2F;Client_Credentials_Flow.png&quot; alt=&quot;Figure 4: Client Credentials Flow&quot; width=&quot;750px&quot;&gt;
+    &lt;figcaption&gt;Figure 4: Client Credentials Flow&lt;&#x2F;figcaption&gt;
+    &lt;&#x2F;figure&gt;
+&lt;&#x2F;center&gt;
+&lt;h4 id=&quot;3-device-code-grant&quot;&gt;3. Device Code Grant&lt;&#x2F;h4&gt;
+&lt;p&gt;The device code grant type offers a mechanism for devices without a browser or with limited inputs to acquire an access token and gain access to a user&#x27;s account. The primary purpose of this grant type is to enable users to authorize applications on such devices, allowing them access to their accounts and resources. For example, when users aim to log in to a video streaming application on a device lacking conventional keyboard input, such as a smart television, the device code provides a solution, facilitating user access to the application.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;Device Code Flow:&lt;&#x2F;strong&gt; The example of device code grant type flow is illustrated step by step.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;Step 1:&lt;&#x2F;strong&gt; The client transmits an access request to the authorization server, which includes its client identifier.&lt;&#x2F;p&gt;
+&lt;p&gt;POST http:&#x2F;&#x2F;localhost:5050&#x2F;device 
+client_id=CLIENT_id&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;Step 2:&lt;&#x2F;strong&gt; The authorization server generates a device code, an end-user code, and an end-user verification URI.&lt;&#x2F;p&gt;
+&lt;pre style=&quot;background-color:#2b303b;color:#c0c5ce;&quot;&gt;&lt;code&gt;&lt;span&gt;&amp;quot;device_code&amp;quot;:&amp;quot;5FMxmDmtHFD55X3DUg081VYYxcfc9Y&amp;quot;,
+&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;user_code&amp;quot;:&amp;quot;ARRY-NWNJ&amp;quot;,
+&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;expires_in&amp;quot;:326380,
+&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;verification_uri&amp;quot;:”http:&#x2F;&#x2F;localhost:5050&#x2F;devices&amp;quot;,
+&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;interval&amp;quot;: 10,
+&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;expires_in”: 1600,
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;&lt;strong&gt;Step 3:&lt;&#x2F;strong&gt; The client directs the user to access the given URI using a secondary device (e.g., a mobile device) and supplies the user with the end-user code.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;Step 4:&lt;&#x2F;strong&gt; The authorization server prompts the user to input the end-user code. Subsequently, the authorization server verifies the code and requests the end user to either accept or decline the authorization request.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;Step 5:&lt;&#x2F;strong&gt; As the end user evaluates the authorization request, the client continuously queries the authorization server using the device code and client identifier to ascertain if the user has concluded the authorization step.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;Step 6:&lt;&#x2F;strong&gt; If the user approves access, the authorization server validates the verification code and issues a response containing the access token.&lt;&#x2F;p&gt;
+&lt;p&gt;The device code flow is illustrated in Figure 5.&lt;&#x2F;p&gt;
+&lt;center&gt;
+    &lt;figure&gt;
+    &lt;img src=&quot;&#x2F;oauth2&#x2F;Device_Code_Flow.png&quot; alt=&quot;Figure 5: Device Code Flow&quot; width=&quot;750px&quot;&gt;
+    &lt;figcaption&gt;Figure 5: Device Code Flow&lt;&#x2F;figcaption&gt;
+    &lt;&#x2F;figure&gt;
+&lt;&#x2F;center&gt;
+&lt;h4 id=&quot;4-implicit-grant&quot;&gt;4. Implicit Grant&lt;&#x2F;h4&gt;
+&lt;p&gt;The implicit grant type is notably simpler. Instead of initially acquiring an authorization code and then exchanging it for an access token, the client application instantly receives the access token once the user grants their consent. With the implicit grant type, all communication occurs through browser redirects without a secure back-channel, unlike the authorization code flow. Consequently, this exposes the sensitive access token and the user&#x27;s data to potential security risks. The implicit grant type is better suited for single-page applications and native desktop applications. The implicit flow is illustrated in Figure 6.&lt;&#x2F;p&gt;
+&lt;center&gt;
+    &lt;figure&gt;
+    &lt;img src=&quot;&#x2F;oauth2&#x2F;Implicit_Code_Flow.png&quot; alt=&quot;Figure 6: Implicit Grant Flow&quot; width=&quot;750px&quot;&gt;
+    &lt;figcaption&gt;Figure 6: Implicit Grant Flow&lt;&#x2F;figcaption&gt;
+    &lt;&#x2F;figure&gt;
+&lt;&#x2F;center&gt;
+&lt;h4 id=&quot;5-password-grant&quot;&gt;5. Password Grant&lt;&#x2F;h4&gt;
+&lt;p&gt;The Password grant type is considered a legacy method for swapping a user&#x27;s credentials for an access token. However, it is not recommended anymore because it involves the client application collecting the user&#x27;s password and transmitting it to the authorization server, posing security risks. The latest OAuth 2.0 Security Current Practice disallows the password grant entirely, and the grant is not defined in OAuth 2.1.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;references&quot;&gt;REFERENCES&lt;&#x2F;h2&gt;
+&lt;p&gt;[1] Mitchell Anicas, “An Introduction to OAuth 2” 2021, &lt;a href=&quot;https:&#x2F;&#x2F;www.digitalocean.com&#x2F;community&#x2F;tutorials&#x2F;an-introduction-to-oauth-2&quot; target=&quot;_blank&quot;&gt;https:&#x2F;&#x2F;www.digitalocean.com&#x2F;community&#x2F;tutorials&#x2F;an-introduction-to-oauth-2&lt;&#x2F;a&gt; &lt;&#x2F;p&gt;
+&lt;p&gt;[2] Okta, “What is OAuth 2.0?”, &lt;a href=&quot;https:&#x2F;&#x2F;auth0.com&#x2F;intro-to-iam&#x2F;what-is-oauth-2&quot; target=&quot;_blank&quot;&gt;https:&#x2F;&#x2F;auth0.com&#x2F;intro-to-iam&#x2F;what-is-oauth-2&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;[3] David Demir, “OAuth 2.0: What is OAuth and How Does it Work?”, 2023, &lt;a href=&quot;https:&#x2F;&#x2F;apidog.com&#x2F;blog&#x2F;what-is-oauth-2&quot; target=&quot;_blank&quot;&gt;https:&#x2F;&#x2F;auth0.com&#x2F;intro-to-iam&#x2F;what-is-oauth-2&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;[4] Gbadebo Bello, “What is OAuth 2.0?”, 2023,  &lt;a href=&quot;https:&#x2F;&#x2F;blog.postman.com&#x2F;what-is-oauth-2-0&quot; target=&quot;_blank&quot;&gt;https:&#x2F;&#x2F;blog.postman.com&#x2F;what-is-oauth-2-0&#x2F;&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;[5] Ramotion, “What is OAuth? A Beginner&#x27;s Guide to Authentication for APIs” 2023, &lt;a href=&quot;https:&#x2F;&#x2F;www.ramotion.com&#x2F;blog&#x2F;what-is-oauth-authentification&quot; target=&quot;_blank&quot;&gt;https:&#x2F;&#x2F;www.ramotion.com&#x2F;blog&#x2F;what-is-oauth-authentification&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;[6] Aaron Parecki, “OAuth 2.0”,  &lt;a href=&quot;https:&#x2F;&#x2F;oauth.net&#x2F;2&quot; target=&quot;_blank&quot;&gt;https:&#x2F;&#x2F;oauth.net&#x2F;2&#x2F;&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;[7] Cloudentity Portal, “Client Credentials Flow”, 2023, &lt;a href=&quot;https:&#x2F;&#x2F;cloudentity.com&#x2F;developers&#x2F;basics&#x2F;oauth-grant-types&#x2F;client-credentials-flow&quot; target=&quot;_blank&quot;&gt;https:&#x2F;&#x2F;cloudentity.com&#x2F;developers&#x2F;basics&#x2F;oauth-grant-types&#x2F;client-credentials-flow&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;[8] Daniel Yang, “How to Identify OAuth2 Vulnerabilities and Mitigate Risks”, 2022, &lt;a href=&quot;https:&#x2F;&#x2F;www.coupa.com&#x2F;blog&#x2F;technology-innovation&#x2F;how-to-mitigate-oauth2-vulnerabilities&quot; target=&quot;_blank&quot;&gt;https:&#x2F;&#x2F;www.coupa.com&#x2F;blog&#x2F;technology-innovation&#x2F;how-to-mitigate-oauth2-vulnerabilities&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;[9] PortSwigger, “OAuth 2.0 Authentication Vulnerabilities”, &lt;a href=&quot;https:&#x2F;&#x2F;portswigger.net&#x2F;web-security&#x2F;oauth&quot; target=&quot;_blank&quot;&gt;https:&#x2F;&#x2F;portswigger.net&#x2F;web-security&#x2F;oauth&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;[10] Auth0 by Okta, “Client Credentials Flow”, &lt;a href=&quot;https:&#x2F;&#x2F;auth0.com&#x2F;docs&#x2F;get-started&#x2F;authentication-and-authorization-flow&#x2F;client-credentials-flow&quot; target=&quot;_blank&quot;&gt;https:&#x2F;&#x2F;auth0.com&#x2F;docs&#x2F;get-started&#x2F;authentication-and-authorization-flow&#x2F;client-credentials-flow&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;[11] Auth0 by Okta, “Authentication and Authorization Flows”, &lt;a href=&quot;https:&#x2F;&#x2F;auth0.com&#x2F;docs&#x2F;get-started&#x2F;authentication-and-authorization-flow&quot; target=&quot;_blank&quot;&gt; https:&#x2F;&#x2F;auth0.com&#x2F;docs&#x2F;get-started&#x2F;authentication-and-authorization-flow&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;[12] Identity Server Documentation, “Device Authorization Grant (Device Flow)”, &lt;a href=&quot;https:&#x2F;&#x2F;is.docs.wso2.com&#x2F;en&#x2F;latest&#x2F;references&#x2F;concepts&#x2F;authorization&quot; target=&quot;_blank&quot;&gt;https:&#x2F;&#x2F;is.docs.wso2.com&#x2F;en&#x2F;latest&#x2F;references&#x2F;concepts&#x2F;authorization&#x2F;device-flow-grant&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;[13] IETF, “OAuth 2.0 Security Best Current Practice”, &lt;a href=&quot;https:&#x2F;&#x2F;datatracker.ietf.org&#x2F;doc&#x2F;html&#x2F;draft-ietf-oauth-security-topics&quot; target=&quot;_blank&quot;&gt;https:&#x2F;&#x2F;datatracker.ietf.org&#x2F;doc&#x2F;html&#x2F;draft-ietf-oauth-security-topics&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
+</content>
+    </entry>
+    <entry xml:lang="en">
+        <title>Design Patterns vs Design Principles</title>
+        <published>2024-03-06T00:00:00+00:00</published>
+        <updated>2024-03-06T00:00:00+00:00</updated>
+        <author>
+          <name>ahmetcancicek</name>
+        </author>
+        <link rel="alternate" href="https://ahmetcancicek.dev/design-patterns-vs-design-principles/" type="text/html"/>
+        <id>https://ahmetcancicek.dev/design-patterns-vs-design-principles/</id>
+        <content type="html">&lt;h2 id=&quot;introduction&quot;&gt;INTRODUCTION&lt;&#x2F;h2&gt;
+&lt;p&gt;Design patterns and design principles are two important concepts to help us write better code in software development. Two concepts are often considered to be interchangeable terms in the field of software development. However, these two concepts serve different purposes, have distinct characteristics, and are used at different levels of the design process. The explanations below highlight the difference between design patterns and design principles.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;design-patterns&quot;&gt;DESIGN PATTERNS&lt;&#x2F;h2&gt;
+&lt;p&gt;Design patterns provide low-level, reusable solutions to common problems related to implementation. In other words, they provide implementation details to solve specific design problems in code. &lt;&#x2F;p&gt;
+&lt;p&gt;On the other hand, design patterns are specific to a programming language that produces implementation details and they enhance code maintainability and scalability. Singleton pattern, factory pattern, adapter, and MVC pattern are an example of these design patterns.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;design-princples&quot;&gt;DESIGN PRINCPLES&lt;&#x2F;h2&gt;
+&lt;p&gt;Design principles provide high-level and best practices guidelines on making it easier to design. They are the most essential concepts for software to be maintainable and flexible. &lt;&#x2F;p&gt;
+&lt;p&gt;Unlike design patterns, design principles cannot be limited to any specific programming language. Ideally, developers should think about design principles at the top of the implementation process. SOLID (Single Responsibility, Open-Closed, Liskov Substitution, Interface Segregation, and Dependency Injection), DRY (Don&#x27;t Repeat Yourself), KISS (Keep It Simple, Stupid), and YAGNI (You Aint&#x27; Gonna Need It) are some of the most well-known design principles.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;conclusion&quot;&gt;CONCLUSION&lt;&#x2F;h2&gt;
+&lt;p&gt;Two concepts improve the code quality and offer maintainable, flexible, and reusable software products. While design patterns provide low-level solutions to specific design problems, design principles represent guidelines for making it easier to design. &lt;&#x2F;p&gt;
+&lt;p&gt;By distinguishing between their differences in design patterns and design principles, software products can be developed with higher quality, maintainability, flexibility, and reusability. This understanding allows developers to choose the appropriate approach for each situation and create more efficient and effective solutions.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;references&quot;&gt;REFERENCES&lt;&#x2F;h2&gt;
+&lt;p&gt;[1] &lt;a href=&quot;https:&#x2F;&#x2F;www.tutorialsteacher.com&#x2F;articles&#x2F;difference-between-design-principle-and-design-pattern&quot; target=&quot;_blank&quot;&gt;https:&#x2F;&#x2F;www.tutorialsteacher.com&#x2F;articles&#x2F;difference-between-design-principle-and-design-pattern&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;[2] &lt;a href=&quot;https:&#x2F;&#x2F;stackoverflow.com&#x2F;questions&#x2F;31317141&#x2F;whats-the-difference-between-design-patterns-and-design-principles&quot; target=&quot;_blank&quot;&gt;https:&#x2F;&#x2F;stackoverflow.com&#x2F;questions&#x2F;31317141&#x2F;whats-the-difference-between-design-patterns-and-design-principles&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;[3] &lt;a href=&quot;https:&#x2F;&#x2F;subscription.packtpub.com&#x2F;book&#x2F;programming&#x2F;9781786463593&#x2F;1&#x2F;ch01lvl1sec17&#x2F;design-patterns-and-principles&quot; target=&quot;_blank&quot;&gt;https:&#x2F;&#x2F;subscription.packtpub.com&#x2F;book&#x2F;programming&#x2F;9781786463593&#x2F;1&#x2F;ch01lvl1sec17&#x2F;design-patterns-and-principles&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
+</content>
+    </entry>
+</feed>
