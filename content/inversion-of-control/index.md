@@ -4,8 +4,6 @@ date = "2024-03-11"
 description = "The design principle known as Inversion of Control (IoC) refers to the reversal of the control flow."
 [taxonomies]
 tags = ["IoC", "inversion", "principle","oop","object","oriented","programming"]
-[extra]
-cover_image = "/inversion-of-control/ioc.jpg"
 +++
 
 ## INTRODUCTION
