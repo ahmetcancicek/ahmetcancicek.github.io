@@ -1,7 +1,7 @@
 +++
 title = "Dependency Inversion Principle (DIP)"
 date = "2024-04-16"
-description = "The Dependency Inversion Principle named DIP is one of the SOLID principles created."
+description = "The Dependency Inversion Principle is one of the SOLID principles introduced."
 [taxonomies]
 tags = ["dependency", "inversion", "principle","dip","IoC"]
 +++
