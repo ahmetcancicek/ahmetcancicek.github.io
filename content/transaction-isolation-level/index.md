@@ -110,12 +110,10 @@ On the other hand, when a transaction carries out operations such as inserting, 
 
 Let's review the isolation level step by step with an example. Consider a database table accounts with the below data. 
 
-```yaml
-| id | balance |
-|----|---------|
-| 1  | 1000    |
-| 2  | 1500    |
-```
+| id   | balance |
+| ---- | ------- |
+| 1    | 1000    |
+| 2    | 1500    |
 
 In this example, T1 and T2 are one of the transactions that operate on this table:
 
