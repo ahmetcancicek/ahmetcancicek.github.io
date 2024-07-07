@@ -1,4 +1,5 @@
 +++
+
 title = "Transaction Isolation Level"
 date = "2024-05-17"
 description = "The concepts of concurrency anomalies and transaction isolation levels are related terms in database management systems."
@@ -32,14 +33,14 @@ While more one than transaction is executed simultaneously in a system to access
 A dirty read occurs when a transaction reads data that has not yet been committed. For instance, suppose that there are two transactions, named Transaction 1 and Transaction 2. In this scenario, Transaction 1 updates a row, and Transaction 2 reads the updated row before Transaction 1 commits. In this situation, if Transaction 1 rolls back the change, Transaction 2 will read data that is effectively nonexistent.
 
 | **Transaction 1** | **Transaction 2** |
-|:-----------------:|:-----------------:|
-|         \|        |         \|        |
-|      write(x)     |         \|        |
-|         \|        |         \|        |
-|         \|        |      read(x)      |
-|         \|        |         \|        |
-|      rollback     |         \|        |
-|         \|        |         \|        |
+| :---------------: | :---------------: |
+|        \|         |        \|         |
+|     write(x)      |        \|         |
+|        \|         |        \|         |
+|        \|         |      read(x)      |
+|        \|         |        \|         |
+|     rollback      |        \|         |
+|        \|         |        \|         |
 |         v         |         v         |
 
 ### NON-REPEATABLE READ
@@ -47,16 +48,16 @@ A dirty read occurs when a transaction reads data that has not yet been committe
 In a system in which many transactions run simultaneously when a transaction updates and commits a row that another transaction has previously read if the first transaction reads the same row, it encounters different data probably. This situation is known as the non-repeatable read anomaly. For example, assume that there are two transactions such as Transaction 1 and Transaction 2. In this example, while Transaction 1 reads any row, Transaction 2 updates or deletes that row and commits. In this step, if Transaction 1 re-reads the same row, it gets a different value from what has been previously read or cannot receive the data because the row has been deleted. 
 
 | **Transaction 1** | **Transaction 2** |
-|:-----------------:|:-----------------:|
-|         \|        |         \|        |
-|      read(x)      |         \|        |
-|         \|        |         \|        |
-|         \|        |      write(x)     |
-|         \|        |         \|        |
-|         \|        |       commit      |
-|         \|        |         \|        |
-|      read(x)      |         \|        |
-|         \|        |         \|        |
+| :---------------: | :---------------: |
+|        \|         |        \|         |
+|      read(x)      |        \|         |
+|        \|         |        \|         |
+|        \|         |     write(x)      |
+|        \|         |        \|         |
+|        \|         |      commit       |
+|        \|         |        \|         |
+|      read(x)      |        \|         |
+|        \|         |        \|         |
 |         v         |         v         |
 
 ### PHANTOM READ
@@ -64,16 +65,16 @@ In a system in which many transactions run simultaneously when a transaction upd
 The phantom read happens when a transaction executes the same query more than once and gets a different set of rows for each read. For example, imagine that a group of transactions runs simultaneously on any system. In this system, Transaction 1 executes a query from the database to retrieve a set of rows, which contains 10 records. However, Transaction 2 adds 15 rows and commits before Transaction 1 executes the query once more. In this situation, if Transaction 1 executes the query again to get data from the database, the set of rows returned may differ attributed to the query. In short, Transaction 1 gets a different result on each read. 
 
 | **Transaction 1** | **Transaction 2** |
-|:-----------------:|:-----------------:|
-|         \|        |         \|        |
-|     read(x>10)    |         \|        |
-|         \|        |         \|        |
-|         \|        |    write(x=15)    |
-|         \|        |         \|        |
-|         \|        |       commit      |
-|         \|        |         \|        |
-|     read(x>10)    |         \|        |
-|         \|        |         \|        |
+| :---------------: | :---------------: |
+|        \|         |        \|         |
+|    read(x>10)     |        \|         |
+|        \|         |        \|         |
+|        \|         |    write(x=15)    |
+|        \|         |        \|         |
+|        \|         |      commit       |
+|        \|         |        \|         |
+|    read(x>10)     |        \|         |
+|        \|         |        \|         |
 |         v         |         v         |
 
 
@@ -95,9 +96,34 @@ In this isolation level, a transaction can only read data that has been committe
 It is important that what is the difference between shared lock and exclusive lock. Concurrency mechanism in a database management system is provided by the concept of these locks. Namely, shared locks and exclusive locks have a pivotal role in transaction isolation levels.
 {% end %}
 
-A transaction holds a read-lock (if it only reads the row) or write-lock (if it updates or deletes the row) on a specific row to prevent the effects of other transactions such as deleting or updating. As a result, this operation prevents the other transactions from accessing dirty data. 
+To prevent dirty reads, the isolation level uses locking. Locking mechanisms ensure that a transaction reads only committed data. With the help of the locking mechanism, a transaction can hold a read-lock (if it only reads the row) or write-lock (if it updates or deletes the row) on a specific row to prevent the effects of other transactions. 
 
-On the other hand, if the transaction completes its operation and exists on the current row, it releases the read-lock. However, it holds the write-lock until it is committed or rolled back to prevent the accessing by other transactions. 
+
+
+When a transaction reads data, it acquires the read-lock (shared lock). This lock allows other transactions to acquire read-lock on the same data. Namely, it enables concurrent reads. However, read-lock prevents other transactions from acquiring exclusive locks on the same data.
+
+
+
+On the other hand, when a transaction carries out operations such as inserting, updating, or deleting, it must acquire the write-lock (exclusive lock) in this isolation level. With the write-lock, the transactions prevent other transactions from acquiring read-lock or write-lock on the same data. Thus, it ensures data integrity during write operations.
+
+
+
+Let's review the isolation level step by step with an example. Consider a database table accounts with the below data. 
+
+```yaml
+| id | balance |
+|----|---------|
+| 1  | 1000    |
+| 2  | 1500    |
+```
+
+In this example, T1 and T2 are one of the transactions that operate on this table:
+
+1. Before T1 reads the balance column of account 1, it first acquires a shared lock on that row.
+2. After T1 acquires a shared lock, it reads and then releases the shared lock.
+3. Before T2 updates the balance column of account 1 to 1200, it acquires an exclusive lock on that row. 
+4. After T2 commits, it releases the exclusive lock.
+5. To T1 reads the balance column of account 1 again, it acquires the shared lock. After acquiring the shared lock, T1 reads the updated value of 1200 and then releases the shared lock.
 
 It would be best for a retail application to display the available inventory of products. However, it is important to note that some inconsistencies between reads are acceptable in this situation. For example, when displaying available inventory to customers, some inaccuracies due to concurrent updates can be tolerated, provided that the data remains up-to-date.
 
@@ -126,11 +152,11 @@ Specifically, as it is the highest level of isolation, it is used to ensure stri
 In the following table, it is shown which transaction isolation level caused which anomalies. An "X" marks each phenomenon that can occur.
 
 | **Transaction Isolation Level** | **Dirty Read** | **Nonrepeatable Read** | **Phantom Read** |
-|---------------------------------|----------------|------------------------|------------------|
-|         Read Uncommitted        |        X       |            X           |         X        |
-|          Read Committed         |       --       |            X           |         X        |
-|         Repeatable Read         |       --       |           --           |         X        |
-|           Serializable          |       --       |           --           |        --        |
+| ------------------------------- | -------------- | ---------------------- | ---------------- |
+| Read Uncommitted                | X              | X                      | X                |
+| Read Committed                  | --             | X                      | X                |
+| Repeatable Read                 | --             | --                     | X                |
+| Serializable                    | --             | --                     | --               |
 
 Concurrency anomalies are prevented by using the correct isolation level. Particularly, higher isolation levels collectively prevent anomalies. However, they increase needing system resources. Therefore, it is essential to comprehend the trade-offs involved and choose an isolation level. Further, choosing the correct isolation level leads to providing data integrity, reliability, consistency, and efficiency in a database management system. 
 
@@ -145,3 +171,6 @@ Concurrency anomalies are prevented by using the correct isolation level. Partic
 [4] <a href="https://www.cockroachlabs.com/blog/sql-isolation-levels-explained/" target="_blank">https://www.cockroachlabs.com/blog/sql-isolation-levels-explained/</a>
 
 [5] <a href="https://dev.mysql.com/doc/refman/8.0/en/innodb-transaction-isolation-levels.html" target="_blank">https://dev.mysql.com/doc/refman/8.0/en/innodb-transaction-isolation-levels.html</a>
+
+
+
