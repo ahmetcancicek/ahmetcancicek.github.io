@@ -1,0 +1,707 @@
+<!doctype html>
+<html class="not-ready lg:text-base" lang="en">
+  <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+  <!-- Title -->
+  <title>
+    Inversion of Control (IoC) - Ahmet Can Çiçek - Software Engineer, Blogger, Researcher
+  </title>
+
+  <!-- Meta -->
+  <meta name="theme-color" />
+
+  
+  <!-- Author -->
+  
+  <!---->
+  
+  <meta name="description" content="The design principle known as Inversion of Control (IoC) refers to the reversal of the control flow." />
+  <meta name="author" content="Inversion of Control (IoC)" />
+  <!-- The Open Graph protocol -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Inversion of Control (IoC)" />
+  <meta property="og:site_name" content="Ahmet Can Çiçek - Software Engineer, Blogger, Researcher" />
+  <meta property="og:description" content="The design principle known as Inversion of Control (IoC) refers to the reversal of the control flow." />
+  <meta property="og:url" content="https:&#x2F;&#x2F;ahmetcancicek.dev&#x2F;inversion-of-control&#x2F;" />
+  
+  <!---->
+  
+  <meta property="og:image" content="https://ahmetcancicek.dev/icons/github.svg" />
+  
+  <!---->
+  
+
+  <!-- CSS & JS -->
+  <link rel="preload stylesheet" as="style" href="https://ahmetcancicek.dev/main.css" />
+  <style>
+    :root {
+      --bg: #f4f4f5;
+      --bg-dark: #18181b;
+      --header: #e4e4e7;
+      --header-dark: #27272a;
+    }
+  </style>
+
+  
+
+  <!-- Dark Icon -->
+  <link rel="preload" as="image" href="https://ahmetcancicek.dev/icons/theme.svg" />
+
+  <!-- Math -->
+  
+  <!---->
+
+  <!-- Mermaid -->
+  
+  <!---->
+
+  <!-- Favicon -->
+  <link rel="icon" href="https://ahmetcancicek.dev/favicon.ico" />
+  <link rel="apple-touch-icon" href="https://ahmetcancicek.dev/apple-touch-icon.png" />
+
+  <!-- Feeds -->
+  
+  <!---->
+  
+  <link
+    rel="alternate"
+    type="application/atom+xml"
+    title="Atom"
+    href="https://ahmetcancicek.dev/atom.xml"
+  />
+  
+  
+  <!---->
+  
+
+  <!-- Canonical -->
+  <link rel="canonical" href="https:&#x2F;&#x2F;ahmetcancicek.dev&#x2F;inversion-of-control&#x2F;" />
+
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-01S4R6K1J4"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+
+    gtag('config', 'G-01S4R6K1J4');
+  </script>
+
+  <!-- Clarity -->
+  <script type="text/javascript">
+    (function (c, l, a, r, i, t, y) {
+      c[a] = c[a] || function () { (c[a].q = c[a].q || []).push(arguments) };
+      t = l.createElement(r); t.async = 1; t.src = "https://www.clarity.ms/tag/" + i;
+      y = l.getElementsByTagName(r)[0]; y.parentNode.insertBefore(t, y);
+    })(window, document, "clarity", "script", "mjh6v01689");
+  </script>
+
+  <!-- Counter -->
+  <script src="https://cdn.counter.dev/script.js" data-id="4cb2d6b7-f6c5-4213-8f5c-65ddacafd373" data-utcoffset="3"></script>
+</head>
+
+  <body class="text-black duration-200 ease-out dark:text-white">
+    <header
+  class="header fixed top-0 z-40 mx-auto min-h-[3.5rem] w-full"
+>
+  <div class="mx-auto w-full max-w-4xl p-3 lg:flex lg:justify-between">
+    <div class="flex justify-between">
+      <div class="flex items-center">
+        <a class="text-2xl font-semibold" href="https://ahmetcancicek.dev">ahmetcancicek</a>
+        <div
+          class="btn-dark ml-4 h-6 w-6 shrink-0 cursor-pointer text-[0] [background:url(./icons/theme.svg)_left_center/cover_no-repeat] dark:invert dark:[background-position:right]"
+          role="button"
+          aria-label="Dark"
+        ></div>
+      </div>
+      
+      <div
+        class="btn-menu relative z-50 flex h-8 w-8 shrink-0 cursor-pointer flex-col items-center justify-center gap-2.5 lg:hidden"
+        role="button"
+        aria-label="Menu"
+      ></div>
+      
+    </div>
+    <script>
+      // base
+      const htmlClass = document.documentElement.classList;
+      setTimeout(() => {
+        htmlClass.remove("not-ready");
+      }, 10);
+
+      // mobile menu
+      const btnMenu = document.querySelector(".btn-menu");
+      btnMenu?.addEventListener("click", () => {
+        htmlClass.toggle("open");
+      });
+
+      // dark theme
+      const setDark = (isDark) => {
+        if (isDark) {
+          document.body.dispatchEvent(new CustomEvent("set-theme", { detail: "dark" }));
+          htmlClass.add("dark");
+        } else {
+          document.body.dispatchEvent(new CustomEvent("set-theme", { detail: "light" }));
+          htmlClass.remove("dark");
+        }
+        localStorage.setItem("dark", isDark);
+      };
+
+      // init
+      const darkScheme = window.matchMedia("(prefers-color-scheme: dark)");
+      if (htmlClass.contains("dark")) {
+        setDark(true);
+      } else {
+        const darkVal = localStorage.getItem("dark");
+        setDark(darkVal ? darkVal === "true" : darkScheme.matches);
+      }
+
+      // listen system
+      darkScheme.addEventListener("change", (event) => {
+        setDark(event.matches);
+      });
+
+      // manual switch
+      const btnDark = document.querySelector(".btn-dark");
+      btnDark.addEventListener("click", () => {
+        setDark(localStorage.getItem("dark") !== "true");
+      });
+    </script>
+    
+    <nav class="flex w-full items-center lg:w-auto">
+      <ul
+        class="nav-wrapper flex w-full flex-col py-2 lg:w-auto lg:flex-row lg:self-center lg:py-0"
+      >
+        
+        <li>
+          <a
+            class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0"
+            href="https://ahmetcancicek.dev/archive"
+            >Archive</a
+          >
+        </li>
+        
+        <li>
+          <a
+            class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0"
+            href="https://ahmetcancicek.dev/tags"
+            >Tags</a
+          >
+        </li>
+        
+      </ul>
+    </nav>
+    
+  </div>
+</header>
+
+
+    <main
+      class="prose prose-neutral relative mx-auto min-h-[calc(100%-9rem)] max-w-3xl break-words px-4 pb-16 pt-32 dark:prose-invert"
+    >
+      
+<article>
+  <header class="mb-16">
+    <h1 class="!my-0 pb-2.5">Inversion of Control (IoC)</h1>
+    <div class="text-sm antialiased opacity-60">
+  
+  <time>2024-03-11</time>
+  <span class="mx-1">&middot;</span>
+  <span>9min</span>
+  <!---->
+  
+  <!---->
+  
+  <span class="mx-1">&middot;</span>
+  <span>ahmetcancicek</span>
+  
+</div>
+
+  </header>
+
+  
+
+  <!-- TOC -->
+  <!---->
+<div class="block-bg mb-12 flex rounded-lg p-2 text-lg">
+  <details>
+    <summary class="cursor-pointer py-1 pl-4">
+      <span>Table of Contents</span>
+    </summary>
+    <div class="px-2">
+      <ul>
+        
+        <li>
+          <a class="no-underline hover:underline" href="https://ahmetcancicek.dev/inversion-of-control/#introduction"
+            >INTRODUCTION</a
+          >
+          
+        </li>
+        
+        <li>
+          <a class="no-underline hover:underline" href="https://ahmetcancicek.dev/inversion-of-control/#background"
+            >BACKGROUND</a
+          >
+          
+          <ul>
+            
+            <li>
+              <a class="no-underline hover:underline" href="https://ahmetcancicek.dev/inversion-of-control/#loose-coupling"
+                >Loose Coupling</a
+              >
+            </li>
+            
+            <li>
+              <a class="no-underline hover:underline" href="https://ahmetcancicek.dev/inversion-of-control/#tight-coupling"
+                >Tight Coupling</a
+              >
+            </li>
+            
+          </ul>
+          
+        </li>
+        
+        <li>
+          <a class="no-underline hover:underline" href="https://ahmetcancicek.dev/inversion-of-control/#ioc-implementation"
+            >IoC IMPLEMENTATION</a
+          >
+          
+        </li>
+        
+        <li>
+          <a class="no-underline hover:underline" href="https://ahmetcancicek.dev/inversion-of-control/#references"
+            >REFERENCES</a
+          >
+          
+        </li>
+        
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!---->
+
+  <!-- Content -->
+  <section><h2 id="introduction">INTRODUCTION</h2>
+<p>IoC is sometimes referred to as the <strong>"Hollywood Principle"</strong></p>
+ <!---->
+
+
+<div
+  class="my-4 flex flex-col rounded-lg bg-[var(--admonition-bg)]"
+  style="--admonition-bg: rgba(159, 159, 159, 0.1)"
+>
+  <div class="flex items-center rounded-t-lg bg-[var(--admonition-bg)] p-1">
+    <div
+      class="mx-2 h-4 w-4 text-[0] [background:var(--url)_center_center_no-repeat] dark:invert"
+      style="--url: url(./icons/quote.svg)"
+    >
+      quote
+    </div>
+    <span><strong>Hollywood Principle</strong></span>
+  </div>
+  <div class="pl-4"><p>Don't call us, we'll call you.</p>
+</div>
+</div>
+<p>Inversion of Control shorthanded IoC is a design principle that refers to the reversal of the control flow in a software application. The goal of using the design principle is a achieve loose coupling as inverting the control over the flow of execution. In order to do this, it transfers the authority for the flow of execution to an external container or framework.</p>
+<p>IoC is like a real-life daily principle using. For example, imagine the scenario, a software engineer named Alice who works in a company, has a crucial task at hand while working. Despite his desire for a coffee break, he cannot afford the interruption because of the importance of the task. In this situation, he may prefer to apply the principle of IoC by delegating the coffee-making responsibility to his nearby colleagues. While their colleagues making coffee, he stays focused on his important task. This scenario is one of the daily examples of IoC.</p>
+<h2 id="background">BACKGROUND</h2>
+<p>While learning the concept of the Inversion of Control, two fundamental terms should be known, called <strong>"loose coupling"</strong> and <strong>"tight coupling"</strong>.</p>
+<h3 id="loose-coupling">Loose Coupling</h3>
+<p>Loose coupling means that components in the system are independent of each other. Loose coupling is achieved by components in a software application that are independent. Namely, changes in one component should not affect the other components. Moreover, every component should have minimal knowledge about each other.</p>
+<h3 id="tight-coupling">Tight Coupling</h3>
+<p>Tight coupling means components in software applications are dependent on each other and changes in one component affect the other components. Because of the tight coupling, reducing system flexibility makes maintenance more difficult.</p>
+<h2 id="ioc-implementation">IoC IMPLEMENTATION</h2>
+<p>The IoC principle makes it possible to invert control, enabling the delegation of control to another class. In this way, it provides a solution to the challenges associated with tight coupling.</p>
+<p>It will be more feasible to move forward step by step so as that learn the Inversion of Control. Therefore, let's analyze an example illustrating tight coupling.</p>
+<p>In the first step, imagine that there are two classes, which are named <strong>Car</strong> and <strong>Engine</strong>.</p>
+<p>In the <strong>Car</strong> class, there is a private member, which is named <strong>Engine</strong>.  The constructor method of the <strong>Car</strong> class creates an instance of the <strong>Engine</strong> class, which is a concrete class and represents the engine of the car.</p>
+<pre data-lang="Java" style="background-color:#2b303b;color:#c0c5ce;" class="language-Java "><code class="language-Java" data-lang="Java"><span style="color:#b48ead;">public class </span><span style="color:#ebcb8b;">Car </span><span style="color:#eff1f5;">{
+</span><span style="color:#eff1f5;">    </span><span style="color:#b48ead;">private </span><span style="color:#ebcb8b;">Engine </span><span style="color:#eff1f5;">engine;
+</span><span style="color:#eff1f5;">
+</span><span style="color:#eff1f5;">    </span><span style="color:#b48ead;">public </span><span style="color:#8fa1b3;">Car</span><span style="color:#eff1f5;">() {
+</span><span style="color:#eff1f5;">        </span><span style="color:#bf616a;">this</span><span style="color:#eff1f5;">.engine </span><span>= </span><span style="color:#b48ead;">new </span><span style="color:#ebcb8b;">Engine</span><span style="color:#eff1f5;">();
+</span><span style="color:#eff1f5;">    }
+</span><span style="color:#eff1f5;">
+</span><span style="color:#eff1f5;">    </span><span style="color:#b48ead;">public void </span><span style="color:#8fa1b3;">start</span><span style="color:#eff1f5;">() {
+</span><span style="color:#eff1f5;">        engine.</span><span style="color:#bf616a;">start</span><span style="color:#eff1f5;">();
+</span><span style="color:#eff1f5;">        </span><span style="color:#65737e;">// Other car-related logic
+</span><span style="color:#eff1f5;">    }
+</span><span style="color:#eff1f5;">}
+</span></code></pre>
+<pre data-lang="Java" style="background-color:#2b303b;color:#c0c5ce;" class="language-Java "><code class="language-Java" data-lang="Java"><span style="color:#b48ead;">public class </span><span style="color:#ebcb8b;">Engine </span><span style="color:#eff1f5;">{
+</span><span style="color:#eff1f5;">    </span><span style="color:#b48ead;">public void </span><span style="color:#8fa1b3;">start</span><span style="color:#eff1f5;">() {
+</span><span style="color:#eff1f5;">        </span><span style="color:#ebcb8b;">System</span><span style="color:#eff1f5;">.out.</span><span style="color:#bf616a;">println</span><span style="color:#eff1f5;">(</span><span>&quot;</span><span style="color:#a3be8c;">Engine is started!</span><span>&quot;</span><span style="color:#eff1f5;">);
+</span><span style="color:#eff1f5;">    }
+</span><span style="color:#eff1f5;">}
+</span></code></pre>
+<p>In the <strong>Main</strong> class, it is created an instance of the <strong>Car</strong> class and uses the method called <strong>start</strong> of this class.</p>
+<pre data-lang="Java" style="background-color:#2b303b;color:#c0c5ce;" class="language-Java "><code class="language-Java" data-lang="Java"><span style="color:#b48ead;">public class </span><span style="color:#ebcb8b;">Main </span><span style="color:#eff1f5;">{
+</span><span style="color:#eff1f5;">    </span><span style="color:#b48ead;">public static void </span><span style="color:#8fa1b3;">main</span><span style="color:#eff1f5;">(</span><span style="color:#ebcb8b;">String</span><span style="color:#b48ead;">[] </span><span style="color:#bf616a;">args</span><span style="color:#eff1f5;">) {
+</span><span style="color:#eff1f5;">        </span><span style="color:#ebcb8b;">Car</span><span style="color:#eff1f5;"> myCar </span><span>= </span><span style="color:#b48ead;">new </span><span style="color:#ebcb8b;">Car</span><span style="color:#eff1f5;">();
+</span><span style="color:#eff1f5;">        myCar.</span><span style="color:#bf616a;">start</span><span style="color:#eff1f5;">();
+</span><span style="color:#eff1f5;">    }
+</span><span style="color:#eff1f5;">}
+</span></code></pre>
+<p>In the previous example, it is evident that the <strong>Car</strong> class is dependent on the <strong>Engine</strong> class in order to fulfill functionality. The <strong>Car</strong> class cannot operate without it. Also, when a change is made to the <strong>Engine</strong> class, these changes affect the <strong>Car</strong> class. For this reason, using the Inversion of Control principle is advisable as a solution to address this issue and challenges.</p>
+<p>Let's refactor the previous examples to invert the control of dependency from one class to another with help using a factory design pattern.</p>
+<p>The <strong>Engine</strong> class is the same as the previous.</p>
+<pre data-lang="Java" style="background-color:#2b303b;color:#c0c5ce;" class="language-Java "><code class="language-Java" data-lang="Java"><span style="color:#b48ead;">public class </span><span style="color:#ebcb8b;">Engine </span><span style="color:#eff1f5;">{
+</span><span style="color:#eff1f5;">    </span><span style="color:#b48ead;">public void </span><span style="color:#8fa1b3;">start</span><span style="color:#eff1f5;">() {
+</span><span style="color:#eff1f5;">        </span><span style="color:#ebcb8b;">System</span><span style="color:#eff1f5;">.out.</span><span style="color:#bf616a;">println</span><span style="color:#eff1f5;">(</span><span>&quot;</span><span style="color:#a3be8c;">Engine is started!</span><span>&quot;</span><span style="color:#eff1f5;">);
+</span><span style="color:#eff1f5;">    }
+</span><span style="color:#eff1f5;">}
+</span></code></pre>
+<p>The below now <strong>Car</strong> class has a private member, which is named <strong>EngineFactory</strong> that provides the creation of the <strong>Engine</strong> class instead of having a direct concrete <strong>Engine</strong> class. In short, the <strong>EngineFactory</strong> class is a concrete class to creates an instance of the <strong>Engine</strong> class. So, the <strong>Car</strong> class is not dependent on the <strong>Engine</strong> class.However, there is still a dependency between the <strong>Car</strong> class and the <strong>EngineFactory</strong>.</p>
+<pre data-lang="Java" style="background-color:#2b303b;color:#c0c5ce;" class="language-Java "><code class="language-Java" data-lang="Java"><span style="color:#b48ead;">public class </span><span style="color:#ebcb8b;">EngineFactory </span><span style="color:#eff1f5;">{
+</span><span style="color:#eff1f5;">    </span><span style="color:#b48ead;">public static </span><span style="color:#ebcb8b;">Engine </span><span style="color:#8fa1b3;">getEngine</span><span style="color:#eff1f5;">() {
+</span><span style="color:#eff1f5;">        </span><span style="color:#b48ead;">return new </span><span style="color:#ebcb8b;">Engine</span><span style="color:#eff1f5;">();
+</span><span style="color:#eff1f5;">    }
+</span><span style="color:#eff1f5;">}
+</span></code></pre>
+<pre data-lang="Java" style="background-color:#2b303b;color:#c0c5ce;" class="language-Java "><code class="language-Java" data-lang="Java"><span style="color:#b48ead;">public class </span><span style="color:#ebcb8b;">Car </span><span style="color:#eff1f5;">{
+</span><span style="color:#eff1f5;">    </span><span style="color:#b48ead;">private </span><span style="color:#ebcb8b;">Engine </span><span style="color:#eff1f5;">engine;
+</span><span style="color:#eff1f5;">
+</span><span style="color:#eff1f5;">    </span><span style="color:#b48ead;">public </span><span style="color:#8fa1b3;">Car</span><span style="color:#eff1f5;">() {
+</span><span style="color:#eff1f5;">        engine </span><span>= </span><span style="color:#ebcb8b;">EngineFactory</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">getEngine</span><span style="color:#eff1f5;">();
+</span><span style="color:#eff1f5;">    }
+</span><span style="color:#eff1f5;">
+</span><span style="color:#eff1f5;">    </span><span style="color:#b48ead;">public void </span><span style="color:#8fa1b3;">start</span><span style="color:#eff1f5;">() {
+</span><span style="color:#eff1f5;">        engine.</span><span style="color:#bf616a;">start</span><span style="color:#eff1f5;">();
+</span><span style="color:#eff1f5;">    }
+</span><span style="color:#eff1f5;">}
+</span><span>
+</span></code></pre>
+<pre data-lang="Java" style="background-color:#2b303b;color:#c0c5ce;" class="language-Java "><code class="language-Java" data-lang="Java"><span style="color:#b48ead;">public class </span><span style="color:#ebcb8b;">Main </span><span style="color:#eff1f5;">{
+</span><span style="color:#eff1f5;">    </span><span style="color:#b48ead;">public static void </span><span style="color:#8fa1b3;">main</span><span style="color:#eff1f5;">(</span><span style="color:#ebcb8b;">String</span><span style="color:#b48ead;">[] </span><span style="color:#bf616a;">args</span><span style="color:#eff1f5;">) {
+</span><span style="color:#eff1f5;">        </span><span style="color:#ebcb8b;">Car</span><span style="color:#eff1f5;"> myCar </span><span>= </span><span style="color:#b48ead;">new </span><span style="color:#ebcb8b;">Car</span><span style="color:#eff1f5;">();
+</span><span style="color:#eff1f5;">        myCar.</span><span style="color:#bf616a;">start</span><span style="color:#eff1f5;">();
+</span><span style="color:#eff1f5;">    }
+</span><span style="color:#eff1f5;">}
+</span></code></pre>
+<p>The previous refactored code has not yet attained fully loosely coupled classes. To achieve fully loosely coupled, it is necessary to integrate the <strong>Dependency Inversion Principle (DIP)</strong>, and one type of implementation of this is <strong>Dependency Injection (DI)</strong>.</p>
+ <!---->
+
+
+<div
+  class="my-4 flex flex-col rounded-lg bg-[var(--admonition-bg)]"
+  style="--admonition-bg: rgba(83, 211, 230, 0.1)"
+>
+  <div class="flex items-center rounded-t-lg bg-[var(--admonition-bg)] p-1">
+    <div
+      class="mx-2 h-4 w-4 text-[0] [background:var(--url)_center_center_no-repeat] dark:invert"
+      style="--url: url(./icons/info.svg)"
+    >
+      info
+    </div>
+    <span><strong>Dependency Injection (DI)</strong></span>
+  </div>
+  <div class="pl-4"><p>In the given examples, the factory design pattern is preferred to reverse the control of dependency creation. A more suitable and common approach to implementing IoC is to use the Dependency Injection (DI) framework.</p>
+</div>
+</div>
+<p>In the second example, let's illustrate the Inversion of Control in a real scenario.</p>
+<p>In this example, imagine that it is needed to develop a project named marketplace in any company. The marketplace should be run with several payment services such as PayPal, Stripe, and Bank.</p>
+<p>According to the scenario, the <strong>Transaction</strong> class refers to payment transactions as a model class in this design.</p>
+<pre data-lang="Java" style="background-color:#2b303b;color:#c0c5ce;" class="language-Java "><code class="language-Java" data-lang="Java"><span style="color:#b48ead;">public class </span><span style="color:#ebcb8b;">Transaction </span><span style="color:#eff1f5;">{
+</span><span style="color:#eff1f5;">    </span><span style="color:#b48ead;">private </span><span style="color:#ebcb8b;">String </span><span style="color:#eff1f5;">transactionId;
+</span><span style="color:#eff1f5;">    </span><span style="color:#b48ead;">private </span><span style="color:#ebcb8b;">BigDecimal </span><span style="color:#eff1f5;">amount;
+</span><span style="color:#eff1f5;">    </span><span style="color:#b48ead;">private </span><span style="color:#ebcb8b;">String </span><span style="color:#eff1f5;">currency;
+</span><span style="color:#eff1f5;">    </span><span style="color:#b48ead;">private </span><span style="color:#ebcb8b;">String </span><span style="color:#eff1f5;">recipientAccount;
+</span><span style="color:#eff1f5;">    </span><span style="color:#b48ead;">private </span><span style="color:#ebcb8b;">String </span><span style="color:#eff1f5;">senderAccount;
+</span><span style="color:#eff1f5;">
+</span><span style="color:#eff1f5;">    </span><span style="color:#b48ead;">public </span><span style="color:#8fa1b3;">Transaction</span><span style="color:#eff1f5;">(</span><span style="color:#ebcb8b;">String </span><span style="color:#bf616a;">transactionId</span><span style="color:#eff1f5;">, </span><span style="color:#ebcb8b;">BigDecimal </span><span style="color:#bf616a;">amount</span><span style="color:#eff1f5;">, </span><span style="color:#ebcb8b;">String </span><span style="color:#bf616a;">currency</span><span style="color:#eff1f5;">, </span><span style="color:#ebcb8b;">String </span><span style="color:#bf616a;">recipientAccount</span><span style="color:#eff1f5;">, </span><span style="color:#ebcb8b;">String </span><span style="color:#bf616a;">senderAccount</span><span style="color:#eff1f5;">) {
+</span><span style="color:#eff1f5;">        </span><span style="color:#bf616a;">this</span><span style="color:#eff1f5;">.transactionId </span><span>=</span><span style="color:#eff1f5;"> transactionId;
+</span><span style="color:#eff1f5;">        </span><span style="color:#bf616a;">this</span><span style="color:#eff1f5;">.amount </span><span>=</span><span style="color:#eff1f5;"> amount;
+</span><span style="color:#eff1f5;">        </span><span style="color:#bf616a;">this</span><span style="color:#eff1f5;">.currency </span><span>=</span><span style="color:#eff1f5;"> currency;
+</span><span style="color:#eff1f5;">        </span><span style="color:#bf616a;">this</span><span style="color:#eff1f5;">.recipientAccount </span><span>=</span><span style="color:#eff1f5;"> recipientAccount;
+</span><span style="color:#eff1f5;">        </span><span style="color:#bf616a;">this</span><span style="color:#eff1f5;">.senderAccount </span><span>=</span><span style="color:#eff1f5;"> senderAccount;
+</span><span style="color:#eff1f5;">    }
+</span><span style="color:#eff1f5;">
+</span><span style="color:#eff1f5;">    </span><span style="color:#65737e;">// getter, setter
+</span><span style="color:#eff1f5;">}
+</span></code></pre>
+<p>There is an interface named <strong>PaymentGateway</strong> and three gateway classes to represent the payment processing logic, which are <strong>PayPalPaymentGateway</strong> class, <strong>StripePaymentGateway</strong> class, and <strong>BankTransferGateway</strong> class. The three classes inherit the interface named <strong>PaymentGateway</strong>.</p>
+<pre data-lang="Java" style="background-color:#2b303b;color:#c0c5ce;" class="language-Java "><code class="language-Java" data-lang="Java"><span style="color:#b48ead;">public interface </span><span style="color:#ebcb8b;">PaymentGateway </span><span style="color:#eff1f5;">{
+</span><span style="color:#eff1f5;">    </span><span style="color:#b48ead;">void </span><span style="color:#8fa1b3;">processPayment</span><span style="color:#eff1f5;">(</span><span style="color:#ebcb8b;">Transaction </span><span style="color:#bf616a;">transaction</span><span style="color:#eff1f5;">);
+</span><span style="color:#eff1f5;">}
+</span></code></pre>
+<pre data-lang="Java" style="background-color:#2b303b;color:#c0c5ce;" class="language-Java "><code class="language-Java" data-lang="Java"><span style="color:#b48ead;">public class </span><span style="color:#ebcb8b;">PayPalPaymentGateway </span><span style="color:#b48ead;">implements </span><span style="color:#a3be8c;">PaymentGateway </span><span style="color:#eff1f5;">{
+</span><span style="color:#eff1f5;">    @</span><span style="color:#bf616a;">Override
+</span><span style="color:#eff1f5;">    </span><span style="color:#b48ead;">public void </span><span style="color:#8fa1b3;">processPayment</span><span style="color:#eff1f5;">(</span><span style="color:#ebcb8b;">Transaction </span><span style="color:#bf616a;">transaction</span><span style="color:#eff1f5;">) {
+</span><span style="color:#eff1f5;">        </span><span style="color:#ebcb8b;">System</span><span style="color:#eff1f5;">.out.</span><span style="color:#bf616a;">println</span><span style="color:#eff1f5;">(</span><span>&quot;</span><span style="color:#a3be8c;">Payment processing with PayPal: </span><span>&quot; +</span><span style="color:#eff1f5;"> transaction.</span><span style="color:#bf616a;">getCurrency</span><span style="color:#eff1f5;">() </span><span>+</span><span style="color:#eff1f5;"> transaction.</span><span style="color:#bf616a;">getAmount</span><span style="color:#eff1f5;">());
+</span><span style="color:#eff1f5;">        </span><span style="color:#65737e;">// Other PayPal payment processing
+</span><span style="color:#eff1f5;">    }
+</span><span style="color:#eff1f5;">}
+</span></code></pre>
+<pre data-lang="Java" style="background-color:#2b303b;color:#c0c5ce;" class="language-Java "><code class="language-Java" data-lang="Java"><span style="color:#b48ead;">public class </span><span style="color:#ebcb8b;">StripePaymentGateway </span><span style="color:#b48ead;">implements </span><span style="color:#a3be8c;">PaymentGateway  </span><span style="color:#eff1f5;">{
+</span><span style="color:#eff1f5;">    @</span><span style="color:#bf616a;">Override
+</span><span style="color:#eff1f5;">    </span><span style="color:#b48ead;">public void </span><span style="color:#8fa1b3;">processPayment</span><span style="color:#eff1f5;">(</span><span style="color:#ebcb8b;">Transaction </span><span style="color:#bf616a;">transaction</span><span style="color:#eff1f5;">) {
+</span><span style="color:#eff1f5;">        </span><span style="color:#ebcb8b;">System</span><span style="color:#eff1f5;">.out.</span><span style="color:#bf616a;">println</span><span style="color:#eff1f5;">(</span><span>&quot;</span><span style="color:#a3be8c;">Payment processing with Stripe: </span><span>&quot; +</span><span style="color:#eff1f5;"> transaction.</span><span style="color:#bf616a;">getCurrency</span><span style="color:#eff1f5;">() </span><span>+</span><span style="color:#eff1f5;"> transaction.</span><span style="color:#bf616a;">getAmount</span><span style="color:#eff1f5;">());
+</span><span style="color:#eff1f5;">        </span><span style="color:#65737e;">// Other Stripe payment processing
+</span><span style="color:#eff1f5;">    }
+</span><span style="color:#eff1f5;">}
+</span></code></pre>
+<pre data-lang="Java" style="background-color:#2b303b;color:#c0c5ce;" class="language-Java "><code class="language-Java" data-lang="Java"><span style="color:#b48ead;">public class </span><span style="color:#ebcb8b;">BankTransferGateway </span><span style="color:#b48ead;">implements </span><span style="color:#a3be8c;">PaymentGateway </span><span style="color:#eff1f5;">{
+</span><span style="color:#eff1f5;">    @</span><span style="color:#bf616a;">Override
+</span><span style="color:#eff1f5;">    </span><span style="color:#b48ead;">public void </span><span style="color:#8fa1b3;">processPayment</span><span style="color:#eff1f5;">(</span><span style="color:#ebcb8b;">Transaction </span><span style="color:#bf616a;">transaction</span><span style="color:#eff1f5;">) {
+</span><span style="color:#eff1f5;">        </span><span style="color:#ebcb8b;">System</span><span style="color:#eff1f5;">.out.</span><span style="color:#bf616a;">println</span><span style="color:#eff1f5;">(</span><span>&quot;</span><span style="color:#a3be8c;">Payment processing with Bank: </span><span>&quot; +</span><span style="color:#eff1f5;"> transaction.</span><span style="color:#bf616a;">getCurrency</span><span style="color:#eff1f5;">() </span><span>+</span><span style="color:#eff1f5;"> transaction.</span><span style="color:#bf616a;">getAmount</span><span style="color:#eff1f5;">());
+</span><span style="color:#eff1f5;">        </span><span style="color:#65737e;">// Other Bank payment processing
+</span><span style="color:#eff1f5;">    }
+</span><span style="color:#eff1f5;">}
+</span></code></pre>
+<p><strong>TransactionProcessor</strong> class is responsible for processing interactions using different payment methods.It is considered a bridge between three classes (<strong>PayPalPaymentGateway</strong>, <strong>StripePaymentGateway</strong>, and <strong>BankTransferGateway</strong>) and the <strong>Main</strong> class.</p>
+<pre data-lang="Java" style="background-color:#2b303b;color:#c0c5ce;" class="language-Java "><code class="language-Java" data-lang="Java"><span style="color:#b48ead;">public class </span><span style="color:#ebcb8b;">TransactionProcessor </span><span style="color:#eff1f5;">{
+</span><span style="color:#eff1f5;">    </span><span style="color:#b48ead;">public void </span><span style="color:#8fa1b3;">processTransaction</span><span style="color:#eff1f5;">(</span><span style="color:#b48ead;">double </span><span style="color:#bf616a;">amount</span><span style="color:#eff1f5;">, </span><span style="color:#ebcb8b;">String </span><span style="color:#bf616a;">paymentMethod</span><span style="color:#eff1f5;">) {
+</span><span style="color:#eff1f5;">        </span><span style="color:#b48ead;">if </span><span style="color:#eff1f5;">(</span><span>&quot;</span><span style="color:#a3be8c;">PayPal</span><span>&quot;</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">equals</span><span style="color:#eff1f5;">(paymentMethod)) {
+</span><span style="color:#eff1f5;">            </span><span style="color:#ebcb8b;">PayPalPaymentGateway</span><span style="color:#eff1f5;"> payPalGateway </span><span>= </span><span style="color:#b48ead;">new </span><span style="color:#ebcb8b;">PayPalPaymentGateway</span><span style="color:#eff1f5;">();
+</span><span style="color:#eff1f5;">            payPalGateway.</span><span style="color:#bf616a;">processPayment</span><span style="color:#eff1f5;">(amount);
+</span><span style="color:#eff1f5;">        } </span><span style="color:#b48ead;">else if </span><span style="color:#eff1f5;">(</span><span>&quot;</span><span style="color:#a3be8c;">Stripe</span><span>&quot;</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">equals</span><span style="color:#eff1f5;">(paymentMethod)) {
+</span><span style="color:#eff1f5;">            </span><span style="color:#ebcb8b;">StripePaymentGateway</span><span style="color:#eff1f5;"> stripeGateway </span><span>= </span><span style="color:#b48ead;">new </span><span style="color:#ebcb8b;">StripePaymentGateway</span><span style="color:#eff1f5;">();
+</span><span style="color:#eff1f5;">            stripeGateway.</span><span style="color:#bf616a;">processPayment</span><span style="color:#eff1f5;">(amount);
+</span><span style="color:#eff1f5;">        } </span><span style="color:#b48ead;">else if </span><span style="color:#eff1f5;">(</span><span>&quot;</span><span style="color:#a3be8c;">BankTransfer</span><span>&quot;</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">equals</span><span style="color:#eff1f5;">(paymentMethod)) {
+</span><span style="color:#eff1f5;">            </span><span style="color:#ebcb8b;">BankTransferGateway</span><span style="color:#eff1f5;"> bankTransferGateway </span><span>= </span><span style="color:#b48ead;">new </span><span style="color:#ebcb8b;">BankTransferGateway</span><span style="color:#eff1f5;">();
+</span><span style="color:#eff1f5;">            bankTransferGateway.</span><span style="color:#bf616a;">processPayment</span><span style="color:#eff1f5;">(amount);
+</span><span style="color:#eff1f5;">        } </span><span style="color:#b48ead;">else </span><span style="color:#eff1f5;">{
+</span><span style="color:#eff1f5;">            </span><span style="color:#b48ead;">throw new </span><span style="color:#ebcb8b;">IllegalArgumentException</span><span style="color:#eff1f5;">(</span><span>&quot;</span><span style="color:#a3be8c;">Invalid payment method: </span><span>&quot; +</span><span style="color:#eff1f5;"> paymentMethod);
+</span><span style="color:#eff1f5;">        }
+</span><span style="color:#eff1f5;">    }
+</span><span style="color:#eff1f5;">}
+</span></code></pre>
+<p>The <strong>Main</strong> class represents the flow of how to use the class design. In the <strong>Main</strong> class, it is created an instance of the <strong>TransactionProcessor</strong> class and uses the method called process of this class.</p>
+<pre data-lang="Java" style="background-color:#2b303b;color:#c0c5ce;" class="language-Java "><code class="language-Java" data-lang="Java"><span style="color:#b48ead;">public class </span><span style="color:#ebcb8b;">Main </span><span style="color:#eff1f5;">{
+</span><span style="color:#eff1f5;">    </span><span style="color:#b48ead;">public static void </span><span style="color:#8fa1b3;">main</span><span style="color:#eff1f5;">(</span><span style="color:#ebcb8b;">String</span><span style="color:#b48ead;">[] </span><span style="color:#bf616a;">args</span><span style="color:#eff1f5;">) {
+</span><span style="color:#eff1f5;">        </span><span style="color:#ebcb8b;">TransactionProcessor</span><span style="color:#eff1f5;"> processor </span><span>= </span><span style="color:#b48ead;">new </span><span style="color:#ebcb8b;">TransactionProcessor</span><span style="color:#eff1f5;">();
+</span><span style="color:#eff1f5;">        </span><span style="color:#ebcb8b;">Transaction</span><span style="color:#eff1f5;"> transaction </span><span>= </span><span style="color:#b48ead;">new </span><span style="color:#ebcb8b;">Transaction</span><span style="color:#eff1f5;">(</span><span>&quot;</span><span style="color:#a3be8c;">2398129</span><span>&quot;</span><span style="color:#eff1f5;">, </span><span style="color:#ebcb8b;">BigDecimal</span><span style="color:#eff1f5;">.</span><span style="color:#d08770;">TEN</span><span style="color:#eff1f5;">, </span><span>&quot;</span><span style="color:#a3be8c;">$</span><span>&quot;</span><span style="color:#eff1f5;">, </span><span>&quot;</span><span style="color:#a3be8c;">12345</span><span>&quot;</span><span style="color:#eff1f5;">, </span><span>&quot;</span><span style="color:#a3be8c;">12346</span><span>&quot;</span><span style="color:#eff1f5;">);
+</span><span style="color:#eff1f5;">        processor.</span><span style="color:#bf616a;">process</span><span style="color:#eff1f5;">(transaction, </span><span>&quot;</span><span style="color:#a3be8c;">PayPal</span><span>&quot;</span><span style="color:#eff1f5;">);
+</span><span style="color:#eff1f5;">    }
+</span><span style="color:#eff1f5;">}
+</span></code></pre>
+<p>As can be seen in the above example, when it is wanted to integrate different payment processors or add financial reporting services, it is noticed easily that the design becomes tightly coupled and difficult to extend and change. Because of this reason, it is wise to integrate the IoC and so decrease dependence between components.</p>
+<p>In this step, let's refactor the previous example by using a factory design pattern in order that achieve the goal of loosely coupled.</p>
+<p>The <strong>PaymentGateway</strong> interface and its concrete implementations <strong>PaypalPaymentGateway</strong>, <strong>StripePaymentGateway</strong>, and <strong>BankTransferGateway</strong> are the same as the previous examples without IoC.</p>
+<pre data-lang="Java" style="background-color:#2b303b;color:#c0c5ce;" class="language-Java "><code class="language-Java" data-lang="Java"><span style="color:#b48ead;">public class </span><span style="color:#ebcb8b;">Transaction </span><span style="color:#eff1f5;">{
+</span><span style="color:#eff1f5;">    </span><span style="color:#b48ead;">private </span><span style="color:#ebcb8b;">String </span><span style="color:#eff1f5;">transactionId;
+</span><span style="color:#eff1f5;">    </span><span style="color:#b48ead;">private </span><span style="color:#ebcb8b;">BigDecimal </span><span style="color:#eff1f5;">amount;
+</span><span style="color:#eff1f5;">    </span><span style="color:#b48ead;">private </span><span style="color:#ebcb8b;">String </span><span style="color:#eff1f5;">currency;
+</span><span style="color:#eff1f5;">    </span><span style="color:#b48ead;">private </span><span style="color:#ebcb8b;">String </span><span style="color:#eff1f5;">recipientAccount;
+</span><span style="color:#eff1f5;">    </span><span style="color:#b48ead;">private </span><span style="color:#ebcb8b;">String </span><span style="color:#eff1f5;">senderAccount;
+</span><span style="color:#eff1f5;">
+</span><span style="color:#eff1f5;">    </span><span style="color:#b48ead;">public </span><span style="color:#8fa1b3;">Transaction</span><span style="color:#eff1f5;">(</span><span style="color:#ebcb8b;">String </span><span style="color:#bf616a;">transactionId</span><span style="color:#eff1f5;">, </span><span style="color:#ebcb8b;">BigDecimal </span><span style="color:#bf616a;">amount</span><span style="color:#eff1f5;">, </span><span style="color:#ebcb8b;">String </span><span style="color:#bf616a;">currency</span><span style="color:#eff1f5;">, </span><span style="color:#ebcb8b;">String </span><span style="color:#bf616a;">recipientAccount</span><span style="color:#eff1f5;">, </span><span style="color:#ebcb8b;">String </span><span style="color:#bf616a;">senderAccount</span><span style="color:#eff1f5;">) {
+</span><span style="color:#eff1f5;">        </span><span style="color:#bf616a;">this</span><span style="color:#eff1f5;">.transactionId </span><span>=</span><span style="color:#eff1f5;"> transactionId;
+</span><span style="color:#eff1f5;">        </span><span style="color:#bf616a;">this</span><span style="color:#eff1f5;">.amount </span><span>=</span><span style="color:#eff1f5;"> amount;
+</span><span style="color:#eff1f5;">        </span><span style="color:#bf616a;">this</span><span style="color:#eff1f5;">.currency </span><span>=</span><span style="color:#eff1f5;"> currency;
+</span><span style="color:#eff1f5;">        </span><span style="color:#bf616a;">this</span><span style="color:#eff1f5;">.recipientAccount </span><span>=</span><span style="color:#eff1f5;"> recipientAccount;
+</span><span style="color:#eff1f5;">        </span><span style="color:#bf616a;">this</span><span style="color:#eff1f5;">.senderAccount </span><span>=</span><span style="color:#eff1f5;"> senderAccount;
+</span><span style="color:#eff1f5;">    }
+</span><span style="color:#eff1f5;">
+</span><span style="color:#eff1f5;">    </span><span style="color:#65737e;">// getter, setter
+</span><span style="color:#eff1f5;">}
+</span></code></pre>
+<pre data-lang="Java" style="background-color:#2b303b;color:#c0c5ce;" class="language-Java "><code class="language-Java" data-lang="Java"><span style="color:#b48ead;">public interface </span><span style="color:#ebcb8b;">PaymentGateway </span><span style="color:#eff1f5;">{
+</span><span style="color:#eff1f5;">    </span><span style="color:#b48ead;">void </span><span style="color:#8fa1b3;">processPayment</span><span style="color:#eff1f5;">(</span><span style="color:#ebcb8b;">BigDecimal </span><span style="color:#bf616a;">amount</span><span style="color:#eff1f5;">);
+</span><span style="color:#eff1f5;">}
+</span></code></pre>
+<pre data-lang="Java" style="background-color:#2b303b;color:#c0c5ce;" class="language-Java "><code class="language-Java" data-lang="Java"><span style="color:#b48ead;">public class </span><span style="color:#ebcb8b;">PayPalPaymentGateway </span><span style="color:#b48ead;">implements </span><span style="color:#a3be8c;">PaymentGateway </span><span style="color:#eff1f5;">{
+</span><span style="color:#eff1f5;">    @</span><span style="color:#bf616a;">Override
+</span><span style="color:#eff1f5;">    </span><span style="color:#b48ead;">public void </span><span style="color:#8fa1b3;">processPayment</span><span style="color:#eff1f5;">(</span><span style="color:#ebcb8b;">Transaction </span><span style="color:#bf616a;">transaction</span><span style="color:#eff1f5;">) {
+</span><span style="color:#eff1f5;">        </span><span style="color:#ebcb8b;">System</span><span style="color:#eff1f5;">.out.</span><span style="color:#bf616a;">println</span><span style="color:#eff1f5;">(</span><span>&quot;</span><span style="color:#a3be8c;">Payment processing with PayPal: </span><span>&quot; +</span><span style="color:#eff1f5;"> transaction.</span><span style="color:#bf616a;">getCurrency</span><span style="color:#eff1f5;">() </span><span>+</span><span style="color:#eff1f5;"> transaction.</span><span style="color:#bf616a;">getAmount</span><span style="color:#eff1f5;">());
+</span><span style="color:#eff1f5;">        </span><span style="color:#65737e;">// Other PayPal payment processing
+</span><span style="color:#eff1f5;">    }
+</span><span style="color:#eff1f5;">}
+</span></code></pre>
+<pre data-lang="Java" style="background-color:#2b303b;color:#c0c5ce;" class="language-Java "><code class="language-Java" data-lang="Java"><span style="color:#b48ead;">public class </span><span style="color:#ebcb8b;">StripePaymentGateway </span><span style="color:#b48ead;">implements </span><span style="color:#a3be8c;">PaymentGateway  </span><span style="color:#eff1f5;">{
+</span><span style="color:#eff1f5;">    @</span><span style="color:#bf616a;">Override
+</span><span style="color:#eff1f5;">    </span><span style="color:#b48ead;">public void </span><span style="color:#8fa1b3;">processPayment</span><span style="color:#eff1f5;">(</span><span style="color:#ebcb8b;">Transaction </span><span style="color:#bf616a;">transaction</span><span style="color:#eff1f5;">) {
+</span><span style="color:#eff1f5;">        </span><span style="color:#ebcb8b;">System</span><span style="color:#eff1f5;">.out.</span><span style="color:#bf616a;">println</span><span style="color:#eff1f5;">(</span><span>&quot;</span><span style="color:#a3be8c;">Payment processing with Stripe: </span><span>&quot; +</span><span style="color:#eff1f5;"> transaction.</span><span style="color:#bf616a;">getCurrency</span><span style="color:#eff1f5;">() </span><span>+</span><span style="color:#eff1f5;"> transaction.</span><span style="color:#bf616a;">getAmount</span><span style="color:#eff1f5;">());
+</span><span style="color:#eff1f5;">        </span><span style="color:#65737e;">// Other Stripe payment processing
+</span><span style="color:#eff1f5;">    }
+</span><span style="color:#eff1f5;">}
+</span></code></pre>
+<pre data-lang="Java" style="background-color:#2b303b;color:#c0c5ce;" class="language-Java "><code class="language-Java" data-lang="Java"><span style="color:#b48ead;">public class </span><span style="color:#ebcb8b;">BankTransferGateway </span><span style="color:#b48ead;">implements </span><span style="color:#a3be8c;">PaymentGateway </span><span style="color:#eff1f5;">{
+</span><span style="color:#eff1f5;">    @</span><span style="color:#bf616a;">Override
+</span><span style="color:#eff1f5;">    </span><span style="color:#b48ead;">public void </span><span style="color:#8fa1b3;">processPayment</span><span style="color:#eff1f5;">(</span><span style="color:#ebcb8b;">Transaction </span><span style="color:#bf616a;">transaction</span><span style="color:#eff1f5;">) {
+</span><span style="color:#eff1f5;">        </span><span style="color:#ebcb8b;">System</span><span style="color:#eff1f5;">.out.</span><span style="color:#bf616a;">println</span><span style="color:#eff1f5;">(</span><span>&quot;</span><span style="color:#a3be8c;">Payment processing with Bank: </span><span>&quot; +</span><span style="color:#eff1f5;"> transaction.</span><span style="color:#bf616a;">getCurrency</span><span style="color:#eff1f5;">() </span><span>+</span><span style="color:#eff1f5;"> transaction.</span><span style="color:#bf616a;">getAmount</span><span style="color:#eff1f5;">());
+</span><span style="color:#eff1f5;">        </span><span style="color:#65737e;">// Other Bank payment processing
+</span><span style="color:#eff1f5;">    }
+</span><span style="color:#eff1f5;">}
+</span></code></pre>
+<p>The <strong>PaymentGatewayFactory</strong> class has a static factory method that returns a specific <strong>PaymentGateway</strong>. It is used to decide which payment services to use. It is a kind of implementation of a factory design pattern.</p>
+<pre data-lang="Java" style="background-color:#2b303b;color:#c0c5ce;" class="language-Java "><code class="language-Java" data-lang="Java"><span style="color:#b48ead;">public class </span><span style="color:#ebcb8b;">PaymentGatewayFactory </span><span style="color:#eff1f5;">{
+</span><span style="color:#eff1f5;">    </span><span style="color:#b48ead;">public static </span><span style="color:#ebcb8b;">PaymentGateway </span><span style="color:#8fa1b3;">createPaymentGateway</span><span style="color:#eff1f5;">(</span><span style="color:#ebcb8b;">String </span><span style="color:#bf616a;">paymentMethod</span><span style="color:#eff1f5;">) {
+</span><span style="color:#eff1f5;">        </span><span style="color:#b48ead;">switch </span><span style="color:#eff1f5;">(paymentMethod) {
+</span><span style="color:#eff1f5;">            </span><span style="color:#b48ead;">case </span><span>&quot;</span><span style="color:#a3be8c;">PayPal</span><span>&quot;:
+</span><span style="color:#eff1f5;">                </span><span style="color:#b48ead;">return new </span><span style="color:#ebcb8b;">PayPalPaymentGateway</span><span style="color:#eff1f5;">();
+</span><span style="color:#eff1f5;">            </span><span style="color:#b48ead;">case </span><span>&quot;</span><span style="color:#a3be8c;">Stripe</span><span>&quot;:
+</span><span style="color:#eff1f5;">                </span><span style="color:#b48ead;">return new </span><span style="color:#ebcb8b;">StripePaymentGateway</span><span style="color:#eff1f5;">();
+</span><span style="color:#eff1f5;">            </span><span style="color:#b48ead;">case </span><span>&quot;</span><span style="color:#a3be8c;">BankTransfer</span><span>&quot;:
+</span><span style="color:#eff1f5;">                </span><span style="color:#b48ead;">return new </span><span style="color:#ebcb8b;">BankTransferGateway</span><span style="color:#eff1f5;">();
+</span><span style="color:#eff1f5;">            </span><span style="color:#b48ead;">default</span><span>:
+</span><span style="color:#eff1f5;">                </span><span style="color:#b48ead;">throw new </span><span style="color:#ebcb8b;">IllegalArgumentException</span><span style="color:#eff1f5;">(</span><span>&quot;</span><span style="color:#a3be8c;">Invalid payment method: </span><span>&quot; +</span><span style="color:#eff1f5;"> paymentMethod);
+</span><span style="color:#eff1f5;">        }
+</span><span style="color:#eff1f5;">    }
+</span><span style="color:#eff1f5;">}
+</span></code></pre>
+<p>The <strong>TransactionProcessor</strong> class uses IoC by accepting a <strong>PaymentGatewayFactory</strong> instance in its constructor and delegates the creation of specific payment gateways to the factory.</p>
+<pre data-lang="Java" style="background-color:#2b303b;color:#c0c5ce;" class="language-Java "><code class="language-Java" data-lang="Java"><span style="color:#b48ead;">public class </span><span style="color:#ebcb8b;">TransactionProcessor </span><span style="color:#eff1f5;">{
+</span><span style="color:#eff1f5;">    </span><span style="color:#b48ead;">public void </span><span style="color:#8fa1b3;">processTransaction</span><span style="color:#eff1f5;">(</span><span style="color:#ebcb8b;">Transaction </span><span style="color:#bf616a;">transaction</span><span style="color:#eff1f5;">, </span><span style="color:#ebcb8b;">String </span><span style="color:#bf616a;">paymentMethod</span><span style="color:#eff1f5;">) {
+</span><span style="color:#eff1f5;">        </span><span style="color:#ebcb8b;">PaymentGateway</span><span style="color:#eff1f5;"> paymentGateway </span><span>= </span><span style="color:#ebcb8b;">PaymentGatewayFactory</span><span style="color:#eff1f5;">.</span><span style="color:#bf616a;">createPaymentGateway</span><span style="color:#eff1f5;">(paymentMethod);
+</span><span style="color:#eff1f5;">        paymentGateway.</span><span style="color:#bf616a;">processPayment</span><span style="color:#eff1f5;">(transaction);
+</span><span style="color:#eff1f5;">    }
+</span><span style="color:#eff1f5;">}
+</span></code></pre>
+<p>In this <strong>Main</strong> class, it is created an instance of <strong>TransactionProcessor</strong> and used to process a payment transaction and uses a method named processTransaction to process a payment transaction.</p>
+<pre data-lang="Java" style="background-color:#2b303b;color:#c0c5ce;" class="language-Java "><code class="language-Java" data-lang="Java"><span>
+</span><span style="color:#b48ead;">public class </span><span style="color:#ebcb8b;">Main </span><span style="color:#eff1f5;">{
+</span><span style="color:#eff1f5;">    </span><span style="color:#b48ead;">public static void </span><span style="color:#8fa1b3;">main</span><span style="color:#eff1f5;">(</span><span style="color:#ebcb8b;">String</span><span style="color:#b48ead;">[] </span><span style="color:#bf616a;">args</span><span style="color:#eff1f5;">) {
+</span><span style="color:#eff1f5;">        </span><span style="color:#ebcb8b;">TransactionProcessor</span><span style="color:#eff1f5;"> transactionProcessor </span><span>= </span><span style="color:#b48ead;">new </span><span style="color:#ebcb8b;">TransactionProcessor</span><span style="color:#eff1f5;">();
+</span><span style="color:#eff1f5;">        </span><span style="color:#ebcb8b;">Transaction</span><span style="color:#eff1f5;"> transaction </span><span>= </span><span style="color:#b48ead;">new </span><span style="color:#ebcb8b;">Transaction</span><span style="color:#eff1f5;">(</span><span>&quot;</span><span style="color:#a3be8c;">2398129</span><span>&quot;</span><span style="color:#eff1f5;">, </span><span style="color:#ebcb8b;">BigDecimal</span><span style="color:#eff1f5;">.</span><span style="color:#d08770;">TEN</span><span style="color:#eff1f5;">, </span><span>&quot;</span><span style="color:#a3be8c;">$</span><span>&quot;</span><span style="color:#eff1f5;">, </span><span>&quot;</span><span style="color:#a3be8c;">12345</span><span>&quot;</span><span style="color:#eff1f5;">, </span><span>&quot;</span><span style="color:#a3be8c;">12346</span><span>&quot;</span><span style="color:#eff1f5;">);
+</span><span style="color:#eff1f5;">        transactionProcessor.</span><span style="color:#bf616a;">processTransaction</span><span style="color:#eff1f5;">(transaction, </span><span>&quot;</span><span style="color:#a3be8c;">PayPal</span><span>&quot;</span><span style="color:#eff1f5;">);
+</span><span style="color:#eff1f5;">    }
+</span><span style="color:#eff1f5;">}
+</span></code></pre>
+<p>The previous examples developed step by step are examples of the implementation of IoC. However, this step is only just the beginning to have a fully loosely coupled design.  In order to achieve it completely, it is not necessary to use a factory design pattern.  it is essential to incorporate DIP (Dependency Inversion Principle) and DI (Dependency Injection) alongside IoC.</p>
+ <!---->
+
+
+<div
+  class="my-4 flex flex-col rounded-lg bg-[var(--admonition-bg)]"
+  style="--admonition-bg: rgba(83, 211, 230, 0.1)"
+>
+  <div class="flex items-center rounded-t-lg bg-[var(--admonition-bg)] p-1">
+    <div
+      class="mx-2 h-4 w-4 text-[0] [background:var(--url)_center_center_no-repeat] dark:invert"
+      style="--url: url(./icons/info.svg)"
+    >
+      info
+    </div>
+    <span><strong>Note</strong></span>
+  </div>
+  <div class="pl-4"><p>It is important to note that IoC is only a principle, not a specific pattern. Not giving implementation details, it provides high-level guidelines for the design of maintainable and flexible software systems. For this reason, there are options to implement IoC using different methods or approaches such as factory design patterns that used previous examples.</p>
+</div>
+</div>
+<p>The next article will be about Dependency Injection (DI) helping to achieve loosely coupled.</p>
+<h2 id="references">REFERENCES</h2>
+<p>[1] <a href="https://www.tutorialsteacher.com/ioc/inversion-of-control" target="_blank">https://www.tutorialsteacher.com/ioc/inversion-of-control</a></p>
+<p>[2] <a href="https://martinfowler.com/bliki/InversionOfControl.html" target="_blank">https://martinfowler.com/bliki/InversionOfControl.html</a></p>
+<p>[3] <a href="https://www.cesarsotovalero.net/blog/inversion-of-control-and-dependency-injection-in-java.html" target="_blank">https://www.cesarsotovalero.net/blog/inversion-of-control-and-dependency-injection-in-java.html</a></p>
+<p>[4] <a href="https://www.yegor256.com/2017/05/10/inversion-of-control.html" target="_blank">https://www.yegor256.com/2017/05/10/inversion-of-control.html</a></p>
+</section>
+
+  <hr />
+
+  <!-- Post Taxonomies -->
+  
+<footer class="mt-12 flex flex-col">
+  <!---->
+  <!---->
+  <!---->
+  <!---->
+  
+  <div class="mb-2 flex flex-wrap">
+    <span class="block-bg mb-1.5 mr-1.5 rounded-lg px-5 py-1.5">Tags </span>
+    
+    <a
+      class="block-bg block-hover mb-1.5 mr-1.5 rounded-lg px-5 py-1.5 no-underline"
+      href="https://ahmetcancicek.dev/tags/ioc/"
+      >IoC</a
+    >
+    
+    <a
+      class="block-bg block-hover mb-1.5 mr-1.5 rounded-lg px-5 py-1.5 no-underline"
+      href="https://ahmetcancicek.dev/tags/inversion/"
+      >inversion</a
+    >
+    
+    <a
+      class="block-bg block-hover mb-1.5 mr-1.5 rounded-lg px-5 py-1.5 no-underline"
+      href="https://ahmetcancicek.dev/tags/principle/"
+      >principle</a
+    >
+    
+    <a
+      class="block-bg block-hover mb-1.5 mr-1.5 rounded-lg px-5 py-1.5 no-underline"
+      href="https://ahmetcancicek.dev/tags/oop/"
+      >oop</a
+    >
+    
+    <a
+      class="block-bg block-hover mb-1.5 mr-1.5 rounded-lg px-5 py-1.5 no-underline"
+      href="https://ahmetcancicek.dev/tags/object/"
+      >object</a
+    >
+    
+    <a
+      class="block-bg block-hover mb-1.5 mr-1.5 rounded-lg px-5 py-1.5 no-underline"
+      href="https://ahmetcancicek.dev/tags/oriented/"
+      >oriented</a
+    >
+    
+    <a
+      class="block-bg block-hover mb-1.5 mr-1.5 rounded-lg px-5 py-1.5 no-underline"
+      href="https://ahmetcancicek.dev/tags/programming/"
+      >programming</a
+    >
+    
+  </div>
+  
+</footer>
+
+<!---->
+
+  <!-- Post Nav -->
+  
+<nav class="block-bg mt-12 flex rounded-lg text-lg">
+  
+  <a
+    class="block-hover-mask flex w-1/2 items-center rounded-l-md p-6 pr-3 font-semibold no-underline"
+    href="https:&#x2F;&#x2F;ahmetcancicek.dev&#x2F;design-patterns-vs-design-principles&#x2F;"
+    ><span class="mr-1.5">←</span><span>Design Patterns vs Design Principles</span></a
+  >
+  <!---->
+  
+  <a
+    class="block-hover-mask ml-auto flex w-1/2 items-center justify-end rounded-r-md p-6 pl-3 font-semibold no-underline"
+    href="https:&#x2F;&#x2F;ahmetcancicek.dev&#x2F;dependency-inversion-principle&#x2F;"
+    ><span>Dependency Inversion Principle (DIP)</span><span class="ml-1.5">→</span></a
+  >
+  
+</nav>
+
+<!---->
+
+  <!-- Comment -->
+  
+</article>
+
+    </main>
+
+    <footer class="mx-auto flex max-w-3xl flex-wrap items-center px-8 py-4 text-sm opacity-60">
+  <div class="mr-auto basis-full lg:basis-1/2">
+    
+    &copy; 2024
+    <a class="link" href="https://ahmetcancicek.dev"
+      >ahmetcancicek</a
+    >
+     |<!---->
+    <!---->
+    <a class="link" href="https:&#x2F;&#x2F;creativecommons.org&#x2F;licenses&#x2F;by-sa&#x2F;4.0&#x2F;deed" rel="noopener" target="_blank">
+      CC BY-SA 4.0
+    </a>
+    <!---->
+    
+  </div>
+  <div class="flex basis-full lg:basis-1/2 lg:justify-end">
+    <a class="link mr-6 lg:ml-6" href="https://www.getzola.org/" rel="noopener" target="_blank"
+      >Powered by Zola</a
+    >
+    <a class="link" href="https://github.com/st1020/kita" rel="noopener" target="_blank">✎ Kita</a>
+  </div>
+</footer>
+
+  </body>
+</html>

@@ -1,0 +1,384 @@
+<!doctype html>
+<html class="not-ready lg:text-base" lang="en">
+  <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+  <!-- Title -->
+  <title>
+    Design Patterns vs Design Principles - Ahmet Can Çiçek - Software Engineer, Blogger, Researcher
+  </title>
+
+  <!-- Meta -->
+  <meta name="theme-color" />
+
+  
+  <!-- Author -->
+  
+  <!---->
+  
+  <meta name="description" content="Design patterns and design principles are two important concepts to help us write better code." />
+  <meta name="author" content="Design Patterns vs Design Principles" />
+  <!-- The Open Graph protocol -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Design Patterns vs Design Principles" />
+  <meta property="og:site_name" content="Ahmet Can Çiçek - Software Engineer, Blogger, Researcher" />
+  <meta property="og:description" content="Design patterns and design principles are two important concepts to help us write better code." />
+  <meta property="og:url" content="https:&#x2F;&#x2F;ahmetcancicek.dev&#x2F;design-patterns-vs-design-principles&#x2F;" />
+  
+  <!---->
+  
+  <meta property="og:image" content="https://ahmetcancicek.dev/icons/github.svg" />
+  
+  <!---->
+  
+
+  <!-- CSS & JS -->
+  <link rel="preload stylesheet" as="style" href="https://ahmetcancicek.dev/main.css" />
+  <style>
+    :root {
+      --bg: #f4f4f5;
+      --bg-dark: #18181b;
+      --header: #e4e4e7;
+      --header-dark: #27272a;
+    }
+  </style>
+
+  
+
+  <!-- Dark Icon -->
+  <link rel="preload" as="image" href="https://ahmetcancicek.dev/icons/theme.svg" />
+
+  <!-- Math -->
+  
+  <!---->
+
+  <!-- Mermaid -->
+  
+  <!---->
+
+  <!-- Favicon -->
+  <link rel="icon" href="https://ahmetcancicek.dev/favicon.ico" />
+  <link rel="apple-touch-icon" href="https://ahmetcancicek.dev/apple-touch-icon.png" />
+
+  <!-- Feeds -->
+  
+  <!---->
+  
+  <link
+    rel="alternate"
+    type="application/atom+xml"
+    title="Atom"
+    href="https://ahmetcancicek.dev/atom.xml"
+  />
+  
+  
+  <!---->
+  
+
+  <!-- Canonical -->
+  <link rel="canonical" href="https:&#x2F;&#x2F;ahmetcancicek.dev&#x2F;design-patterns-vs-design-principles&#x2F;" />
+
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-01S4R6K1J4"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+
+    gtag('config', 'G-01S4R6K1J4');
+  </script>
+
+  <!-- Clarity -->
+  <script type="text/javascript">
+    (function (c, l, a, r, i, t, y) {
+      c[a] = c[a] || function () { (c[a].q = c[a].q || []).push(arguments) };
+      t = l.createElement(r); t.async = 1; t.src = "https://www.clarity.ms/tag/" + i;
+      y = l.getElementsByTagName(r)[0]; y.parentNode.insertBefore(t, y);
+    })(window, document, "clarity", "script", "mjh6v01689");
+  </script>
+
+  <!-- Counter -->
+  <script src="https://cdn.counter.dev/script.js" data-id="4cb2d6b7-f6c5-4213-8f5c-65ddacafd373" data-utcoffset="3"></script>
+</head>
+
+  <body class="text-black duration-200 ease-out dark:text-white">
+    <header
+  class="header fixed top-0 z-40 mx-auto min-h-[3.5rem] w-full"
+>
+  <div class="mx-auto w-full max-w-4xl p-3 lg:flex lg:justify-between">
+    <div class="flex justify-between">
+      <div class="flex items-center">
+        <a class="text-2xl font-semibold" href="https://ahmetcancicek.dev">ahmetcancicek</a>
+        <div
+          class="btn-dark ml-4 h-6 w-6 shrink-0 cursor-pointer text-[0] [background:url(./icons/theme.svg)_left_center/cover_no-repeat] dark:invert dark:[background-position:right]"
+          role="button"
+          aria-label="Dark"
+        ></div>
+      </div>
+      
+      <div
+        class="btn-menu relative z-50 flex h-8 w-8 shrink-0 cursor-pointer flex-col items-center justify-center gap-2.5 lg:hidden"
+        role="button"
+        aria-label="Menu"
+      ></div>
+      
+    </div>
+    <script>
+      // base
+      const htmlClass = document.documentElement.classList;
+      setTimeout(() => {
+        htmlClass.remove("not-ready");
+      }, 10);
+
+      // mobile menu
+      const btnMenu = document.querySelector(".btn-menu");
+      btnMenu?.addEventListener("click", () => {
+        htmlClass.toggle("open");
+      });
+
+      // dark theme
+      const setDark = (isDark) => {
+        if (isDark) {
+          document.body.dispatchEvent(new CustomEvent("set-theme", { detail: "dark" }));
+          htmlClass.add("dark");
+        } else {
+          document.body.dispatchEvent(new CustomEvent("set-theme", { detail: "light" }));
+          htmlClass.remove("dark");
+        }
+        localStorage.setItem("dark", isDark);
+      };
+
+      // init
+      const darkScheme = window.matchMedia("(prefers-color-scheme: dark)");
+      if (htmlClass.contains("dark")) {
+        setDark(true);
+      } else {
+        const darkVal = localStorage.getItem("dark");
+        setDark(darkVal ? darkVal === "true" : darkScheme.matches);
+      }
+
+      // listen system
+      darkScheme.addEventListener("change", (event) => {
+        setDark(event.matches);
+      });
+
+      // manual switch
+      const btnDark = document.querySelector(".btn-dark");
+      btnDark.addEventListener("click", () => {
+        setDark(localStorage.getItem("dark") !== "true");
+      });
+    </script>
+    
+    <nav class="flex w-full items-center lg:w-auto">
+      <ul
+        class="nav-wrapper flex w-full flex-col py-2 lg:w-auto lg:flex-row lg:self-center lg:py-0"
+      >
+        
+        <li>
+          <a
+            class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0"
+            href="https://ahmetcancicek.dev/archive"
+            >Archive</a
+          >
+        </li>
+        
+        <li>
+          <a
+            class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0"
+            href="https://ahmetcancicek.dev/tags"
+            >Tags</a
+          >
+        </li>
+        
+      </ul>
+    </nav>
+    
+  </div>
+</header>
+
+
+    <main
+      class="prose prose-neutral relative mx-auto min-h-[calc(100%-9rem)] max-w-3xl break-words px-4 pb-16 pt-32 dark:prose-invert"
+    >
+      
+<article>
+  <header class="mb-16">
+    <h1 class="!my-0 pb-2.5">Design Patterns vs Design Principles</h1>
+    <div class="text-sm antialiased opacity-60">
+  
+  <time>2024-03-06</time>
+  <span class="mx-1">&middot;</span>
+  <span>2min</span>
+  <!---->
+  
+  <!---->
+  
+  <span class="mx-1">&middot;</span>
+  <span>ahmetcancicek</span>
+  
+</div>
+
+  </header>
+
+  
+
+  <!-- TOC -->
+  <!---->
+<div class="block-bg mb-12 flex rounded-lg p-2 text-lg">
+  <details>
+    <summary class="cursor-pointer py-1 pl-4">
+      <span>Table of Contents</span>
+    </summary>
+    <div class="px-2">
+      <ul>
+        
+        <li>
+          <a class="no-underline hover:underline" href="https://ahmetcancicek.dev/design-patterns-vs-design-principles/#introduction"
+            >INTRODUCTION</a
+          >
+          
+        </li>
+        
+        <li>
+          <a class="no-underline hover:underline" href="https://ahmetcancicek.dev/design-patterns-vs-design-principles/#design-patterns"
+            >DESIGN PATTERNS</a
+          >
+          
+        </li>
+        
+        <li>
+          <a class="no-underline hover:underline" href="https://ahmetcancicek.dev/design-patterns-vs-design-principles/#design-princples"
+            >DESIGN PRINCPLES</a
+          >
+          
+        </li>
+        
+        <li>
+          <a class="no-underline hover:underline" href="https://ahmetcancicek.dev/design-patterns-vs-design-principles/#conclusion"
+            >CONCLUSION</a
+          >
+          
+        </li>
+        
+        <li>
+          <a class="no-underline hover:underline" href="https://ahmetcancicek.dev/design-patterns-vs-design-principles/#references"
+            >REFERENCES</a
+          >
+          
+        </li>
+        
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!---->
+
+  <!-- Content -->
+  <section><h2 id="introduction">INTRODUCTION</h2>
+<p>Design patterns and design principles are important terms in the area of software development. Generally, although these terms are often used interchangeably, they are different things. Understanding two concepts helps to receive a better software design. In this context, the article highlights the difference between Design Patterns and Design Principles.</p>
+<h2 id="design-patterns">DESIGN PATTERNS</h2>
+<p>Design patterns provide implementation details and give general solutions to solve specific design problems in code. Namely, it should be considered as low-level solutions related to implementation. However, design patterns are not specific to a programming language.  If the language supports the necessary features that come with OOP, the same design pattern can be applied to that language.</p>
+<p>Using design patterns helps to enhance the maintainability and scalability of code. For this reason, design patterns are preferred instead of temporary solutions when any problem is encountered. Singleton, Adapter, Factory, and MVC patterns are examples of these design patterns.</p>
+<h2 id="design-princples">DESIGN PRINCPLES</h2>
+<p>Design principles are considered as overarching guidelines at the top of the implementation process. They provide high-level guidelines for the design of maintainable and flexible software systems. SOLID (Single Responsibility, Open-Closed, Liskov Substitution, Interface Segregation, and Dependency Injection), DRY (Don't Repeat Yourself), KISS (Keep It Simple, Stupid), and YAGNI (You Aint' Gonna Need It) are some of the most well-known design principles.</p>
+<h2 id="conclusion">CONCLUSION</h2>
+<p>Both concepts are essential in software design. By using these concepts, code can be made more maintainable, flexible, and reusable. Design Patterns provide low-level solutions to specific problems, while Design Principles offer high-level guidelines. Understanding these concepts helps developers to choose appropriate approaches for each situation, which encountered problems or when deciding stage of design and create more efficient solutions.</p>
+<h2 id="references">REFERENCES</h2>
+<p>[1] <a href="https://www.tutorialsteacher.com/articles/difference-between-design-principle-and-design-pattern" target="_blank">https://www.tutorialsteacher.com/articles/difference-between-design-principle-and-design-pattern</a></p>
+<p>[2] <a href="https://stackoverflow.com/questions/31317141/whats-the-difference-between-design-patterns-and-design-principles" target="_blank">https://stackoverflow.com/questions/31317141/whats-the-difference-between-design-patterns-and-design-principles</a></p>
+<p>[3] <a href="https://subscription.packtpub.com/book/programming/9781786463593/1/ch01lvl1sec17/design-patterns-and-principles" target="_blank">https://subscription.packtpub.com/book/programming/9781786463593/1/ch01lvl1sec17/design-patterns-and-principles</a></p>
+</section>
+
+  <hr />
+
+  <!-- Post Taxonomies -->
+  
+<footer class="mt-12 flex flex-col">
+  <!---->
+  <!---->
+  <!---->
+  <!---->
+  
+  <div class="mb-2 flex flex-wrap">
+    <span class="block-bg mb-1.5 mr-1.5 rounded-lg px-5 py-1.5">Tags </span>
+    
+    <a
+      class="block-bg block-hover mb-1.5 mr-1.5 rounded-lg px-5 py-1.5 no-underline"
+      href="https://ahmetcancicek.dev/tags/pattern/"
+      >pattern</a
+    >
+    
+    <a
+      class="block-bg block-hover mb-1.5 mr-1.5 rounded-lg px-5 py-1.5 no-underline"
+      href="https://ahmetcancicek.dev/tags/principle/"
+      >principle</a
+    >
+    
+    <a
+      class="block-bg block-hover mb-1.5 mr-1.5 rounded-lg px-5 py-1.5 no-underline"
+      href="https://ahmetcancicek.dev/tags/design/"
+      >design</a
+    >
+    
+    <a
+      class="block-bg block-hover mb-1.5 mr-1.5 rounded-lg px-5 py-1.5 no-underline"
+      href="https://ahmetcancicek.dev/tags/architecture/"
+      >architecture</a
+    >
+    
+  </div>
+  
+</footer>
+
+<!---->
+
+  <!-- Post Nav -->
+  
+<nav class="block-bg mt-12 flex rounded-lg text-lg">
+  <!---->
+  
+  <a
+    class="block-hover-mask ml-auto flex w-1/2 items-center justify-end rounded-r-md p-6 pl-3 font-semibold no-underline"
+    href="https:&#x2F;&#x2F;ahmetcancicek.dev&#x2F;inversion-of-control&#x2F;"
+    ><span>Inversion of Control (IoC)</span><span class="ml-1.5">→</span></a
+  >
+  
+</nav>
+
+<!---->
+
+  <!-- Comment -->
+  
+</article>
+
+    </main>
+
+    <footer class="mx-auto flex max-w-3xl flex-wrap items-center px-8 py-4 text-sm opacity-60">
+  <div class="mr-auto basis-full lg:basis-1/2">
+    
+    &copy; 2024
+    <a class="link" href="https://ahmetcancicek.dev"
+      >ahmetcancicek</a
+    >
+     |<!---->
+    <!---->
+    <a class="link" href="https:&#x2F;&#x2F;creativecommons.org&#x2F;licenses&#x2F;by-sa&#x2F;4.0&#x2F;deed" rel="noopener" target="_blank">
+      CC BY-SA 4.0
+    </a>
+    <!---->
+    
+  </div>
+  <div class="flex basis-full lg:basis-1/2 lg:justify-end">
+    <a class="link mr-6 lg:ml-6" href="https://www.getzola.org/" rel="noopener" target="_blank"
+      >Powered by Zola</a
+    >
+    <a class="link" href="https://github.com/st1020/kita" rel="noopener" target="_blank">✎ Kita</a>
+  </div>
+</footer>
+
+  </body>
+</html>

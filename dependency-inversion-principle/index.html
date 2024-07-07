@@ -1,0 +1,749 @@
+<!doctype html>
+<html class="not-ready lg:text-base" lang="en">
+  <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+  <!-- Title -->
+  <title>
+    Dependency Inversion Principle (DIP) - Ahmet Can Çiçek - Software Engineer, Blogger, Researcher
+  </title>
+
+  <!-- Meta -->
+  <meta name="theme-color" />
+
+  
+  <!-- Author -->
+  
+  <!---->
+  
+  <meta name="description" content="The Dependency Inversion Principle is one of the SOLID principles introduced." />
+  <meta name="author" content="Dependency Inversion Principle (DIP)" />
+  <!-- The Open Graph protocol -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Dependency Inversion Principle (DIP)" />
+  <meta property="og:site_name" content="Ahmet Can Çiçek - Software Engineer, Blogger, Researcher" />
+  <meta property="og:description" content="The Dependency Inversion Principle is one of the SOLID principles introduced." />
+  <meta property="og:url" content="https:&#x2F;&#x2F;ahmetcancicek.dev&#x2F;dependency-inversion-principle&#x2F;" />
+  
+  <!---->
+  
+  <meta property="og:image" content="https://ahmetcancicek.dev/icons/github.svg" />
+  
+  <!---->
+  
+
+  <!-- CSS & JS -->
+  <link rel="preload stylesheet" as="style" href="https://ahmetcancicek.dev/main.css" />
+  <style>
+    :root {
+      --bg: #f4f4f5;
+      --bg-dark: #18181b;
+      --header: #e4e4e7;
+      --header-dark: #27272a;
+    }
+  </style>
+
+  
+
+  <!-- Dark Icon -->
+  <link rel="preload" as="image" href="https://ahmetcancicek.dev/icons/theme.svg" />
+
+  <!-- Math -->
+  
+  <!---->
+
+  <!-- Mermaid -->
+  
+  <!---->
+
+  <!-- Favicon -->
+  <link rel="icon" href="https://ahmetcancicek.dev/favicon.ico" />
+  <link rel="apple-touch-icon" href="https://ahmetcancicek.dev/apple-touch-icon.png" />
+
+  <!-- Feeds -->
+  
+  <!---->
+  
+  <link
+    rel="alternate"
+    type="application/atom+xml"
+    title="Atom"
+    href="https://ahmetcancicek.dev/atom.xml"
+  />
+  
+  
+  <!---->
+  
+
+  <!-- Canonical -->
+  <link rel="canonical" href="https:&#x2F;&#x2F;ahmetcancicek.dev&#x2F;dependency-inversion-principle&#x2F;" />
+
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-01S4R6K1J4"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+
+    gtag('config', 'G-01S4R6K1J4');
+  </script>
+
+  <!-- Clarity -->
+  <script type="text/javascript">
+    (function (c, l, a, r, i, t, y) {
+      c[a] = c[a] || function () { (c[a].q = c[a].q || []).push(arguments) };
+      t = l.createElement(r); t.async = 1; t.src = "https://www.clarity.ms/tag/" + i;
+      y = l.getElementsByTagName(r)[0]; y.parentNode.insertBefore(t, y);
+    })(window, document, "clarity", "script", "mjh6v01689");
+  </script>
+
+  <!-- Counter -->
+  <script src="https://cdn.counter.dev/script.js" data-id="4cb2d6b7-f6c5-4213-8f5c-65ddacafd373" data-utcoffset="3"></script>
+</head>
+
+  <body class="text-black duration-200 ease-out dark:text-white">
+    <header
+  class="header fixed top-0 z-40 mx-auto min-h-[3.5rem] w-full"
+>
+  <div class="mx-auto w-full max-w-4xl p-3 lg:flex lg:justify-between">
+    <div class="flex justify-between">
+      <div class="flex items-center">
+        <a class="text-2xl font-semibold" href="https://ahmetcancicek.dev">ahmetcancicek</a>
+        <div
+          class="btn-dark ml-4 h-6 w-6 shrink-0 cursor-pointer text-[0] [background:url(./icons/theme.svg)_left_center/cover_no-repeat] dark:invert dark:[background-position:right]"
+          role="button"
+          aria-label="Dark"
+        ></div>
+      </div>
+      
+      <div
+        class="btn-menu relative z-50 flex h-8 w-8 shrink-0 cursor-pointer flex-col items-center justify-center gap-2.5 lg:hidden"
+        role="button"
+        aria-label="Menu"
+      ></div>
+      
+    </div>
+    <script>
+      // base
+      const htmlClass = document.documentElement.classList;
+      setTimeout(() => {
+        htmlClass.remove("not-ready");
+      }, 10);
+
+      // mobile menu
+      const btnMenu = document.querySelector(".btn-menu");
+      btnMenu?.addEventListener("click", () => {
+        htmlClass.toggle("open");
+      });
+
+      // dark theme
+      const setDark = (isDark) => {
+        if (isDark) {
+          document.body.dispatchEvent(new CustomEvent("set-theme", { detail: "dark" }));
+          htmlClass.add("dark");
+        } else {
+          document.body.dispatchEvent(new CustomEvent("set-theme", { detail: "light" }));
+          htmlClass.remove("dark");
+        }
+        localStorage.setItem("dark", isDark);
+      };
+
+      // init
+      const darkScheme = window.matchMedia("(prefers-color-scheme: dark)");
+      if (htmlClass.contains("dark")) {
+        setDark(true);
+      } else {
+        const darkVal = localStorage.getItem("dark");
+        setDark(darkVal ? darkVal === "true" : darkScheme.matches);
+      }
+
+      // listen system
+      darkScheme.addEventListener("change", (event) => {
+        setDark(event.matches);
+      });
+
+      // manual switch
+      const btnDark = document.querySelector(".btn-dark");
+      btnDark.addEventListener("click", () => {
+        setDark(localStorage.getItem("dark") !== "true");
+      });
+    </script>
+    
+    <nav class="flex w-full items-center lg:w-auto">
+      <ul
+        class="nav-wrapper flex w-full flex-col py-2 lg:w-auto lg:flex-row lg:self-center lg:py-0"
+      >
+        
+        <li>
+          <a
+            class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0"
+            href="https://ahmetcancicek.dev/archive"
+            >Archive</a
+          >
+        </li>
+        
+        <li>
+          <a
+            class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0"
+            href="https://ahmetcancicek.dev/tags"
+            >Tags</a
+          >
+        </li>
+        
+      </ul>
+    </nav>
+    
+  </div>
+</header>
+
+
+    <main
+      class="prose prose-neutral relative mx-auto min-h-[calc(100%-9rem)] max-w-3xl break-words px-4 pb-16 pt-32 dark:prose-invert"
+    >
+      
+<article>
+  <header class="mb-16">
+    <h1 class="!my-0 pb-2.5">Dependency Inversion Principle (DIP)</h1>
+    <div class="text-sm antialiased opacity-60">
+  
+  <time>2024-04-16</time>
+  <span class="mx-1">&middot;</span>
+  <span>10min</span>
+  <!---->
+  
+  <!---->
+  
+  <span class="mx-1">&middot;</span>
+  <span>ahmetcancicek</span>
+  
+</div>
+
+  </header>
+
+  
+
+  <!-- TOC -->
+  <!---->
+<div class="block-bg mb-12 flex rounded-lg p-2 text-lg">
+  <details>
+    <summary class="cursor-pointer py-1 pl-4">
+      <span>Table of Contents</span>
+    </summary>
+    <div class="px-2">
+      <ul>
+        
+        <li>
+          <a class="no-underline hover:underline" href="https://ahmetcancicek.dev/dependency-inversion-principle/#introduction"
+            >INTRODUCTION</a
+          >
+          
+        </li>
+        
+        <li>
+          <a class="no-underline hover:underline" href="https://ahmetcancicek.dev/dependency-inversion-principle/#dependency-inversion-principle-dip"
+            >DEPENDENCY INVERSION PRINCIPLE (DIP)</a
+          >
+          
+        </li>
+        
+        <li>
+          <a class="no-underline hover:underline" href="https://ahmetcancicek.dev/dependency-inversion-principle/#conclusion"
+            >CONCLUSION</a
+          >
+          
+        </li>
+        
+        <li>
+          <a class="no-underline hover:underline" href="https://ahmetcancicek.dev/dependency-inversion-principle/#references"
+            >REFERENCES</a
+          >
+          
+        </li>
+        
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!---->
+
+  <!-- Content -->
+  <section><h2 id="introduction">INTRODUCTION</h2>
+<p>The Dependency Inversion Principle named DIP is one of the SOLID principles created by Robert Cecil Martin. The previous article belongs to title stand "Inversion of Control (IoC)", which is the first step so that achieving a loose couple design. It can be achieved more loose couple design by applying the Dependency Inversion Principle compared to the previous state.</p>
+<p>The goal of this principle is to achieve loose coupling. With this principle, high-level modules, which are responsible for complex logic, remain unaffected by changes in low-level modules. In order to achieve this goal, it is important to utilize an abstraction that separates high-level and low-level modules. In short, the principle relies on interfaces or abstract classes as opposed to depending on concrete classes.</p>
+<h2 id="dependency-inversion-principle-dip">DEPENDENCY INVERSION PRINCIPLE (DIP)</h2>
+ <!---->
+
+
+<div
+  class="my-4 flex flex-col rounded-lg bg-[var(--admonition-bg)]"
+  style="--admonition-bg: rgba(159, 159, 159, 0.1)"
+>
+  <div class="flex items-center rounded-t-lg bg-[var(--admonition-bg)] p-1">
+    <div
+      class="mx-2 h-4 w-4 text-[0] [background:var(--url)_center_center_no-repeat] dark:invert"
+      style="--url: url(./icons/quote.svg)"
+    >
+      quote
+    </div>
+    <span><strong>Definition</strong></span>
+  </div>
+  <div class="pl-4"><p>Robert C. Martin's definition of the Dependency Inversion Principle consists of two parts:</p>
+<ol>
+<li>High-level modules should not depend on low-level modules. Both should depend on abstractions.</li>
+<li>Abstractions should not depend on details. Details should depend on abstractions.</li>
+</ol>
+</div>
+</div>
+<p>According to this principle, if any system has several components, it is not preferred the approach of injecting one direct component into another. In this principle, it's advisable to create an abstraction layer between components so that have a low level of coupling.</p>
+<p>Firstly, in an effort to understand the Dependency Inversion Principle (DIP), let's create a simple example without using the Dependency Inversion Principle.</p>
+<p>In this example, imagine that it is needed to develop a car model. Naturally, a car consists of a lot of components such as an engine, brake, steering wheel, and clutch. As these components can be replaced, each component of a car can be created from different brands. For example, any car can structured from a Ford engine and GM brake. In summary, a car can be structured in different combinations. However, in this scenario, all components depend on each other. If there is a need to replace any components, it affects the model due to this dependency.</p>
+<p>The <strong>Car</strong> class represents the model containing concrete classes such as <strong>Engine</strong>, <strong>SteeringWheel</strong>, and <strong>Clutch</strong>. Without these components, any car in this model would be not functional. In the constructor method of the <strong>Car</strong> class, it creates the instance of the <strong>Engine</strong>, <strong>SteeringWheel</strong>, and <strong>Cluctch</strong> classes.</p>
+<pre data-lang="Java" style="background-color:#2b303b;color:#c0c5ce;" class="language-Java "><code class="language-Java" data-lang="Java"><span style="color:#b48ead;">public class </span><span style="color:#ebcb8b;">Car </span><span style="color:#eff1f5;">{
+</span><span style="color:#eff1f5;">    </span><span style="color:#b48ead;">private </span><span style="color:#ebcb8b;">Engine </span><span style="color:#eff1f5;">engine;
+</span><span style="color:#eff1f5;">    </span><span style="color:#b48ead;">private </span><span style="color:#ebcb8b;">SteeringWheel </span><span style="color:#eff1f5;">steeringWheel;
+</span><span style="color:#eff1f5;">    </span><span style="color:#b48ead;">private </span><span style="color:#ebcb8b;">Clutch </span><span style="color:#eff1f5;">clutch;
+</span><span style="color:#eff1f5;">
+</span><span style="color:#eff1f5;">    </span><span style="color:#b48ead;">public </span><span style="color:#8fa1b3;">Car</span><span style="color:#eff1f5;">() {
+</span><span style="color:#eff1f5;">        </span><span style="color:#bf616a;">this</span><span style="color:#eff1f5;">.engine </span><span>= </span><span style="color:#b48ead;">new </span><span style="color:#ebcb8b;">Engine</span><span style="color:#eff1f5;">();
+</span><span style="color:#eff1f5;">        </span><span style="color:#bf616a;">this</span><span style="color:#eff1f5;">.steeringWheel </span><span>= </span><span style="color:#b48ead;">new </span><span style="color:#ebcb8b;">SteeringWheel</span><span style="color:#eff1f5;">();
+</span><span style="color:#eff1f5;">        </span><span style="color:#bf616a;">this</span><span style="color:#eff1f5;">.clutch </span><span>= </span><span style="color:#b48ead;">new </span><span style="color:#ebcb8b;">Clutch</span><span style="color:#eff1f5;">();
+</span><span style="color:#eff1f5;">    }
+</span><span style="color:#eff1f5;">
+</span><span style="color:#eff1f5;">    </span><span style="color:#b48ead;">public void </span><span style="color:#8fa1b3;">start</span><span style="color:#eff1f5;">() {
+</span><span style="color:#eff1f5;">        engine.</span><span style="color:#bf616a;">start</span><span style="color:#eff1f5;">();
+</span><span style="color:#eff1f5;">        </span><span style="color:#65737e;">// other car-related logic
+</span><span style="color:#eff1f5;">    }
+</span><span style="color:#eff1f5;">}
+</span></code></pre>
+<p><strong>Engine</strong> class represents the engine of a car. It has methods that are related to fulfill the functionality of the engine.</p>
+<pre data-lang="Java" style="background-color:#2b303b;color:#c0c5ce;" class="language-Java "><code class="language-Java" data-lang="Java"><span style="color:#b48ead;">public class </span><span style="color:#ebcb8b;">Engine </span><span style="color:#eff1f5;">{
+</span><span style="color:#eff1f5;">    </span><span style="color:#b48ead;">public void </span><span style="color:#8fa1b3;">start</span><span style="color:#eff1f5;">() {
+</span><span style="color:#eff1f5;">        </span><span style="color:#ebcb8b;">System</span><span style="color:#eff1f5;">.out.</span><span style="color:#bf616a;">println</span><span style="color:#eff1f5;">(</span><span>&quot;</span><span style="color:#a3be8c;">Engine is started!</span><span>&quot;</span><span style="color:#eff1f5;">);
+</span><span style="color:#eff1f5;">    }
+</span><span style="color:#eff1f5;">
+</span><span style="color:#eff1f5;">    </span><span style="color:#b48ead;">public void </span><span style="color:#8fa1b3;">stop</span><span style="color:#eff1f5;">(){
+</span><span style="color:#eff1f5;">        </span><span style="color:#ebcb8b;">System</span><span style="color:#eff1f5;">.out.</span><span style="color:#bf616a;">println</span><span style="color:#eff1f5;">(</span><span>&quot;</span><span style="color:#a3be8c;">Engine is stopped!</span><span>&quot;</span><span style="color:#eff1f5;">);
+</span><span style="color:#eff1f5;">
+</span><span style="color:#eff1f5;">    }
+</span><span style="color:#eff1f5;">}
+</span></code></pre>
+<p>This <strong>SteeringWhel</strong> class represents the steering wheel of a car.</p>
+<pre data-lang="Java" style="background-color:#2b303b;color:#c0c5ce;" class="language-Java "><code class="language-Java" data-lang="Java"><span style="color:#b48ead;">public class </span><span style="color:#ebcb8b;">SteeringWheel </span><span style="color:#eff1f5;">{
+</span><span style="color:#eff1f5;">    </span><span style="color:#b48ead;">public void </span><span style="color:#8fa1b3;">turnLeft</span><span style="color:#eff1f5;">() {
+</span><span style="color:#eff1f5;">        </span><span style="color:#ebcb8b;">System</span><span style="color:#eff1f5;">.out.</span><span style="color:#bf616a;">println</span><span style="color:#eff1f5;">(</span><span>&quot;</span><span style="color:#a3be8c;">Steering wheel is turned left!</span><span>&quot;</span><span style="color:#eff1f5;">);
+</span><span style="color:#eff1f5;">    }
+</span><span style="color:#eff1f5;">
+</span><span style="color:#eff1f5;">    </span><span style="color:#b48ead;">public void </span><span style="color:#8fa1b3;">turnRight</span><span style="color:#eff1f5;">() {
+</span><span style="color:#eff1f5;">        </span><span style="color:#ebcb8b;">System</span><span style="color:#eff1f5;">.out.</span><span style="color:#bf616a;">println</span><span style="color:#eff1f5;">(</span><span>&quot;</span><span style="color:#a3be8c;">Steering wheel is turned right!</span><span>&quot;</span><span style="color:#eff1f5;">);
+</span><span style="color:#eff1f5;">    }
+</span><span style="color:#eff1f5;">}
+</span></code></pre>
+<p>This class represents the clutch of a car.</p>
+<pre data-lang="Java" style="background-color:#2b303b;color:#c0c5ce;" class="language-Java "><code class="language-Java" data-lang="Java"><span style="color:#b48ead;">public class </span><span style="color:#ebcb8b;">Clutch </span><span style="color:#eff1f5;">{
+</span><span style="color:#eff1f5;">    </span><span style="color:#b48ead;">public void </span><span style="color:#8fa1b3;">engage</span><span style="color:#eff1f5;">() {
+</span><span style="color:#eff1f5;">        </span><span style="color:#ebcb8b;">System</span><span style="color:#eff1f5;">.out.</span><span style="color:#bf616a;">println</span><span style="color:#eff1f5;">(</span><span>&quot;</span><span style="color:#a3be8c;">Clutch is engaged!</span><span>&quot;</span><span style="color:#eff1f5;">);
+</span><span style="color:#eff1f5;">    }
+</span><span style="color:#eff1f5;">
+</span><span style="color:#eff1f5;">    </span><span style="color:#b48ead;">public void </span><span style="color:#8fa1b3;">disengage</span><span style="color:#eff1f5;">() {
+</span><span style="color:#eff1f5;">        </span><span style="color:#ebcb8b;">System</span><span style="color:#eff1f5;">.out.</span><span style="color:#bf616a;">println</span><span style="color:#eff1f5;">(</span><span>&quot;</span><span style="color:#a3be8c;">Clutch is disengaged!</span><span>&quot;</span><span style="color:#eff1f5;">);
+</span><span style="color:#eff1f5;">    }
+</span><span style="color:#eff1f5;">}
+</span></code></pre>
+<p>As it can be seen easily in the provided example, the <strong>Car</strong> class is dependent on the <strong>Engine</strong>, <strong>SteeringWheel</strong>, and <strong>Clutch</strong> concrete classes for functionality.</p>
+<p>For example, if there is a need to change the engine, you might have to replace the corresponding adjustment to the clutch or add new features because the current clutch might not be compatible with the new engine. In the context of this scenario, does the model seem correct? Probably, it does not seem correct. In the case of this situation, It may be considered restructuring the model so that it is loosely coupled.</p>
+<p>Let's refactor the previous examples, especially with help from the Dependency Inversion Principle.</p>
+<p>Initially, It should be defined interfaces for each car component. With these interfaces, it will be able to create concrete implementations for special components.</p>
+<pre data-lang="Java" style="background-color:#2b303b;color:#c0c5ce;" class="language-Java "><code class="language-Java" data-lang="Java"><span style="color:#b48ead;">public interface </span><span style="color:#ebcb8b;">Engine </span><span style="color:#eff1f5;">{
+</span><span style="color:#eff1f5;">    </span><span style="color:#b48ead;">void </span><span style="color:#8fa1b3;">start</span><span style="color:#eff1f5;">();
+</span><span style="color:#eff1f5;">    </span><span style="color:#b48ead;">void </span><span style="color:#8fa1b3;">stop</span><span style="color:#eff1f5;">();
+</span><span style="color:#eff1f5;">}
+</span></code></pre>
+<pre data-lang="Java" style="background-color:#2b303b;color:#c0c5ce;" class="language-Java "><code class="language-Java" data-lang="Java"><span style="color:#b48ead;">public interface </span><span style="color:#ebcb8b;">Brake </span><span style="color:#eff1f5;">{
+</span><span style="color:#eff1f5;">    </span><span style="color:#b48ead;">void </span><span style="color:#8fa1b3;">apply</span><span style="color:#eff1f5;">();
+</span><span style="color:#eff1f5;">}
+</span></code></pre>
+<pre data-lang="Java" style="background-color:#2b303b;color:#c0c5ce;" class="language-Java "><code class="language-Java" data-lang="Java"><span style="color:#b48ead;">public interface </span><span style="color:#ebcb8b;">Clutch </span><span style="color:#eff1f5;">{
+</span><span style="color:#eff1f5;">    </span><span style="color:#b48ead;">void </span><span style="color:#8fa1b3;">engage</span><span style="color:#eff1f5;">();
+</span><span style="color:#eff1f5;">    </span><span style="color:#b48ead;">void </span><span style="color:#8fa1b3;">disengage</span><span style="color:#eff1f5;">();
+</span><span style="color:#eff1f5;">}
+</span></code></pre>
+<pre data-lang="Java" style="background-color:#2b303b;color:#c0c5ce;" class="language-Java "><code class="language-Java" data-lang="Java"><span style="color:#b48ead;">public interface </span><span style="color:#ebcb8b;">SteeringWheel </span><span style="color:#eff1f5;">{
+</span><span style="color:#eff1f5;">    </span><span style="color:#b48ead;">void </span><span style="color:#8fa1b3;">turnLeft</span><span style="color:#eff1f5;">();
+</span><span style="color:#eff1f5;">    </span><span style="color:#b48ead;">void </span><span style="color:#8fa1b3;">turnRight</span><span style="color:#eff1f5;">();
+</span><span style="color:#eff1f5;">}
+</span></code></pre>
+<p>Next, it should be created a concrete implementation for each component. In this context, each implementation can belong to a specific brand.</p>
+<pre data-lang="Java" style="background-color:#2b303b;color:#c0c5ce;" class="language-Java "><code class="language-Java" data-lang="Java"><span style="color:#b48ead;">public class </span><span style="color:#ebcb8b;">FordEngine </span><span style="color:#b48ead;">implements </span><span style="color:#a3be8c;">Engine </span><span style="color:#eff1f5;">{
+</span><span style="color:#eff1f5;">    @</span><span style="color:#bf616a;">Override
+</span><span style="color:#eff1f5;">    </span><span style="color:#b48ead;">public void </span><span style="color:#8fa1b3;">start</span><span style="color:#eff1f5;">() {
+</span><span style="color:#eff1f5;">        </span><span style="color:#ebcb8b;">System</span><span style="color:#eff1f5;">.out.</span><span style="color:#bf616a;">println</span><span style="color:#eff1f5;">(</span><span>&quot;</span><span style="color:#a3be8c;">Ford engine is started!</span><span>&quot;</span><span style="color:#eff1f5;">);
+</span><span style="color:#eff1f5;">    }
+</span><span style="color:#eff1f5;">
+</span><span style="color:#eff1f5;">    @</span><span style="color:#bf616a;">Override
+</span><span style="color:#eff1f5;">    </span><span style="color:#b48ead;">public void </span><span style="color:#8fa1b3;">stop</span><span style="color:#eff1f5;">() {
+</span><span style="color:#eff1f5;">        </span><span style="color:#ebcb8b;">System</span><span style="color:#eff1f5;">.out.</span><span style="color:#bf616a;">println</span><span style="color:#eff1f5;">(</span><span>&quot;</span><span style="color:#a3be8c;">Ford engine is stopped!</span><span>&quot;</span><span style="color:#eff1f5;">);
+</span><span style="color:#eff1f5;">    }
+</span><span style="color:#eff1f5;">}
+</span></code></pre>
+<pre data-lang="Java" style="background-color:#2b303b;color:#c0c5ce;" class="language-Java "><code class="language-Java" data-lang="Java"><span style="color:#b48ead;">public class </span><span style="color:#ebcb8b;">GMSteeringWheel </span><span style="color:#b48ead;">implements </span><span style="color:#a3be8c;">SteeringWheel </span><span style="color:#eff1f5;">{
+</span><span style="color:#eff1f5;">    @</span><span style="color:#bf616a;">Override
+</span><span style="color:#eff1f5;">    </span><span style="color:#b48ead;">public void </span><span style="color:#8fa1b3;">turnLeft</span><span style="color:#eff1f5;">() {
+</span><span style="color:#eff1f5;">        </span><span style="color:#ebcb8b;">System</span><span style="color:#eff1f5;">.out.</span><span style="color:#bf616a;">println</span><span style="color:#eff1f5;">(</span><span>&quot;</span><span style="color:#a3be8c;">GM steering wheel is turned left!</span><span>&quot;</span><span style="color:#eff1f5;">);
+</span><span style="color:#eff1f5;">    }
+</span><span style="color:#eff1f5;">
+</span><span style="color:#eff1f5;">    @</span><span style="color:#bf616a;">Override
+</span><span style="color:#eff1f5;">    </span><span style="color:#b48ead;">public void </span><span style="color:#8fa1b3;">turnRight</span><span style="color:#eff1f5;">() {
+</span><span style="color:#eff1f5;">        </span><span style="color:#ebcb8b;">System</span><span style="color:#eff1f5;">.out.</span><span style="color:#bf616a;">println</span><span style="color:#eff1f5;">(</span><span>&quot;</span><span style="color:#a3be8c;">GM steering wheel is turned right!&#39;</span><span>&quot;</span><span style="color:#eff1f5;">);
+</span><span style="color:#eff1f5;">    }
+</span><span style="color:#eff1f5;">}
+</span></code></pre>
+<pre data-lang="Java" style="background-color:#2b303b;color:#c0c5ce;" class="language-Java "><code class="language-Java" data-lang="Java"><span style="color:#b48ead;">public class </span><span style="color:#ebcb8b;">ToyotaBrake </span><span style="color:#b48ead;">implements </span><span style="color:#a3be8c;">Brake </span><span style="color:#eff1f5;">{
+</span><span style="color:#eff1f5;">    @</span><span style="color:#bf616a;">Override
+</span><span style="color:#eff1f5;">    </span><span style="color:#b48ead;">public void </span><span style="color:#8fa1b3;">apply</span><span style="color:#eff1f5;">() {
+</span><span style="color:#eff1f5;">        </span><span style="color:#ebcb8b;">System</span><span style="color:#eff1f5;">.out.</span><span style="color:#bf616a;">println</span><span style="color:#eff1f5;">(</span><span>&quot;</span><span style="color:#a3be8c;">Toyota brake is applied!</span><span>&quot;</span><span style="color:#eff1f5;">);
+</span><span style="color:#eff1f5;">    }
+</span><span style="color:#eff1f5;">}
+</span></code></pre>
+<pre data-lang="Java" style="background-color:#2b303b;color:#c0c5ce;" class="language-Java "><code class="language-Java" data-lang="Java"><span style="color:#b48ead;">public class </span><span style="color:#ebcb8b;">GMClutch </span><span style="color:#b48ead;">implements </span><span style="color:#a3be8c;">Clutch </span><span style="color:#eff1f5;">{
+</span><span style="color:#eff1f5;">    @</span><span style="color:#bf616a;">Override
+</span><span style="color:#eff1f5;">    </span><span style="color:#b48ead;">public void </span><span style="color:#8fa1b3;">engage</span><span style="color:#eff1f5;">() {
+</span><span style="color:#eff1f5;">        </span><span style="color:#ebcb8b;">System</span><span style="color:#eff1f5;">.out.</span><span style="color:#bf616a;">println</span><span style="color:#eff1f5;">(</span><span>&quot;</span><span style="color:#a3be8c;">GM clutch is engaged!</span><span>&quot;</span><span style="color:#eff1f5;">);
+</span><span style="color:#eff1f5;">    }
+</span><span style="color:#eff1f5;">
+</span><span style="color:#eff1f5;">    @</span><span style="color:#bf616a;">Override
+</span><span style="color:#eff1f5;">    </span><span style="color:#b48ead;">public void </span><span style="color:#8fa1b3;">disengage</span><span style="color:#eff1f5;">() {
+</span><span style="color:#eff1f5;">        </span><span style="color:#ebcb8b;">System</span><span style="color:#eff1f5;">.out.</span><span style="color:#bf616a;">println</span><span style="color:#eff1f5;">(</span><span>&quot;</span><span style="color:#a3be8c;">GM clutch is disengaged!</span><span>&quot;</span><span style="color:#eff1f5;">);
+</span><span style="color:#eff1f5;">    }
+</span><span style="color:#eff1f5;">}
+</span></code></pre>
+<p>Finally, it can be created a <strong>Car</strong> class that depends on the interfaces rather than concrete implementations. It is important to note that using interfaces achieves loose coupling.</p>
+<pre data-lang="Java" style="background-color:#2b303b;color:#c0c5ce;" class="language-Java "><code class="language-Java" data-lang="Java"><span style="color:#b48ead;">public class </span><span style="color:#ebcb8b;">Car </span><span style="color:#eff1f5;">{
+</span><span style="color:#eff1f5;">    </span><span style="color:#b48ead;">private </span><span style="color:#ebcb8b;">Engine </span><span style="color:#eff1f5;">engine;
+</span><span style="color:#eff1f5;">    </span><span style="color:#b48ead;">private </span><span style="color:#ebcb8b;">Brake </span><span style="color:#eff1f5;">brake;
+</span><span style="color:#eff1f5;">    </span><span style="color:#b48ead;">private </span><span style="color:#ebcb8b;">Clutch </span><span style="color:#eff1f5;">clutch;
+</span><span style="color:#eff1f5;">    </span><span style="color:#b48ead;">private </span><span style="color:#ebcb8b;">SteeringWheel </span><span style="color:#eff1f5;">steeringWheel;
+</span><span style="color:#eff1f5;">
+</span><span style="color:#eff1f5;">    </span><span style="color:#b48ead;">public </span><span style="color:#8fa1b3;">Car</span><span style="color:#eff1f5;">(</span><span style="color:#ebcb8b;">Engine </span><span style="color:#bf616a;">engine</span><span style="color:#eff1f5;">, </span><span style="color:#ebcb8b;">Brake </span><span style="color:#bf616a;">brake</span><span style="color:#eff1f5;">, </span><span style="color:#ebcb8b;">Clutch </span><span style="color:#bf616a;">clutch</span><span style="color:#eff1f5;">, </span><span style="color:#ebcb8b;">SteeringWheel </span><span style="color:#bf616a;">steeringWheel</span><span style="color:#eff1f5;">) {
+</span><span style="color:#eff1f5;">        </span><span style="color:#bf616a;">this</span><span style="color:#eff1f5;">.engine </span><span>=</span><span style="color:#eff1f5;"> engine;
+</span><span style="color:#eff1f5;">        </span><span style="color:#bf616a;">this</span><span style="color:#eff1f5;">.brake </span><span>=</span><span style="color:#eff1f5;"> brake;
+</span><span style="color:#eff1f5;">        </span><span style="color:#bf616a;">this</span><span style="color:#eff1f5;">.clutch </span><span>=</span><span style="color:#eff1f5;"> clutch;
+</span><span style="color:#eff1f5;">        </span><span style="color:#bf616a;">this</span><span style="color:#eff1f5;">.steeringWheel </span><span>=</span><span style="color:#eff1f5;"> steeringWheel;
+</span><span style="color:#eff1f5;">    }
+</span><span style="color:#eff1f5;">
+</span><span style="color:#eff1f5;">    </span><span style="color:#b48ead;">public void </span><span style="color:#8fa1b3;">startCar</span><span style="color:#eff1f5;">() {
+</span><span style="color:#eff1f5;">        engine.</span><span style="color:#bf616a;">start</span><span style="color:#eff1f5;">();
+</span><span style="color:#eff1f5;">        </span><span style="color:#65737e;">// Other operations
+</span><span style="color:#eff1f5;">    }
+</span><span style="color:#eff1f5;">
+</span><span style="color:#eff1f5;">    </span><span style="color:#b48ead;">public void </span><span style="color:#8fa1b3;">stopCar</span><span style="color:#eff1f5;">() {
+</span><span style="color:#eff1f5;">        engine.</span><span style="color:#bf616a;">stop</span><span style="color:#eff1f5;">();
+</span><span style="color:#eff1f5;">        </span><span style="color:#65737e;">// Other operations
+</span><span style="color:#eff1f5;">    }
+</span><span style="color:#eff1f5;">
+</span><span style="color:#eff1f5;">    </span><span style="color:#b48ead;">public void </span><span style="color:#8fa1b3;">turnLeft</span><span style="color:#eff1f5;">() {
+</span><span style="color:#eff1f5;">        steeringWheel.</span><span style="color:#bf616a;">turnLeft</span><span style="color:#eff1f5;">();
+</span><span style="color:#eff1f5;">    }
+</span><span style="color:#eff1f5;">
+</span><span style="color:#eff1f5;">    </span><span style="color:#b48ead;">public void </span><span style="color:#8fa1b3;">turnRight</span><span style="color:#eff1f5;">() {
+</span><span style="color:#eff1f5;">        steeringWheel.</span><span style="color:#bf616a;">turnRight</span><span style="color:#eff1f5;">();
+</span><span style="color:#eff1f5;">    }
+</span><span style="color:#eff1f5;">
+</span><span style="color:#eff1f5;">    </span><span style="color:#b48ead;">public void </span><span style="color:#8fa1b3;">applyBrake</span><span style="color:#eff1f5;">() {
+</span><span style="color:#eff1f5;">        brake.</span><span style="color:#bf616a;">apply</span><span style="color:#eff1f5;">();
+</span><span style="color:#eff1f5;">    }
+</span><span style="color:#eff1f5;">
+</span><span style="color:#eff1f5;">    </span><span style="color:#b48ead;">public void </span><span style="color:#8fa1b3;">engageClutch</span><span style="color:#eff1f5;">() {
+</span><span style="color:#eff1f5;">        clutch.</span><span style="color:#bf616a;">engage</span><span style="color:#eff1f5;">();
+</span><span style="color:#eff1f5;">    }
+</span><span style="color:#eff1f5;">
+</span><span style="color:#eff1f5;">    </span><span style="color:#b48ead;">public void </span><span style="color:#8fa1b3;">disengageClutch</span><span style="color:#eff1f5;">() {
+</span><span style="color:#eff1f5;">        clutch.</span><span style="color:#bf616a;">disengage</span><span style="color:#eff1f5;">();
+</span><span style="color:#eff1f5;">    }
+</span><span style="color:#eff1f5;">}
+</span></code></pre>
+<p>The below code represents how you might use the <strong>Car</strong> class as having a loose coupling. As reviewed carefully the <strong>Main</strong> class, it can be seen easily that each component belongs to a special brand. Namely, they are a kind of implementation of a special brand.</p>
+<pre data-lang="Java" style="background-color:#2b303b;color:#c0c5ce;" class="language-Java "><code class="language-Java" data-lang="Java"><span style="color:#b48ead;">public class </span><span style="color:#ebcb8b;">Main </span><span style="color:#eff1f5;">{
+</span><span style="color:#eff1f5;">    </span><span style="color:#b48ead;">public static void </span><span style="color:#8fa1b3;">main</span><span style="color:#eff1f5;">(</span><span style="color:#ebcb8b;">String</span><span style="color:#b48ead;">[] </span><span style="color:#bf616a;">args</span><span style="color:#eff1f5;">) {
+</span><span style="color:#eff1f5;">        </span><span style="color:#ebcb8b;">Engine</span><span style="color:#eff1f5;"> fordEngine </span><span>= </span><span style="color:#b48ead;">new </span><span style="color:#ebcb8b;">FordEngine</span><span style="color:#eff1f5;">();
+</span><span style="color:#eff1f5;">        </span><span style="color:#ebcb8b;">SteeringWheel</span><span style="color:#eff1f5;"> gmSteeringWheel </span><span>= </span><span style="color:#b48ead;">new </span><span style="color:#ebcb8b;">GMSteeringWheel</span><span style="color:#eff1f5;">();
+</span><span style="color:#eff1f5;">        </span><span style="color:#ebcb8b;">Brake</span><span style="color:#eff1f5;"> toyotaBrake </span><span>= </span><span style="color:#b48ead;">new </span><span style="color:#ebcb8b;">ToyotaBrake</span><span style="color:#eff1f5;">();
+</span><span style="color:#eff1f5;">        </span><span style="color:#ebcb8b;">Clutch</span><span style="color:#eff1f5;"> fordClutch </span><span>= </span><span style="color:#b48ead;">new </span><span style="color:#ebcb8b;">GMClutch</span><span style="color:#eff1f5;">();
+</span><span style="color:#eff1f5;">
+</span><span style="color:#eff1f5;">        </span><span style="color:#ebcb8b;">Car</span><span style="color:#eff1f5;"> car </span><span>= </span><span style="color:#b48ead;">new </span><span style="color:#ebcb8b;">Car</span><span style="color:#eff1f5;">(fordEngine, toyotaBrake, fordClutch, gmSteeringWheel);
+</span><span style="color:#eff1f5;">
+</span><span style="color:#eff1f5;">        car.</span><span style="color:#bf616a;">startCar</span><span style="color:#eff1f5;">();
+</span><span style="color:#eff1f5;">        car.</span><span style="color:#bf616a;">turnLeft</span><span style="color:#eff1f5;">();
+</span><span style="color:#eff1f5;">        car.</span><span style="color:#bf616a;">applyBrake</span><span style="color:#eff1f5;">();
+</span><span style="color:#eff1f5;">        car.</span><span style="color:#bf616a;">engageClutch</span><span style="color:#eff1f5;">();
+</span><span style="color:#eff1f5;">
+</span><span style="color:#eff1f5;">        car.</span><span style="color:#bf616a;">disengageClutch</span><span style="color:#eff1f5;">();
+</span><span style="color:#eff1f5;">        car.</span><span style="color:#bf616a;">stopCar</span><span style="color:#eff1f5;">();
+</span><span style="color:#eff1f5;">    }
+</span><span style="color:#eff1f5;">}
+</span></code></pre>
+<p>Thus, it has received a loose coupling. There is a high-level module named <strong>Car</strong> class and low-level module named <strong>FordEngine</strong>, <strong>GMSteeringWheel</strong>, <strong>ToyotaBrake</strong> and <strong>GMClutch</strong> classes are dependent on an abstraction named <strong>Brake</strong>, <strong>Engine</strong>, <strong>Brake</strong>, and <strong>Clutch</strong> interfaces.</p>
+<p>Now, let's consider another example to illustrate the Dependency Inversion Principle in a real scenario.</p>
+<p>In this example, imagine that it is needed to develop a project named marketplace in any company. The marketplace should be run with several payment services such as PayPal, Stripe, and Bank.</p>
+<p>According to the scenario, the <strong>Transaction</strong> class refers to payment transactions as a model class in this design.</p>
+<pre data-lang="Java" style="background-color:#2b303b;color:#c0c5ce;" class="language-Java "><code class="language-Java" data-lang="Java"><span style="color:#b48ead;">public class </span><span style="color:#ebcb8b;">Transaction </span><span style="color:#eff1f5;">{
+</span><span style="color:#eff1f5;">    </span><span style="color:#b48ead;">private </span><span style="color:#ebcb8b;">String </span><span style="color:#eff1f5;">transactionId;
+</span><span style="color:#eff1f5;">    </span><span style="color:#b48ead;">private </span><span style="color:#ebcb8b;">BigDecimal </span><span style="color:#eff1f5;">amount;
+</span><span style="color:#eff1f5;">    </span><span style="color:#b48ead;">private </span><span style="color:#ebcb8b;">String </span><span style="color:#eff1f5;">currency;
+</span><span style="color:#eff1f5;">    </span><span style="color:#b48ead;">private </span><span style="color:#ebcb8b;">String </span><span style="color:#eff1f5;">recipientAccount;
+</span><span style="color:#eff1f5;">    </span><span style="color:#b48ead;">private </span><span style="color:#ebcb8b;">String </span><span style="color:#eff1f5;">senderAccount;
+</span><span style="color:#eff1f5;">
+</span><span style="color:#eff1f5;">    </span><span style="color:#b48ead;">public </span><span style="color:#8fa1b3;">Transaction</span><span style="color:#eff1f5;">(</span><span style="color:#ebcb8b;">String </span><span style="color:#bf616a;">transactionId</span><span style="color:#eff1f5;">, </span><span style="color:#ebcb8b;">BigDecimal </span><span style="color:#bf616a;">amount</span><span style="color:#eff1f5;">, </span><span style="color:#ebcb8b;">String </span><span style="color:#bf616a;">currency</span><span style="color:#eff1f5;">, </span><span style="color:#ebcb8b;">String </span><span style="color:#bf616a;">recipientAccount</span><span style="color:#eff1f5;">, </span><span style="color:#ebcb8b;">String </span><span style="color:#bf616a;">senderAccount</span><span style="color:#eff1f5;">) {
+</span><span style="color:#eff1f5;">        </span><span style="color:#bf616a;">this</span><span style="color:#eff1f5;">.transactionId </span><span>=</span><span style="color:#eff1f5;"> transactionId;
+</span><span style="color:#eff1f5;">        </span><span style="color:#bf616a;">this</span><span style="color:#eff1f5;">.amount </span><span>=</span><span style="color:#eff1f5;"> amount;
+</span><span style="color:#eff1f5;">        </span><span style="color:#bf616a;">this</span><span style="color:#eff1f5;">.currency </span><span>=</span><span style="color:#eff1f5;"> currency;
+</span><span style="color:#eff1f5;">        </span><span style="color:#bf616a;">this</span><span style="color:#eff1f5;">.recipientAccount </span><span>=</span><span style="color:#eff1f5;"> recipientAccount;
+</span><span style="color:#eff1f5;">        </span><span style="color:#bf616a;">this</span><span style="color:#eff1f5;">.senderAccount </span><span>=</span><span style="color:#eff1f5;"> senderAccount;
+</span><span style="color:#eff1f5;">    }
+</span><span style="color:#eff1f5;">
+</span><span style="color:#eff1f5;">    </span><span style="color:#65737e;">// getter, setter
+</span><span style="color:#eff1f5;">}
+</span></code></pre>
+<p>Each payment gateway class (<strong>PayPalPaymentGateway</strong>, <strong>StripePaymentGateway</strong>, <strong>BankTransferGateway</strong>) directly represents its payment processing logic. They inherit an interface, which is <strong>PaymentGateway</strong>.</p>
+<p>This class represents a PayPal payment gateway.</p>
+<pre data-lang="Java" style="background-color:#2b303b;color:#c0c5ce;" class="language-Java "><code class="language-Java" data-lang="Java"><span style="color:#b48ead;">public class </span><span style="color:#ebcb8b;">PayPalPaymentGateway </span><span style="color:#eff1f5;">{
+</span><span style="color:#eff1f5;">    </span><span style="color:#b48ead;">public boolean </span><span style="color:#8fa1b3;">processPayment</span><span style="color:#eff1f5;">(</span><span style="color:#ebcb8b;">Transaction </span><span style="color:#bf616a;">transaction</span><span style="color:#eff1f5;">) {
+</span><span style="color:#eff1f5;">        </span><span style="color:#ebcb8b;">System</span><span style="color:#eff1f5;">.out.</span><span style="color:#bf616a;">println</span><span style="color:#eff1f5;">(</span><span>&quot;</span><span style="color:#a3be8c;">Payment processing with PayPal: </span><span>&quot; +</span><span style="color:#eff1f5;"> transaction.</span><span style="color:#bf616a;">getCurrency</span><span style="color:#eff1f5;">() </span><span>+</span><span style="color:#eff1f5;"> transaction.</span><span style="color:#bf616a;">getAmount</span><span style="color:#eff1f5;">());
+</span><span style="color:#eff1f5;">        </span><span style="color:#b48ead;">return </span><span style="color:#d08770;">true</span><span style="color:#eff1f5;">;
+</span><span style="color:#eff1f5;">    }
+</span><span style="color:#eff1f5;">}
+</span></code></pre>
+<p>The <strong>StripePaymentGateway</strong> class represents a Stripe payment gateway inheritance of the <strong>PaymentGateway</strong>.</p>
+<pre data-lang="Java" style="background-color:#2b303b;color:#c0c5ce;" class="language-Java "><code class="language-Java" data-lang="Java"><span style="color:#b48ead;">public class </span><span style="color:#ebcb8b;">StripePaymentGateway  </span><span style="color:#eff1f5;">{
+</span><span style="color:#eff1f5;">    </span><span style="color:#b48ead;">public boolean </span><span style="color:#8fa1b3;">processPayment</span><span style="color:#eff1f5;">(</span><span style="color:#ebcb8b;">Transaction </span><span style="color:#bf616a;">transaction</span><span style="color:#eff1f5;">) {
+</span><span style="color:#eff1f5;">        </span><span style="color:#ebcb8b;">System</span><span style="color:#eff1f5;">.out.</span><span style="color:#bf616a;">println</span><span style="color:#eff1f5;">(</span><span>&quot;</span><span style="color:#a3be8c;">Payment processing with Stripe: </span><span>&quot; +</span><span style="color:#eff1f5;"> transaction.</span><span style="color:#bf616a;">getCurrency</span><span style="color:#eff1f5;">() </span><span>+</span><span style="color:#eff1f5;"> transaction.</span><span style="color:#bf616a;">getAmount</span><span style="color:#eff1f5;">());
+</span><span style="color:#eff1f5;">        </span><span style="color:#b48ead;">return </span><span style="color:#d08770;">true</span><span style="color:#eff1f5;">;
+</span><span style="color:#eff1f5;">    }
+</span><span style="color:#eff1f5;">}
+</span></code></pre>
+<p>This class represents a bank transfer payment gateway.</p>
+<pre data-lang="Java" style="background-color:#2b303b;color:#c0c5ce;" class="language-Java "><code class="language-Java" data-lang="Java"><span style="color:#b48ead;">public class </span><span style="color:#ebcb8b;">BankTransferGateway </span><span style="color:#eff1f5;">{
+</span><span style="color:#eff1f5;">    </span><span style="color:#b48ead;">public boolean </span><span style="color:#8fa1b3;">processPayment</span><span style="color:#eff1f5;">(</span><span style="color:#ebcb8b;">Transaction </span><span style="color:#bf616a;">transaction</span><span style="color:#eff1f5;">) {
+</span><span style="color:#eff1f5;">        </span><span style="color:#ebcb8b;">System</span><span style="color:#eff1f5;">.out.</span><span style="color:#bf616a;">println</span><span style="color:#eff1f5;">(</span><span>&quot;</span><span style="color:#a3be8c;">Payment processing with Bank: </span><span>&quot; +</span><span style="color:#eff1f5;"> transaction.</span><span style="color:#bf616a;">getCurrency</span><span style="color:#eff1f5;">() </span><span>+</span><span style="color:#eff1f5;"> transaction.</span><span style="color:#bf616a;">getAmount</span><span style="color:#eff1f5;">());
+</span><span style="color:#eff1f5;">        </span><span style="color:#b48ead;">return </span><span style="color:#d08770;">true</span><span style="color:#eff1f5;">;
+</span><span style="color:#eff1f5;">    }
+</span><span style="color:#eff1f5;">}
+</span></code></pre>
+<p>This class is responsible for processing transactions using different payment methods. It is considered a bridge between three classes (<strong>PayPalPaymentGateway</strong>, <strong>StripePaymentGateway</strong>, and <strong>BankTransferGateway</strong>) and the <strong>Main</strong> class. When reviewing the code carefully, it can be seen easily that there are three private members. These private members, which are <strong>PayPalPaymentGateway</strong>, <strong>StripePaymentGateway</strong>, and <strong>BankTransferGateway</strong>, are created in the constructor method. Thus, <strong>TransactionProcessor</strong> is dependent on these members.</p>
+<pre data-lang="Java" style="background-color:#2b303b;color:#c0c5ce;" class="language-Java "><code class="language-Java" data-lang="Java"><span style="color:#b48ead;">public class </span><span style="color:#ebcb8b;">TransactionProcessor </span><span style="color:#eff1f5;">{
+</span><span style="color:#eff1f5;">    </span><span style="color:#b48ead;">private final </span><span style="color:#ebcb8b;">PayPalPaymentGateway </span><span style="color:#eff1f5;">payPalPaymentGateway;
+</span><span style="color:#eff1f5;">    </span><span style="color:#b48ead;">private final </span><span style="color:#ebcb8b;">StripePaymentGateway </span><span style="color:#eff1f5;">stripePaymentGateway;
+</span><span style="color:#eff1f5;">    </span><span style="color:#b48ead;">private final </span><span style="color:#ebcb8b;">BankTransferGateway </span><span style="color:#eff1f5;">bankTransferGateway;
+</span><span style="color:#eff1f5;">
+</span><span style="color:#eff1f5;">    </span><span style="color:#b48ead;">public </span><span style="color:#8fa1b3;">TransactionProcessor</span><span style="color:#eff1f5;">() {
+</span><span style="color:#eff1f5;">        </span><span style="color:#bf616a;">this</span><span style="color:#eff1f5;">.payPalPaymentGateway </span><span>= </span><span style="color:#b48ead;">new </span><span style="color:#ebcb8b;">PayPalPaymentGateway</span><span style="color:#eff1f5;">();
+</span><span style="color:#eff1f5;">        </span><span style="color:#bf616a;">this</span><span style="color:#eff1f5;">.stripePaymentGateway </span><span>= </span><span style="color:#b48ead;">new </span><span style="color:#ebcb8b;">StripePaymentGateway</span><span style="color:#eff1f5;">();
+</span><span style="color:#eff1f5;">        </span><span style="color:#bf616a;">this</span><span style="color:#eff1f5;">.bankTransferGateway </span><span>= </span><span style="color:#b48ead;">new </span><span style="color:#ebcb8b;">BankTransferGateway</span><span style="color:#eff1f5;">();
+</span><span style="color:#eff1f5;">    }
+</span><span style="color:#eff1f5;">
+</span><span style="color:#eff1f5;">    </span><span style="color:#b48ead;">public boolean </span><span style="color:#8fa1b3;">process</span><span style="color:#eff1f5;">(</span><span style="color:#ebcb8b;">Transaction </span><span style="color:#bf616a;">transaction</span><span style="color:#eff1f5;">, </span><span style="color:#ebcb8b;">String </span><span style="color:#bf616a;">paymentMethod</span><span style="color:#eff1f5;">) {
+</span><span style="color:#eff1f5;">        </span><span style="color:#b48ead;">if </span><span style="color:#eff1f5;">(paymentMethod.</span><span style="color:#bf616a;">equals</span><span style="color:#eff1f5;">(</span><span>&quot;</span><span style="color:#a3be8c;">PayPal</span><span>&quot;</span><span style="color:#eff1f5;">))
+</span><span style="color:#eff1f5;">            </span><span style="color:#b48ead;">return</span><span style="color:#eff1f5;"> payPalPaymentGateway.</span><span style="color:#bf616a;">processPayment</span><span style="color:#eff1f5;">(transaction);
+</span><span style="color:#eff1f5;">        </span><span style="color:#b48ead;">else if </span><span style="color:#eff1f5;">(paymentMethod.</span><span style="color:#bf616a;">equals</span><span style="color:#eff1f5;">(</span><span>&quot;</span><span style="color:#a3be8c;">Stripe</span><span>&quot;</span><span style="color:#eff1f5;">))
+</span><span style="color:#eff1f5;">            </span><span style="color:#b48ead;">return</span><span style="color:#eff1f5;"> stripePaymentGateway.</span><span style="color:#bf616a;">processPayment</span><span style="color:#eff1f5;">(transaction);
+</span><span style="color:#eff1f5;">        </span><span style="color:#b48ead;">else if </span><span style="color:#eff1f5;">(paymentMethod.</span><span style="color:#bf616a;">equals</span><span style="color:#eff1f5;">(</span><span>&quot;</span><span style="color:#a3be8c;">BankTransfer</span><span>&quot;</span><span style="color:#eff1f5;">))
+</span><span style="color:#eff1f5;">            </span><span style="color:#b48ead;">return</span><span style="color:#eff1f5;"> bankTransferGateway.</span><span style="color:#bf616a;">processPayment</span><span style="color:#eff1f5;">(transaction);
+</span><span style="color:#eff1f5;">
+</span><span style="color:#eff1f5;">        </span><span style="color:#b48ead;">return </span><span style="color:#d08770;">false</span><span style="color:#eff1f5;">;
+</span><span style="color:#eff1f5;">    }
+</span><span style="color:#eff1f5;">}
+</span></code></pre>
+<p>The below code represents how you might use the <strong>TransactionProcessor</strong>. In the <strong>Main</strong> class, it is created an instance of the <strong>TransactionProcessor</strong> class and uses the method called process of this class.</p>
+<pre data-lang="Java" style="background-color:#2b303b;color:#c0c5ce;" class="language-Java "><code class="language-Java" data-lang="Java"><span style="color:#b48ead;">public class </span><span style="color:#ebcb8b;">Main </span><span style="color:#eff1f5;">{
+</span><span style="color:#eff1f5;">    </span><span style="color:#b48ead;">public static void </span><span style="color:#8fa1b3;">main</span><span style="color:#eff1f5;">(</span><span style="color:#ebcb8b;">String</span><span style="color:#b48ead;">[] </span><span style="color:#bf616a;">args</span><span style="color:#eff1f5;">) {
+</span><span style="color:#eff1f5;">        </span><span style="color:#ebcb8b;">TransactionProcessor</span><span style="color:#eff1f5;"> processor </span><span>= </span><span style="color:#b48ead;">new </span><span style="color:#ebcb8b;">TransactionProcessor</span><span style="color:#eff1f5;">();
+</span><span style="color:#eff1f5;">        </span><span style="color:#ebcb8b;">Transaction</span><span style="color:#eff1f5;"> transaction </span><span>= </span><span style="color:#b48ead;">new </span><span style="color:#ebcb8b;">Transaction</span><span style="color:#eff1f5;">(</span><span>&quot;</span><span style="color:#a3be8c;">2398129</span><span>&quot;</span><span style="color:#eff1f5;">, </span><span style="color:#ebcb8b;">BigDecimal</span><span style="color:#eff1f5;">.</span><span style="color:#d08770;">TEN</span><span style="color:#eff1f5;">, </span><span>&quot;</span><span style="color:#a3be8c;">$</span><span>&quot;</span><span style="color:#eff1f5;">, </span><span>&quot;</span><span style="color:#a3be8c;">12345</span><span>&quot;</span><span style="color:#eff1f5;">, </span><span>&quot;</span><span style="color:#a3be8c;">12346</span><span>&quot;</span><span style="color:#eff1f5;">);
+</span><span style="color:#eff1f5;">        processor.</span><span style="color:#bf616a;">process</span><span style="color:#eff1f5;">(transaction, </span><span>&quot;</span><span style="color:#a3be8c;">PayPal</span><span>&quot;</span><span style="color:#eff1f5;">);
+</span><span style="color:#eff1f5;">    }
+</span><span style="color:#eff1f5;">}
+</span></code></pre>
+<p>As in the first example without the Dependency Inversion Principle, it can be seen easily that <strong>TransactionProcessor</strong> is dependent on the <strong>PayPalPaymentGateway</strong>, <strong>StripePaymentGateway</strong>, and <strong>BankTransferGateway</strong> concrete classes. In this design, if it is needed to add a new payment gateway class, the <strong>TransactionProcessor</strong> class will have to be changed, too. So, restructuring the design is necessary.</p>
+<p>Let's refactor the given example by using the Dependency Inversion Principle in order that achieve the goal of loosely coupled.</p>
+<p>Initially, it should be defined as an interface. Due to this interface, the design will be able to be loosely coupled.</p>
+<p>The <strong>Transaction</strong> class, <strong>PaymentGateway</strong> interface, and its concrete implementations <strong>PaypalPaymentGateway</strong>, <strong>StripePaymentGateway</strong>, and <strong>BankTransferGateway</strong> are the same as the previous examples without IoC.</p>
+<pre data-lang="Java" style="background-color:#2b303b;color:#c0c5ce;" class="language-Java "><code class="language-Java" data-lang="Java"><span style="color:#b48ead;">public class </span><span style="color:#ebcb8b;">Transaction </span><span style="color:#eff1f5;">{
+</span><span style="color:#eff1f5;">    </span><span style="color:#b48ead;">private </span><span style="color:#ebcb8b;">String </span><span style="color:#eff1f5;">transactionId;
+</span><span style="color:#eff1f5;">    </span><span style="color:#b48ead;">private </span><span style="color:#ebcb8b;">BigDecimal </span><span style="color:#eff1f5;">amount;
+</span><span style="color:#eff1f5;">    </span><span style="color:#b48ead;">private </span><span style="color:#ebcb8b;">String </span><span style="color:#eff1f5;">currency;
+</span><span style="color:#eff1f5;">    </span><span style="color:#b48ead;">private </span><span style="color:#ebcb8b;">String </span><span style="color:#eff1f5;">recipientAccount;
+</span><span style="color:#eff1f5;">    </span><span style="color:#b48ead;">private </span><span style="color:#ebcb8b;">String </span><span style="color:#eff1f5;">senderAccount;
+</span><span style="color:#eff1f5;">
+</span><span style="color:#eff1f5;">    </span><span style="color:#b48ead;">public </span><span style="color:#8fa1b3;">Transaction</span><span style="color:#eff1f5;">(</span><span style="color:#ebcb8b;">String </span><span style="color:#bf616a;">transactionId</span><span style="color:#eff1f5;">, </span><span style="color:#ebcb8b;">BigDecimal </span><span style="color:#bf616a;">amount</span><span style="color:#eff1f5;">, </span><span style="color:#ebcb8b;">String </span><span style="color:#bf616a;">currency</span><span style="color:#eff1f5;">, </span><span style="color:#ebcb8b;">String </span><span style="color:#bf616a;">recipientAccount</span><span style="color:#eff1f5;">, </span><span style="color:#ebcb8b;">String </span><span style="color:#bf616a;">senderAccount</span><span style="color:#eff1f5;">) {
+</span><span style="color:#eff1f5;">        </span><span style="color:#bf616a;">this</span><span style="color:#eff1f5;">.transactionId </span><span>=</span><span style="color:#eff1f5;"> transactionId;
+</span><span style="color:#eff1f5;">        </span><span style="color:#bf616a;">this</span><span style="color:#eff1f5;">.amount </span><span>=</span><span style="color:#eff1f5;"> amount;
+</span><span style="color:#eff1f5;">        </span><span style="color:#bf616a;">this</span><span style="color:#eff1f5;">.currency </span><span>=</span><span style="color:#eff1f5;"> currency;
+</span><span style="color:#eff1f5;">        </span><span style="color:#bf616a;">this</span><span style="color:#eff1f5;">.recipientAccount </span><span>=</span><span style="color:#eff1f5;"> recipientAccount;
+</span><span style="color:#eff1f5;">        </span><span style="color:#bf616a;">this</span><span style="color:#eff1f5;">.senderAccount </span><span>=</span><span style="color:#eff1f5;"> senderAccount;
+</span><span style="color:#eff1f5;">    }
+</span><span style="color:#eff1f5;">
+</span><span style="color:#eff1f5;">    </span><span style="color:#65737e;">// getter, setter
+</span><span style="color:#eff1f5;">}
+</span></code></pre>
+<pre data-lang="Java" style="background-color:#2b303b;color:#c0c5ce;" class="language-Java "><code class="language-Java" data-lang="Java"><span style="color:#b48ead;">public interface </span><span style="color:#ebcb8b;">PaymentGateway </span><span style="color:#eff1f5;">{
+</span><span style="color:#eff1f5;">    </span><span style="color:#b48ead;">boolean </span><span style="color:#8fa1b3;">processPayment</span><span style="color:#eff1f5;">(</span><span style="color:#ebcb8b;">Transaction </span><span style="color:#bf616a;">transaction</span><span style="color:#eff1f5;">);
+</span><span style="color:#eff1f5;">}
+</span></code></pre>
+<pre data-lang="Java" style="background-color:#2b303b;color:#c0c5ce;" class="language-Java "><code class="language-Java" data-lang="Java"><span style="color:#b48ead;">public class </span><span style="color:#ebcb8b;">PayPalPaymentGateway </span><span style="color:#b48ead;">implements </span><span style="color:#a3be8c;">PaymentGateway </span><span style="color:#eff1f5;">{
+</span><span style="color:#eff1f5;">    @</span><span style="color:#bf616a;">Override
+</span><span style="color:#eff1f5;">    </span><span style="color:#b48ead;">public boolean </span><span style="color:#8fa1b3;">processPayment</span><span style="color:#eff1f5;">(</span><span style="color:#ebcb8b;">Transaction </span><span style="color:#bf616a;">transaction</span><span style="color:#eff1f5;">) {
+</span><span style="color:#eff1f5;">        </span><span style="color:#ebcb8b;">System</span><span style="color:#eff1f5;">.out.</span><span style="color:#bf616a;">println</span><span style="color:#eff1f5;">(</span><span>&quot;</span><span style="color:#a3be8c;">Payment processing with PayPal: </span><span>&quot; +</span><span style="color:#eff1f5;"> transaction.</span><span style="color:#bf616a;">getCurrency</span><span style="color:#eff1f5;">() </span><span>+</span><span style="color:#eff1f5;"> transaction.</span><span style="color:#bf616a;">getAmount</span><span style="color:#eff1f5;">());
+</span><span style="color:#eff1f5;">        </span><span style="color:#b48ead;">return </span><span style="color:#d08770;">true</span><span style="color:#eff1f5;">;
+</span><span style="color:#eff1f5;">    }
+</span><span style="color:#eff1f5;">}
+</span></code></pre>
+<pre data-lang="Java" style="background-color:#2b303b;color:#c0c5ce;" class="language-Java "><code class="language-Java" data-lang="Java"><span style="color:#b48ead;">public class </span><span style="color:#ebcb8b;">StripePaymentGateway </span><span style="color:#b48ead;">implements </span><span style="color:#a3be8c;">PaymentGateway</span><span style="color:#eff1f5;">{
+</span><span style="color:#eff1f5;">    @</span><span style="color:#bf616a;">Override
+</span><span style="color:#eff1f5;">    </span><span style="color:#b48ead;">public boolean </span><span style="color:#8fa1b3;">processPayment</span><span style="color:#eff1f5;">(</span><span style="color:#ebcb8b;">Transaction </span><span style="color:#bf616a;">transaction</span><span style="color:#eff1f5;">) {
+</span><span style="color:#eff1f5;">        </span><span style="color:#ebcb8b;">System</span><span style="color:#eff1f5;">.out.</span><span style="color:#bf616a;">println</span><span style="color:#eff1f5;">(</span><span>&quot;</span><span style="color:#a3be8c;">Payment processing with Stripe: </span><span>&quot; +</span><span style="color:#eff1f5;"> transaction.</span><span style="color:#bf616a;">getCurrency</span><span style="color:#eff1f5;">() </span><span>+</span><span style="color:#eff1f5;"> transaction.</span><span style="color:#bf616a;">getAmount</span><span style="color:#eff1f5;">());
+</span><span style="color:#eff1f5;">        </span><span style="color:#b48ead;">return </span><span style="color:#d08770;">true</span><span style="color:#eff1f5;">;
+</span><span style="color:#eff1f5;">    }
+</span><span style="color:#eff1f5;">}
+</span></code></pre>
+<pre data-lang="Java" style="background-color:#2b303b;color:#c0c5ce;" class="language-Java "><code class="language-Java" data-lang="Java"><span style="color:#b48ead;">public class </span><span style="color:#ebcb8b;">BankTransferGateway </span><span style="color:#b48ead;">implements </span><span style="color:#a3be8c;">PaymentGateway </span><span style="color:#eff1f5;">{
+</span><span style="color:#eff1f5;">    @</span><span style="color:#bf616a;">Override
+</span><span style="color:#eff1f5;">    </span><span style="color:#b48ead;">public boolean </span><span style="color:#8fa1b3;">processPayment</span><span style="color:#eff1f5;">(</span><span style="color:#ebcb8b;">Transaction </span><span style="color:#bf616a;">transaction</span><span style="color:#eff1f5;">) {
+</span><span style="color:#eff1f5;">        </span><span style="color:#ebcb8b;">System</span><span style="color:#eff1f5;">.out.</span><span style="color:#bf616a;">println</span><span style="color:#eff1f5;">(</span><span>&quot;</span><span style="color:#a3be8c;">Payment processing with Bank: </span><span>&quot; +</span><span style="color:#eff1f5;"> transaction.</span><span style="color:#bf616a;">getCurrency</span><span style="color:#eff1f5;">() </span><span>+</span><span style="color:#eff1f5;"> transaction.</span><span style="color:#bf616a;">getAmount</span><span style="color:#eff1f5;">());
+</span><span style="color:#eff1f5;">        </span><span style="color:#b48ead;">return </span><span style="color:#d08770;">true</span><span style="color:#eff1f5;">;
+</span><span style="color:#eff1f5;">    }
+</span><span style="color:#eff1f5;">}
+</span></code></pre>
+<p>With the above code, it is created separate classes (<strong>PayPalPaymentGateway</strong>, <strong>StripePaymentGateway</strong>, <strong>BankTransferGateway</strong>) that implement the <strong>PaymentGateway</strong> interface. Each of these classes provides its specific implementation of the processPayment method.</p>
+<p>Finally, <strong>TransactionProcessor</strong> class is created, which is responsible for processing transactions using different payment methods and depends on the interfaces rather than concrete implementations.</p>
+<pre data-lang="Java" style="background-color:#2b303b;color:#c0c5ce;" class="language-Java "><code class="language-Java" data-lang="Java"><span style="color:#b48ead;">public class </span><span style="color:#ebcb8b;">TransactionProcessor </span><span style="color:#eff1f5;">{
+</span><span style="color:#eff1f5;">    </span><span style="color:#b48ead;">private final </span><span style="color:#ebcb8b;">PaymentGateway </span><span style="color:#eff1f5;">paymentGateway;
+</span><span style="color:#eff1f5;">
+</span><span style="color:#eff1f5;">    </span><span style="color:#b48ead;">public </span><span style="color:#8fa1b3;">TransactionProcessor</span><span style="color:#eff1f5;">(</span><span style="color:#ebcb8b;">PaymentGateway </span><span style="color:#bf616a;">paymentGateway</span><span style="color:#eff1f5;">) {
+</span><span style="color:#eff1f5;">        </span><span style="color:#bf616a;">this</span><span style="color:#eff1f5;">.paymentGateway </span><span>=</span><span style="color:#eff1f5;"> paymentGateway;
+</span><span style="color:#eff1f5;">    }
+</span><span style="color:#eff1f5;">
+</span><span style="color:#eff1f5;">    </span><span style="color:#b48ead;">public boolean </span><span style="color:#8fa1b3;">process</span><span style="color:#eff1f5;">(</span><span style="color:#ebcb8b;">Transaction </span><span style="color:#bf616a;">transaction</span><span style="color:#eff1f5;">) {
+</span><span style="color:#eff1f5;">        </span><span style="color:#b48ead;">return</span><span style="color:#eff1f5;"> paymentGateway.</span><span style="color:#bf616a;">processPayment</span><span style="color:#eff1f5;">(transaction);
+</span><span style="color:#eff1f5;">    }
+</span><span style="color:#eff1f5;">}
+</span></code></pre>
+<p>In the Main class, it is demonstrated how the system can easily switch between different payment gateways without modifying the <strong>TransactionProcessor</strong> class.</p>
+<pre data-lang="Java" style="background-color:#2b303b;color:#c0c5ce;" class="language-Java "><code class="language-Java" data-lang="Java"><span style="color:#b48ead;">public class </span><span style="color:#ebcb8b;">Main </span><span style="color:#eff1f5;">{
+</span><span style="color:#eff1f5;">    </span><span style="color:#b48ead;">public static void </span><span style="color:#8fa1b3;">main</span><span style="color:#eff1f5;">(</span><span style="color:#ebcb8b;">String</span><span style="color:#b48ead;">[] </span><span style="color:#bf616a;">args</span><span style="color:#eff1f5;">) {
+</span><span style="color:#eff1f5;">        </span><span style="color:#ebcb8b;">PaymentGateway</span><span style="color:#eff1f5;"> paymentGateway </span><span>= </span><span style="color:#b48ead;">new </span><span style="color:#ebcb8b;">BankTransferGateway</span><span style="color:#eff1f5;">();
+</span><span style="color:#eff1f5;">        </span><span style="color:#ebcb8b;">TransactionProcessor</span><span style="color:#eff1f5;"> processor </span><span>= </span><span style="color:#b48ead;">new </span><span style="color:#ebcb8b;">TransactionProcessor</span><span style="color:#eff1f5;">(paymentGateway);
+</span><span style="color:#eff1f5;">        </span><span style="color:#ebcb8b;">Transaction</span><span style="color:#eff1f5;"> transaction </span><span>= </span><span style="color:#b48ead;">new </span><span style="color:#ebcb8b;">Transaction</span><span style="color:#eff1f5;">(</span><span>&quot;</span><span style="color:#a3be8c;">2398129</span><span>&quot;</span><span style="color:#eff1f5;">, </span><span style="color:#ebcb8b;">BigDecimal</span><span style="color:#eff1f5;">.</span><span style="color:#d08770;">TEN</span><span style="color:#eff1f5;">, </span><span>&quot;</span><span style="color:#a3be8c;">$</span><span>&quot;</span><span style="color:#eff1f5;">, </span><span>&quot;</span><span style="color:#a3be8c;">12345</span><span>&quot;</span><span style="color:#eff1f5;">, </span><span>&quot;</span><span style="color:#a3be8c;">12346</span><span>&quot;</span><span style="color:#eff1f5;">);
+</span><span style="color:#eff1f5;">        processor.</span><span style="color:#bf616a;">process</span><span style="color:#eff1f5;">(transaction);
+</span><span style="color:#eff1f5;">    }
+</span><span style="color:#eff1f5;">}
+</span></code></pre>
+<h2 id="conclusion">CONCLUSION</h2>
+<p>As the above examples, the Dependency Inversion Principle provides the development of interchangeable components. In line with this principle, a design is provided adaptable, extensible, and flexible. Abstractions have an important role in order that revert the inversion of control mechanisms.</p>
+<h2 id="references">REFERENCES</h2>
+<p>[1] <a href="https://stackify.com/dependency-inversion-principle/" target="_blank">https://stackify.com/dependency-inversion-principle/</a></p>
+<p>[2] <a href="https://www.tutorialsteacher.com/ioc/dependency-inversion-principle" target="_blank">https://www.tutorialsteacher.com/ioc/dependency-inversion-principle</a></p>
+</section>
+
+  <hr />
+
+  <!-- Post Taxonomies -->
+  
+<footer class="mt-12 flex flex-col">
+  <!---->
+  <!---->
+  <!---->
+  <!---->
+  
+  <div class="mb-2 flex flex-wrap">
+    <span class="block-bg mb-1.5 mr-1.5 rounded-lg px-5 py-1.5">Tags </span>
+    
+    <a
+      class="block-bg block-hover mb-1.5 mr-1.5 rounded-lg px-5 py-1.5 no-underline"
+      href="https://ahmetcancicek.dev/tags/dependency/"
+      >dependency</a
+    >
+    
+    <a
+      class="block-bg block-hover mb-1.5 mr-1.5 rounded-lg px-5 py-1.5 no-underline"
+      href="https://ahmetcancicek.dev/tags/inversion/"
+      >inversion</a
+    >
+    
+    <a
+      class="block-bg block-hover mb-1.5 mr-1.5 rounded-lg px-5 py-1.5 no-underline"
+      href="https://ahmetcancicek.dev/tags/principle/"
+      >principle</a
+    >
+    
+    <a
+      class="block-bg block-hover mb-1.5 mr-1.5 rounded-lg px-5 py-1.5 no-underline"
+      href="https://ahmetcancicek.dev/tags/dip/"
+      >dip</a
+    >
+    
+    <a
+      class="block-bg block-hover mb-1.5 mr-1.5 rounded-lg px-5 py-1.5 no-underline"
+      href="https://ahmetcancicek.dev/tags/ioc/"
+      >IoC</a
+    >
+    
+  </div>
+  
+</footer>
+
+<!---->
+
+  <!-- Post Nav -->
+  
+<nav class="block-bg mt-12 flex rounded-lg text-lg">
+  
+  <a
+    class="block-hover-mask flex w-1/2 items-center rounded-l-md p-6 pr-3 font-semibold no-underline"
+    href="https:&#x2F;&#x2F;ahmetcancicek.dev&#x2F;inversion-of-control&#x2F;"
+    ><span class="mr-1.5">←</span><span>Inversion of Control (IoC)</span></a
+  >
+  <!---->
+  
+  <a
+    class="block-hover-mask ml-auto flex w-1/2 items-center justify-end rounded-r-md p-6 pl-3 font-semibold no-underline"
+    href="https:&#x2F;&#x2F;ahmetcancicek.dev&#x2F;transaction-isolation-level&#x2F;"
+    ><span>Transaction Isolation Level</span><span class="ml-1.5">→</span></a
+  >
+  
+</nav>
+
+<!---->
+
+  <!-- Comment -->
+  
+</article>
+
+    </main>
+
+    <footer class="mx-auto flex max-w-3xl flex-wrap items-center px-8 py-4 text-sm opacity-60">
+  <div class="mr-auto basis-full lg:basis-1/2">
+    
+    &copy; 2024
+    <a class="link" href="https://ahmetcancicek.dev"
+      >ahmetcancicek</a
+    >
+     |<!---->
+    <!---->
+    <a class="link" href="https:&#x2F;&#x2F;creativecommons.org&#x2F;licenses&#x2F;by-sa&#x2F;4.0&#x2F;deed" rel="noopener" target="_blank">
+      CC BY-SA 4.0
+    </a>
+    <!---->
+    
+  </div>
+  <div class="flex basis-full lg:basis-1/2 lg:justify-end">
+    <a class="link mr-6 lg:ml-6" href="https://www.getzola.org/" rel="noopener" target="_blank"
+      >Powered by Zola</a
+    >
+    <a class="link" href="https://github.com/st1020/kita" rel="noopener" target="_blank">✎ Kita</a>
+  </div>
+</footer>
+
+  </body>
+</html>
