@@ -98,15 +98,9 @@ It is important that what is the difference between shared lock and exclusive lo
 
 To prevent dirty reads, the isolation level uses locking. Locking mechanisms ensure that a transaction reads only committed data. With the help of the locking mechanism, a transaction can hold a read-lock (if it only reads the row) or write-lock (if it updates or deletes the row) on a specific row to prevent the effects of other transactions. 
 
-
-
-When a transaction reads data, it acquires the read-lock (shared lock). This lock allows other transactions to acquire read-lock on the same data. Namely, it enables concurrent reads. However, read-lock prevents other transactions from acquiring exclusive locks on the same data.
-
-
+When a transaction reads data, it acquires the read-lock (shared lock). This lock allows other transactions to acquire read-lock on the same data.  Namely, it enables concurrent reads. However, read-lock prevents other transactions from acquiring exclusive locks on the same data. It is important to note that shared locks otherwise known as read-lock are released immediately after the read operation. The lock is not held throughout the entire transaction. As soon as the read operation, the lock is released. 
 
 On the other hand, when a transaction carries out operations such as inserting, updating, or deleting, it must acquire the write-lock (exclusive lock) in this isolation level. With the write-lock, the transactions prevent other transactions from acquiring read-lock or write-lock on the same data. Thus, it ensures data integrity during write operations.
-
-
 
 Let's review the isolation level step by step with an example. Consider a database table accounts with the below data. 
 
@@ -169,6 +163,3 @@ Concurrency anomalies are prevented by using the correct isolation level. Partic
 [4] <a href="https://www.cockroachlabs.com/blog/sql-isolation-levels-explained/" target="_blank">https://www.cockroachlabs.com/blog/sql-isolation-levels-explained/</a>
 
 [5] <a href="https://dev.mysql.com/doc/refman/8.0/en/innodb-transaction-isolation-levels.html" target="_blank">https://dev.mysql.com/doc/refman/8.0/en/innodb-transaction-isolation-levels.html</a>
-
-
-
